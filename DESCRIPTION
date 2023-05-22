@@ -1,0 +1,28 @@
+Package: dartRverse
+Title: Easily Install and Load the 'dartRverse' suits of packages
+Version: 0.33
+Date: 2023-05-22
+Authors@R: c(
+            person("Bernd", "Gruber", email="bernd.gruber@canberra.edu.au", role=c("aut","cre")), 
+            person("Arthur", "Georges", email="georges@aerg.edu.au", role="aut"),
+            person("Jose L.", "Mijangos", email="Luis.MijangosAraujo@canberra.edu.au", role="aut"), 
+            person("Carlo", "Pacioni",email="carlo.pacioni@delwp.vic.gov.au",role="aut"),
+            person("Peter J.", "Unmack", email="peter.mail2@unmack.net", role="aut"),
+            person("Oliver", "Berry", email="oliver.berry@csiro.au", role="aut" ),
+            person("Lindsay V.", "Clark", email="lvclark@illinois.edu", role="ctb"),
+            person("Floriaan", "Devloo-Delva",email="Floriaan.Devloo-Delva@csiro.au", role="ctb"),
+            person("Eric","Archer", email="eric.archer@noaa.gov", role="ctb")
+            )
+Description: The 'dartRverse' is a set of packages that work together to analyse SNP data
+URL: https://github.com/green-striped-gecko/dartRverse
+Depends: R (>= 3.5), dartR.base
+Suggests:  dartR.data, dartR.sim, dartR.spatial
+VignetteBuilder: knitr
+StagedInstall: no
+Encoding: UTF-8
+RoxygenNote: 7.2.3
+NeedsCompilation: no
+Packaged: 2023-05-22 13:20:46 UTC; green-striped-gecko
+Author: Bernd Gruber [aut, cre],
+Maintainer: Bernd Gruber <bernd.gruber@canberra.edu.au>
+Repository: CRAN
