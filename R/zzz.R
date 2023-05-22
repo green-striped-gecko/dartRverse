@@ -1,3 +1,10 @@
+#' @import cli
+#' @import dartR.base
+#' @importFrom dplyr filter "%>%"
+#' @importFrom purrr map2_lgl map_chr
+#' @importFrom rlang is_installed inform
+#' @importFrom tibble tibble
+
 .onAttach <- function(...) {
   
   packageStartupMessage(

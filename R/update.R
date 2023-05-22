@@ -59,10 +59,7 @@ BiocManager::install(c('SNPRelate', 'qvalue'))"))
 #'
 #' @export
 dartRverse_sitrep <- function() {
-  cli::cat_rule("R & RStudio")
-  if (rstudioapi::isAvailable()) {
-    cli::cat_bullet("RStudio: ", rstudioapi::getVersion())
-  }
+  cli::cat_rule("R")
   cli::cat_bullet("R: ", getRversion())
 
   deps <- dartRverse_deps()
