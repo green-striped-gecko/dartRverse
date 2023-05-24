@@ -13,12 +13,12 @@ Authors@R: c(
             person("Floriaan", "Devloo-Delva",email="Floriaan.Devloo-Delva@csiro.au", role="ctb"),
             person("Eric","Archer", email="eric.archer@noaa.gov", role="ctb")
             )
-Description: The 'dartRverse' is a set of packages that work together to analyse SNP data. It works similar to 'tidyverse' and support the installation of dependent packages.
+Description: The 'dartRverse' is a set of packages that work together to analyse SNP data. It works similar to 'tidyverse' and support the installation and maintanance of packages.
 URL: https://github.com/green-striped-gecko/dartRverse
 License: GPL (>= 3)
-Depends: R (>= 3.5), dartR.base
+Depends: R (>= 3.5), dartR.base, dartR.data
 Imports: dplyr, tibble, cli, rlang, purrr
-Suggests:  dartR.data, dartR.sim
+Suggests:  dartR.sim, dartR.popgenomics, dartR.spatial
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 NeedsCompilation: no

@@ -21,7 +21,7 @@ dartRverse_update <- function(recursive = FALSE, repos = getOption("repos")) {
   }
 
   cli::cat_line(cli::pluralize(
-    "The following {cli::qty(nrow(behind))} dartR.base package{?s} {?is/are} out of date:"
+    "The following {cli::qty(nrow(behind))} package{?s} needed for dartR.base {?is/are} out of date:"
   ))
   cli::cat_line()
   cli::cat_bullet(format(behind$package), " (", behind$local, " -> ", behind$cran, ")")
@@ -30,23 +30,30 @@ dartRverse_update <- function(recursive = FALSE, repos = getOption("repos")) {
   cli::cat_line("To update dartR.base packages, run [in a clean, restarted R session]:")
 
   pkg_str <- paste0(deparse(behind$package), collapse = "\n")
-  cli::cat_line(cli::style_bold("install.packages(", pkg_str, ")"))
+  cli::cat_line(cli::col_blue("install.packages(", pkg_str, ")"))
   
   cli::cat_line()
   cli::cat_line("Currently installed dartRverse packages:")
   pkg_str <- paste0(deparse(c(core, installedaddons)), collapse = "\n")
+  versions <- vapply(c(core, installedaddons), package_version_h, character(1)) 
   
-  cli::cat_line(cli::style_bold(pkg_str))
+  pkg_str <- paste0(
+    cli::col_green(cli::symbol$tick), " ", cli::col_blue(format(c(core, installedaddons))), " ",
+    cli::ansi_align(versions, max(cli::ansi_nchar(versions))))
+  
+  
+    
+  cli::cat_line(pkg_str)
   
   
   pkg_str <- paste0(deparse(notinstalledaddons),collapse = "\n")
   cli::cat_line()
   cli::cat_line("To install missing dartRverse packages, run [in a clean, restarted R session]:")
-  cli::cat_line(cli::style_bold("install.packages(", pkg_str, ")"))
-  cli::cat_line()
-  cli::cat_line("In case SNPRelate is missing, run [in a clean, restarted R session]:")
-  cli::cat_line(cli::style_bold("if (!require('BiocManager')) install.packages('BiocManager')
-BiocManager::install(c('SNPRelate', 'qvalue'))"))
+  cli::cat_line(cli::col_blue("install.packages(", pkg_str, ")"))
+#  cli::cat_line()
+#  cli::cat_line("In case SNPRelate is missing, run [in a clean, restarted R session]:")
+#  cli::cat_line(cli::style_bold("if (!require('BiocManager')) install.packages('BiocManager')
+#BiocManager::install(c('SNPRelate', 'qvalue'))"))
   invisible()
 }
 
