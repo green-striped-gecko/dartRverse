@@ -1,11 +1,13 @@
 #' Supports installation of CRAN and Github package of the dartRverse
 #' 
-#' This functions expects the name of one (or several) dartR packages, the repository (CRAN or Github) and in the case of github the branch (main, dev, beta) to install the identified version of the pacakge. If run with no parameter the current installed packages and its versions are printed
+#' This functions expects the name of one (or several) dartR packages, the repository (CRAN or Github) and in the case of github the branch (main, dev, beta) to install the identified version of the pacakge. If run with no parameter the current installed packages and their versions are printed
 #' 
 #' @param package Name of the package to install, currently [dartR.sim, dartR.spatial, dartR.popgenomics]
 #' @param rep Which repository is used (CRAN or Github) 
 #' @param branch If Github is used the branch on Github needs to be specified, [either main, beta or dev]
 #' @return NULL
+#' @examples 
+#' dartRverse_install()
 #' @export
 #' @importFrom utils installed.packages install.packages available.packages
 
@@ -15,15 +17,6 @@ dartRverse_install <- function(
                                 branch = "main")
 {
   pkg <- "devtools"
-  if (!(requireNamespace(pkg, quietly = TRUE))) {
-    cat(cli::col_red(
-      "Package",
-      pkg,
-      " needed for this function to work. Please install it.\n"
-    ))
-    return(-1)
-  }
-  pkg <- "stringr"
   if (!(requireNamespace(pkg, quietly = TRUE))) {
     cat(cli::col_red(
       "Package",
@@ -69,7 +62,7 @@ dartRverse_install <- function(
   if (!is.null(rep)) {
     
     #make sure package exists
-    if (!package %in% addons)  {
+    if (!package %in% c(core,addons))  {
       cat(cli::col_red(
         "\n"
       ))
@@ -79,14 +72,14 @@ dartRverse_install <- function(
     
     if (!is.na(pmatch(toupper(rep), "CRAN"))) {
       ps <- paste0("package:",package)
-      if (ps %in% search()) detach(ps, unload = TRUE, character.only = TRUE)
+      if (ps %in% search()) detach(ps, unload = TRUE, character.only = TRUE, force=TRUE)
         cat(cli::col_green(paste0("  Installing ",package ," from CRAN (latest version)\n")))
       install.packages(package)
     }
     if (!is.na(pmatch(toupper(rep), "GITHUB"))) {
         cat(cli::col_green(paste0("  Installing ",package," from Github from branch [",branch,"] \n")))
       ps <- paste0("package:",package)
-      if (ps %in% search()) detach(ps, unload = TRUE, character.only = TRUE)
+      if (ps %in% search()) detach(ps, unload = TRUE, character.only = TRUE, force=TRUE)
       devtools::install_github(paste0("green-striped-gecko/",package),
                                ref = branch,
                                dependencies = TRUE)

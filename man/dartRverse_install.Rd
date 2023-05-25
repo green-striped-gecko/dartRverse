@@ -14,5 +14,8 @@ dartRverse_install(package = NULL, rep = "CRAN", branch = "main")
 \item{branch}{If Github is used the branch on Github needs to be specified, [either main, beta or dev]}
 }
 \description{
-This functions expects the name of one (or several) dartR packages, the repository (CRAN or Github) and in the case of github the branch (main, dev, beta) to install the identified version of the pacakge. If run with no parameter the current installed packages and its versions are printed
+This functions expects the name of one (or several) dartR packages, the repository (CRAN or Github) and in the case of github the branch (main, dev, beta) to install the identified version of the pacakge. If run with no parameter the current installed packages and their versions are printed
+}
+\examples{
+dartRverse_install()
 }
