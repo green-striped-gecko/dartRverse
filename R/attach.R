@@ -1,30 +1,3 @@
-# core_unloaded <- function() {
-#   toinstall <- c(core, installedaddons)
-#   search <- paste0("package:", toinstall)
-#   toinstall[!search %in% search()]
-# }
-# 
-# # Attach the package from the same package library it was
-# # loaded from before. https://github.com/dartRverse/dartRverse/issues/171
-# same_library <- function(pkg) {
-#   loc <- if (pkg %in% loadedNamespaces()) dirname(getNamespaceInfo(pkg, "path"))
-#   do.call(
-#     "library",
-#     list(pkg, lib.loc = loc, character.only = TRUE, warn.conflicts = FALSE)
-#   )
-#      # library(pkg, lib.loc = loc, character.only = TRUE, warn.conflicts = FALSE, quietly = TRUE, logical.return = TRUE)
-# }
-# 
-# dartRverse_attach <- function() {
-#   to_load <- core_unloaded()
-# 
-#   suppressPackageStartupMessages(
-#     lapply(to_load, same_library)
-#  )
-# 
-#   invisible(to_load)
-# }
-
 dartRverse_attach_message <- function(to_load, type) {
   if (length(to_load) == 0) {
     return(NULL)

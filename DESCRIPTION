@@ -17,8 +17,8 @@ Description: The 'dartRverse' is a set of packages that work together to analyse
 URL: https://github.com/green-striped-gecko/dartRverse
 License: GPL (>= 3)
 Depends: R (>= 3.5), dartR.base, dartR.data
-Imports: dplyr, tibble, cli, rlang, purrr
-Suggests:  dartR.sim, dartR.popgenomics, dartR.spatial
+Imports: cli, rlang
+Suggests:  dartR.sim, dartR.popgenomics, dartR.spatial, devtools
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 NeedsCompilation: no
