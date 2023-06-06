@@ -19,6 +19,10 @@ License: GPL (>= 3)
 Depends: R (>= 3.5), dartR.base, dartR.data
 Imports: cli, rlang
 Suggests:  dartR.sim, dartR.popgenomics, dartR.spatial, devtools
+Remotes: github::green-striped-gecko/dartR.base,
+         github::green-striped-gecko/dartR.popgenomics, 
+         github::green-striped-gecko/dartR.sim,
+         github::green-striped-gecko/dartR.spatial
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 NeedsCompilation: no
