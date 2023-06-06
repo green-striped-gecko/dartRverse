@@ -83,7 +83,7 @@ will tell you, if the packages are installed and also which other dartR
 packages are missing. In case you want to install additional packages,
 e.g. dartR.popgenomicis, type:
 
-```{r}
+```{r, eval=FALSE}
 install.packages("dartR.popgenomics")
 ```
 

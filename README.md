@@ -1,14 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# `dartRverse` <a href="https://green-striped-gecko.github.io/dartR/"><img src='man/figures/dartRlogo.png' align="right" height="140" /></a>
+# `dartRverse` <a href="https://green-striped-gecko.github.io/dartR/"><img src="man/figures/dartRlogo.png" align="right" height="140"/></a>
 
 ## An accessible genetic analysis platform for conservation, ecology and agriculture - dartRverse
 
 <!-- badges: start -->
 
-[![check
-main](https://github.com/green-striped-gecko/dartRverse/workflows/check-standard/badge.svg)](https://github.com/green-striped-gecko/dartRverse/actions)
+[![main](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yml/badge.svg?branch=main)](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yml)
 
 Publication:
 [![](https://img.shields.io/badge/doi-10.1111/1755--0998.12745-00cccc.svg)](https://doi.org/10.1111/1755-0998.12745)
@@ -19,7 +18,8 @@ Zenodo:
 <!-- badges: start -->
 
 Dev repositories:
-[![check-dev](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yaml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yaml)
+[![R-CMD-check](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yml)
+
 <!-- badges: end -->
 
 ## Overview
@@ -42,10 +42,12 @@ Diversity Arrays Technology, and is supported with funding from the ACT
 Priority Investment Program, CSIRO and the University of Canberra.
 
 <p align="center">
-<img src='man/figures/UC.png' height="100"/>    
-<img src='man/figures/csiro_logo.png' height="100"/>    
-<img src='man/figures/DArT-removebg-preview.png' height="100"/>    
-<img src='man/figures/ACT.png' height="100"/>
+
+<img src="man/figures/UC.png" height="100"/>    
+<img src="man/figures/csiro_logo.png" height="100"/>    
+<img src="man/figures/DArT-removebg-preview.png" height="100"/>    
+<img src="man/figures/ACT.png" height="100"/>
+
 </p>
 
 ## Installation
@@ -114,7 +116,6 @@ e.g. dartR.popgenomicis, type:
 
 ``` r
 install.packages("dartR.popgenomics")
-#> Warning: package 'dartR.popgenomics' is in use and will not be installed
 ```
 
 You can install the development version of any of the dartR packages
@@ -139,7 +140,9 @@ in genetic data analysis, from reading multiple data input formats to
 manipulating, filtering, exploring and analysing the data.
 
 <p align="center">
-<img src='man/figures/Figure_1.png' width="800"/>
+
+<img src="man/figures/Figure_1.png" width="800"/>
+
 </p>
 
 We use the prefix ‘gl’ in function names to acknowledge the use of the
