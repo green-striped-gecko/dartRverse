@@ -1,7 +1,7 @@
 Package: dartRverse
-Title: Easily Install and Load the 'dartRverse' suits of packages
-Version: 0.33
-Date: 2023-05-22
+Title: Easily Install and Load the 'dartRverse' Suits of Packages
+Version: 0.44
+Date: 2023-06-06
 Authors@R: c(
             person("Bernd", "Gruber", email="bernd.gruber@canberra.edu.au", role=c("aut","cre")), 
             person("Arthur", "Georges", email="georges@aerg.edu.au", role="aut"),
@@ -13,7 +13,7 @@ Authors@R: c(
             person("Floriaan", "Devloo-Delva",email="Floriaan.Devloo-Delva@csiro.au", role="ctb"),
             person("Eric","Archer", email="eric.archer@noaa.gov", role="ctb")
             )
-Description: The 'dartRverse' is a set of packages that work together to analyse SNP data. It works similar to 'tidyverse' and support the installation and maintanance of packages.
+Description: The 'dartRverse' is a set of packages that work together to analyse SNP data. It works similar to 'tidyverse' and support the installation and maintenance of packages. It borrowed code and ideas from the tidyverse package.
 URL: https://github.com/green-striped-gecko/dartRverse
 License: GPL (>= 3)
 Depends: R (>= 3.5), dartR.base, dartR.data
