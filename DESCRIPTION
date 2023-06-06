@@ -1,6 +1,6 @@
 Package: dartRverse
 Title: Easily Install and Load the 'dartRverse' suits of packages
-Version: 0.33
+Version: 0.34
 Date: 2023-05-22
 Authors@R: c(
             person("Bernd", "Gruber", email="bernd.gruber@canberra.edu.au", role=c("aut","cre")), 
