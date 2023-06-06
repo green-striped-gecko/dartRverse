@@ -18,7 +18,7 @@ Zenodo:
 <!-- badges: start -->
 
 Dev repositories:
-[![R-CMD-check](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yml)
+[![dev](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yml)
 
 <!-- badges: end -->
 
