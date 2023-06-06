@@ -1,28 +1,14 @@
----
-output: github_document
-editor_options: 
-  markdown: 
-    wrap: 72
----
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
-)
-```
-
-# `dartRverse` <a href="https://green-striped-gecko.github.io/dartR/"><img src="man/figures/dartRlogo.png" align="right" height="140"/></a>
+# `dartRverse` <a href="https://green-striped-gecko.github.io/dartR/"><img src='man/figures/dartRlogo.png' align="right" height="140" /></a>
 
 ## An accessible genetic analysis platform for conservation, ecology and agriculture - dartRverse
 
 <!-- badges: start -->
 
-[![main](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yml/badge.svg?branch=main)](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yml)
+[![check
+main](https://github.com/green-striped-gecko/dartRverse/workflows/check-standard/badge.svg)](https://github.com/green-striped-gecko/dartRverse/actions)
 
 Publication:
 [![](https://img.shields.io/badge/doi-10.1111/1755--0998.12745-00cccc.svg)](https://doi.org/10.1111/1755-0998.12745)
@@ -33,8 +19,7 @@ Zenodo:
 <!-- badges: start -->
 
 Dev repositories:
-[![R-CMD-check](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yml)
-
+[![check-dev](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yaml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yaml)
 <!-- badges: end -->
 
 ## Overview
@@ -43,59 +28,104 @@ Dev repositories:
 dartRverse. Currenlty there are two core packages that needs to be
 installed to use dartR:
 
--   dartR.base
--   dartR.data
+- dartR.base
+- dartR.data
 
 Additional packages are
 
--   dartR.sim
--   dartR.spatial
--   dartR.popgenomics
+- dartR.sim
+- dartR.spatial
+- dartR.popgenomics
 
 `dartR` is a collaboration between the University of Canberra, CSIRO and
 Diversity Arrays Technology, and is supported with funding from the ACT
 Priority Investment Program, CSIRO and the University of Canberra.
 
 <p align="center">
-
-<img src="man/figures/UC.png" height="100"/>    
-<img src="man/figures/csiro_logo.png" height="100"/>    
-<img src="man/figures/DArT-removebg-preview.png" height="100"/>    
-<img src="man/figures/ACT.png" height="100"/>
-
+<img src='man/figures/UC.png' height="100"/>    
+<img src='man/figures/csiro_logo.png' height="100"/>    
+<img src='man/figures/DArT-removebg-preview.png' height="100"/>    
+<img src='man/figures/ACT.png' height="100"/>
 </p>
 
 ## Installation
 
 `dartRverse` is on CRAN, so to install it simply type:
 
-```{r, eval = FALSE}
+``` r
 install.packages("dartRverse")
 ```
 
 This should install dartRverse, dartR.base and dartR.data
 
-```{r}
+``` r
 library(dartRverse)
+#> Loading required package: dartR.base
+#> Loading required package: adegenet
+#> Loading required package: ade4
+#> 
+#>    /// adegenet 2.1.8 is loaded ////////////
+#> 
+#>    > overview: '?adegenet'
+#>    > tutorials/doc/questions: 'adegenetWeb()' 
+#>    > bug reports/feature requests: adegenetIssues()
+#> Loading required package: ggplot2
+#> Loading required package: dplyr
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
+#> Loading required package: dartR.data
+#> **** Welcome to dartR.data [Version 1.0.3 ] ****
+#> Registered S3 method overwritten by 'pegas':
+#>   method      from
+#>   print.amova ade4
+#> **** Welcome to dartR.base [Version 0.33 ] ****
+#> **********************************************
+#> **** Welcome to dartRverse [Version 0.44] ****
+#> **********************************************
+#> **** Welcome to dartR.sim [Version 0.57 ] ****
+#> **** Welcome to dartR.popgenomics [Version 0.77 ] ****
+#> Registered S3 method overwritten by 'GGally':
+#>   method from   
+#>   +.gg   ggplot2
+#> The legacy packages maptools, rgdal, and rgeos, underpinning this package
+#> will retire shortly. Please refer to R-spatial evolution reports on
+#> https://r-spatial.org/r/2023/05/15/evolution4.html for details.
+#> This package is now running under evolution status 0
+#> Registered S3 method overwritten by 'genetics':
+#>   method      from 
+#>   [.haplotype pegas
+#> **** Welcome to dartR.spatial [Version 0.63 ] ****
+#> -- Core dartRverse packages -------------------------------------- dartRverse --
+#> v dartR.base 0.33      v dartR.data 1.0.3
+#> -- Installed dartRverse packages   ------------------------------- dartRverse --
+#> v dartR.popgenomics 0.77     v dartR.spatial     0.63
+#> v dartR.sim         0.57
 ```
 
 will tell you, if the packages are installed and also which other dartR
 packages are missing. In case you want to install additional packages,
-e.g. dartR.popgenomicis, type:
+e.g. dartR.popgenomicis, type:
 
-```{r}
+``` r
 install.packages("dartR.popgenomics")
+#> Warning: package 'dartR.popgenomics' is in use and will not be installed
 ```
 
 You can install the development version of any of the dartR packages
 from GitHub with:
 
-```{r, eval = FALSE}
+``` r
 library(dartRverse)
 dartRverse_install(package = "dartR.base", rep = "github", branch = "dev")
 ```
 
-This installs the development branch ('dev') of the Github version of
+This installs the development branch (‘dev’) of the Github version of
 dart.base. All other packages/branches can be installed accordingly.
 
 Please consult [this installation
@@ -109,12 +139,10 @@ in genetic data analysis, from reading multiple data input formats to
 manipulating, filtering, exploring and analysing the data.
 
 <p align="center">
-
-<img src="man/figures/Figure_1.png" width="800"/>
-
+<img src='man/figures/Figure_1.png' width="800"/>
 </p>
 
-We use the prefix 'gl' in function names to acknowledge the use of the
+We use the prefix ‘gl’ in function names to acknowledge the use of the
 genlight object from package
 [adegenet](https://doi.org/10.1093/bioinformatics/btn129) as our input
 format.
@@ -128,7 +156,7 @@ genlight object.
 For instance, you might use the code below to generate a report and then
 filter your data based on the percentage of missing data:
 
-```{r, eval = FALSE}
+``` r
 library(dartR)
 test <- platypus.gl
 rep <- gl.report.callrate(test)
@@ -141,7 +169,7 @@ test_1 <- gl.filter.callrate(test)
     fuss, have a look at our [R-refresher
     tutorial](http://georges.biomatix.org/storage/app/media/uploaded-files/Tutorial_1_dartR_RStudio_Refresher_22-Dec-21.pdf).
 
-2.  Let's get started by reading your genetic data into `dartR`; if you
+2.  Let’s get started by reading your genetic data into `dartR`; if you
     have DArT data, follow [this
     tutorial](http://georges.biomatix.org/storage/app/media/uploaded-files/tutorial3adartrdatastructuresandinput22-dec-21-2.pdf);
     if not, follow [this
@@ -191,7 +219,7 @@ Please acknowledge `dartR` if you use it in your study. Copy and paste
 the following code to the R console to retrieve the citation
 information:
 
-```{r, eval = FALSE}
+``` r
 citation("dartR")
 ```
 
