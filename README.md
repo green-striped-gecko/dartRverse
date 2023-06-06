@@ -25,7 +25,7 @@ Dev repositories:
 ## Overview
 
 `dartRverse` aims to support the installation of packages of the
-dartRverse. Currenlty there are two core packages that needs to be
+dartRverse. Currently there are two core packages that need to be
 installed to use dartR:
 
 - dartR.base
@@ -33,9 +33,9 @@ installed to use dartR:
 
 Additional packages are
 
-- dartR.sim
-- dartR.spatial
-- dartR.popgenomics
+- dartR.sim (functions to simulate SNP data)
+- dartR.spatial (spatial analysis)
+- dartR.popgenomics (popgenomics analysis)
 
 `dartR` is a collaboration between the University of Canberra, CSIRO and
 Diversity Arrays Technology, and is supported with funding from the ACT
@@ -52,7 +52,7 @@ Priority Investment Program, CSIRO and the University of Canberra.
 
 ## Installation
 
-`dartRverse` is on CRAN, so to install it simply type:
+`dartRverse` will be on CRAN, so to install it simply type:
 
 ``` r
 install.packages("dartRverse")
@@ -91,7 +91,7 @@ library(dartRverse)
 #> **** Welcome to dartRverse [Version 0.44] ****
 #> **********************************************
 #> **** Welcome to dartR.sim [Version 0.57 ] ****
-#> **** Welcome to dartR.popgenomics [Version 0.77 ] ****
+#> **** Welcome to dartR.popgenomics [Version 0.78 ] ****
 #> Registered S3 method overwritten by 'GGally':
 #>   method from   
 #>   +.gg   ggplot2
@@ -106,7 +106,7 @@ library(dartRverse)
 #> -- Core dartRverse packages -------------------------------------- dartRverse --
 #> v dartR.base 0.33      v dartR.data 1.0.3
 #> -- Installed dartRverse packages   ------------------------------- dartRverse --
-#> v dartR.popgenomics 0.77     v dartR.spatial     0.63
+#> v dartR.popgenomics 0.78     v dartR.spatial     0.63
 #> v dartR.sim         0.57
 ```
 
@@ -128,6 +128,20 @@ dartRverse_install(package = "dartR.base", rep = "github", branch = "dev")
 
 This installs the development branch (‘dev’) of the Github version of
 dart.base. All other packages/branches can be installed accordingly.
+
+To check which packages are already installed (and which version),
+simply type:
+
+``` r
+dartRverse_install()
+#> 
+#> Currently installed dartRverse packages:
+#> v dartR.base        0.33 
+#> v dartR.data        1.0.3
+#> v dartR.sim         0.57 
+#> v dartR.popgenomics 0.78 
+#> v dartR.spatial     0.63
+```
 
 Please consult [this installation
 tutorial](https://github.com/green-striped-gecko/dartR/wiki/Installation-tutorial)
@@ -160,7 +174,7 @@ For instance, you might use the code below to generate a report and then
 filter your data based on the percentage of missing data:
 
 ``` r
-library(dartR)
+library(dartR.base)
 test <- platypus.gl
 rep <- gl.report.callrate(test)
 test_1 <- gl.filter.callrate(test)
@@ -223,7 +237,7 @@ the following code to the R console to retrieve the citation
 information:
 
 ``` r
-citation("dartR")
+citation("dartRverse")
 ```
 
 Check out our
