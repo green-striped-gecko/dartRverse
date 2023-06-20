@@ -32,7 +32,7 @@ dartRverse_install <- function(
   if (is.null(package))  #just print current versions
   {
     cli::cat_line()
-    cli::cat_line("Currently installed dartRverse packages:")
+    cli::cat_line("[Not]installed dartRverse packages:")
     pkg_str <- paste0(deparse(c(dc$core, dc$ip)), collapse = "\n")
     versions <- vapply(c(dc$core, dc$ip), package_version_h, character(1)) 
     
