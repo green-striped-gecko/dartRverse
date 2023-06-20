@@ -6,7 +6,6 @@
 
 core <- c("dartR.base", "dartR.data")
 addons <- c("dartR.sim","dartR.popgenomics","dartR.spatial","dartR.sexlinked","dartR.captive")
-
 dartR_check <- function()
 {
 
