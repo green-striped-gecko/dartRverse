@@ -88,9 +88,9 @@ library(dartRverse)
 #>   print.amova ade4
 #> **** Welcome to dartR.base [Version 0.33 ] ****
 #> **********************************************
-#> **** Welcome to dartRverse [Version 0.44] ****
+#> **** Welcome to dartRverse [Version 0.45] ****
 #> **********************************************
-#> **** Welcome to dartR.sim [Version 0.57 ] ****
+#> **** Welcome to dartR.sim [Version 0.62 ] ****
 #> **** Welcome to dartR.popgenomics [Version 0.78 ] ****
 #> Registered S3 method overwritten by 'GGally':
 #>   method from   
@@ -103,11 +103,21 @@ library(dartRverse)
 #>   method      from 
 #>   [.haplotype pegas
 #> **** Welcome to dartR.spatial [Version 0.63 ] ****
-#> -- Core dartRverse packages -------------------------------------- dartRverse --
-#> v dartR.base 0.33      v dartR.data 1.0.3
-#> -- Installed dartRverse packages   ------------------------------- dartRverse --
-#> v dartR.popgenomics 0.78     v dartR.spatial     0.63
-#> v dartR.sim         0.57
+#> **** Welcome to dartR.captive [Version 0.67 ] ****
+#> 
+#> Attaching package: 'dartR.captive'
+#> The following objects are masked from 'package:dartR.popgenomics':
+#> 
+#>     gl.assign.grm, gl.assign.mahalanobis, gl.assign.pa, gl.assign.pca,
+#>     gl.grm, gl.grm.network, gl.plot.network, utils.assignment,
+#>     utils.assignment_2, utils.assignment_3, utils.assignment_4
+#> **** Welcome to dartR.sexlinked [Version 0.22 ] ****
+#> ── Core dartRverse packages ────────────────────────────────────── dartRverse ──
+#> ✔ dartR.base 0.33      ✔ dartR.data 1.0.3
+#> ── Installed dartRverse packages   ─────────────────────────────── dartRverse ──
+#> ✔ dartR.captive     0.67     ✔ dartR.sim         0.62
+#> ✔ dartR.popgenomics 0.78     ✔ dartR.spatial     0.63
+#> ✔ dartR.sexlinked   0.22
 ```
 
 will tell you, if the packages are installed and also which other dartR
@@ -135,12 +145,14 @@ simply type:
 ``` r
 dartRverse_install()
 #> 
-#> Currently installed dartRverse packages:
-#> v dartR.base        0.33 
-#> v dartR.data        1.0.3
-#> v dartR.sim         0.57 
-#> v dartR.popgenomics 0.78 
-#> v dartR.spatial     0.63
+#> dartRverse packages:
+#> ✔ dartR.base        0.33 
+#> ✔ dartR.data        1.0.3
+#> ✔ dartR.sim         0.62 
+#> ✔ dartR.popgenomics 0.78 
+#> ✔ dartR.spatial     0.63 
+#> ✔ dartR.captive     0.67 
+#> ✔ dartR.sexlinked   0.22
 ```
 
 Please consult [this installation
