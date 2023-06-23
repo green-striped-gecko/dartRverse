@@ -28,12 +28,5 @@ Authors:
   \item Oliver Berry \email{oliver.berry@csiro.au}
 }
 
-Other contributors:
-\itemize{
-  \item Lindsay V. Clark \email{lvclark@illinois.edu} [contributor]
-  \item Floriaan Devloo-Delva \email{Floriaan.Devloo-Delva@csiro.au} [contributor]
-  \item Eric Archer \email{eric.archer@noaa.gov} [contributor]
-}
-
 }
 \keyword{internal}
