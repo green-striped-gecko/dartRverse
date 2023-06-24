@@ -5,17 +5,17 @@
 #' @importFrom utils packageVersion
 
 core <- c("dartR.base", "dartR.data")
-addons <- c("dartR.sim","dartR.popgenomics","dartR.spatial","dartR.sexlinked","dartR.captive")
+addons <- c("dartR.sim","dartR.popgenomics","dartR.spatial","dartR.captive","dartR.sexlinked")
+
 dartR_check <- function()
 {
 
-  ip <- installed.packages()[,1]
   
   bc <- unlist(lapply(core, function(x)  
   {
     loc <- if (x %in% loadedNamespaces()) dirname(getNamespaceInfo(x, "path"))
     
-    suppressMessages(suppressWarnings(require(x, lib.loc = loc,  quietly = TRUE, character.only = TRUE )))
+   suppressMessages(suppressWarnings(require(x, lib.loc = loc,  quietly = TRUE, character.only = TRUE )))
     
   }))
   
@@ -23,10 +23,9 @@ dartR_check <- function()
   {
     loc <- if (x %in% loadedNamespaces()) dirname(getNamespaceInfo(x, "path"))
     
-    suppressMessages(suppressWarnings(require(x, lib.loc = loc,  quietly = TRUE, character.only = TRUE )))
+   suppressMessages(suppressWarnings(require(x, lib.loc = loc,  quietly = TRUE, character.only = TRUE )))
     
   }))
-  
   
   core <- core[bc]
   installedaddons <- addons[ba]
@@ -47,6 +46,10 @@ dartR_check <- function()
     ), collapse="\n")
   )
   dc <- dartR_check()
+  #core <- dc$core
+  #installedaddons <- dc$ip
+  #notinstalledaddons <- dc$nip
+  #dartRverse_attach() 
   inform_startup(dartRverse_attach_message(dc$core,"core")) 
   inform_startup(dartRverse_attach_message(dc$ip,"addon"))
   inform_startup(dartRverse_attach_message(dc$nip,"notaddon"))

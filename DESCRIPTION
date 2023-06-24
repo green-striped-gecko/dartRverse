@@ -1,17 +1,14 @@
 Package: dartRverse
 Title: Easily Install and Load the 'dartRverse' Suits of Packages
-Version: 0.44
-Date: 2023-06-06
+Version: 0.46
+Date: 2023-06-23
 Authors@R: c(
             person("Bernd", "Gruber", email="bernd.gruber@canberra.edu.au", role=c("aut","cre")), 
             person("Arthur", "Georges", email="georges@aerg.edu.au", role="aut"),
             person("Jose L.", "Mijangos", email="Luis.MijangosAraujo@canberra.edu.au", role="aut"), 
             person("Carlo", "Pacioni",email="carlo.pacioni@delwp.vic.gov.au",role="aut"),
             person("Peter J.", "Unmack", email="peter.mail2@unmack.net", role="aut"),
-            person("Oliver", "Berry", email="oliver.berry@csiro.au", role="aut" ),
-            person("Lindsay V.", "Clark", email="lvclark@illinois.edu", role="ctb"),
-            person("Floriaan", "Devloo-Delva",email="Floriaan.Devloo-Delva@csiro.au", role="ctb"),
-            person("Eric","Archer", email="eric.archer@noaa.gov", role="ctb")
+            person("Oliver", "Berry", email="oliver.berry@csiro.au", role="aut" )
             )
 Description: The 'dartRverse' is a set of packages that work together to analyse SNP data. It works similar to 'tidyverse' and support the installation and maintenance of packages. It borrowed code and ideas from the tidyverse package.
 URL: https://github.com/green-striped-gecko/dartRverse
@@ -19,16 +16,8 @@ License: GPL (>= 3)
 Depends: R (>= 3.5), dartR.base, dartR.data
 Imports: cli, rlang
 Suggests:  
-  dartR.sim, 
-  dartR.popgenomics, 
-  dartR.spatial, 
-  dartR.captive,
-  devtools
-Remotes: github::green-striped-gecko/dartR.base,
-         github::green-striped-gecko/dartR.popgenomics, 
-         github::green-striped-gecko/dartR.sim,
-         github::green-striped-gecko/dartR.spatial,
-         github::green-striped-gecko/dartR.captive
+   devtools
+Remotes: github::green-striped-gecko/dartR.base
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 NeedsCompilation: no
