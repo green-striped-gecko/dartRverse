@@ -15,7 +15,7 @@ dartR_check <- function()
   {
     loc <- if (x %in% loadedNamespaces()) dirname(getNamespaceInfo(x, "path"))
     
-    library(x, lib.loc = loc, logical.return = TRUE, quietly = TRUE, character.only = TRUE)
+   suppressMessages(suppressWarnings(require(x, lib.loc = loc,  quietly = TRUE, character.only = TRUE )))
     
   }))
   
@@ -23,14 +23,14 @@ dartR_check <- function()
   {
     loc <- if (x %in% loadedNamespaces()) dirname(getNamespaceInfo(x, "path"))
     
-    library(x, lib.loc = loc, logical.return = TRUE, quietly = TRUE, character.only = TRUE)
+   suppressMessages(suppressWarnings(require(x, lib.loc = loc,  quietly = TRUE, character.only = TRUE )))
     
   }))
   
-  
   core <- core[bc]
   installedaddons <- addons[ba]
-  notinstalledaddons <- addons[!ba]  
+  if (is.null(ba)) notinstalledaddons <- addons else 
+    notinstalledaddons <- addons[!ba]  
   
   return(pack<- list(core=core, ip=installedaddons, nip = notinstalledaddons))
   
