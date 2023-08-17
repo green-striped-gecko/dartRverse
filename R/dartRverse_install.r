@@ -1,11 +1,13 @@
 #' Supports installation of CRAN and Github package of the dartRverse
 #' 
-#' This functions expects the name of one (or several) dartR packages, the repository (CRAN or Github) and in the case of github the branch (main, dev, beta) to install the identified version of the pacakge. If run with no parameter the current installed packages and their versions are printed
+#' This functions expects the name of one (or several) dartR packages, the repository (CRAN or Github) and in the case of github the branch (main, dev, beta) to install the identified version of the pacakge. If run with no parameter the current installed packages and their versions are printed.
 #' 
-#' @param package Name of the package to install, currently [dartR.sim, dartR.spatial, dartR.popgenomics]
-#' @param rep Which repository is used (CRAN or Github) 
+#' @param package Name of the package to install, currently [dartR.base, dartR.data, dartR.sim, dartR.spatial, dartR.popgenomics, dartR.sexlinked]
+#' @param rep Which repository is used ('CRAN' or 'Github'). 
 #' @param branch If Github is used the branch on Github needs to be specified, [either main, beta or dev]
-#' @return NULL
+#' The 'main' repository on Github is identical with the latest CRAN submission. Important changes and fixes are published under 'beta' and tested there, before the are submitted to CRAN. Hence this might be the best chance 
+#' to look for fixes. All 'dev' branches are 'risky' meaning they have not been tested.
+#' @return functions returns NULL
 #' @examples 
 #' dartRverse_install()
 #' @export
