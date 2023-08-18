@@ -1,6 +1,6 @@
 Package: dartRverse
 Title: Install and Load the 'dartRverse' Suits of Packages
-Version: 0.47
+Version: 0.48
 Date: 2023-08-18
 Revision: Balanced Buzzard
 Authors@R: c(
@@ -15,7 +15,7 @@ Description: Provides a single function that supports the installation of all pa
     belonging to the 'dartRverse'. The 'dartRverse' is a set of packages that work 
     together to analyse 'SNP' data. All packages aim to have a similar 'look and feel' 
     and are based on the same type of data structure ('genlight'), with additional
-    metadata for loci and indidividuals (samples). For more information visit the
+    metadata for loci and individuals (samples). For more information visit the
     'GitHub' pages.
 URL: https://github.com/green-striped-gecko/dartRverse
 License: GPL (>= 3)
