@@ -16,7 +16,7 @@ bibentry(
 
 bibentry(bibtype = "Article",
          title        = "{dartR v2}: An accessible genetic analysis platform for conservation, ecology and agriculture",
-         author       = "Jose Luis Mijangos, Oliver F Berry, Carlo Pacioni, Arthur Georges",
+         author       = "Jose Luis Mijangos, Bernd Gruber, Oliver F Berry, Carlo Pacioni, Arthur Georges",
          journal      = "Methods in Ecology and Evolution",
          year         = "2022",
          volume       = "",

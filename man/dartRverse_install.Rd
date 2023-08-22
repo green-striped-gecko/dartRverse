@@ -2,9 +2,14 @@
 % Please edit documentation in R/dartRverse_install.r
 \name{dartRverse_install}
 \alias{dartRverse_install}
-\title{Supports installation of CRAN and Github package of the dartRverse}
+\title{Checks installed package and Supports installation of CRAN and Github packages of the dartRverse}
 \usage{
-dartRverse_install(package = NULL, rep = "CRAN", branch = "main")
+dartRverse_install(
+  package = NULL,
+  rep = "CRAN",
+  branch = "main",
+  verbose = TRUE
+)
 }
 \arguments{
 \item{package}{Name of the package to install, currently [dartR.base, dartR.data, dartR.sim, dartR.spatial, dartR.popgenomics, dartR.sexlinked]}
@@ -14,6 +19,8 @@ dartRverse_install(package = NULL, rep = "CRAN", branch = "main")
 \item{branch}{If Github is used the branch on Github needs to be specified, [either main, beta or dev]
 The 'main' repository on Github is identical with the latest CRAN submission. Important changes and fixes are published under 'beta' and tested there, before the are submitted to CRAN. Hence this might be the best chance 
 to look for fixes. All 'dev' branches are 'risky' meaning they have not been tested.}
+
+\item{verbose}{if set to true the current installed packages are printed.}
 }
 \value{
 functions returns NULL

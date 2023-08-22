@@ -1,4 +1,4 @@
-#' Supports installation of CRAN and Github package of the dartRverse
+#' Checks installed package and Supports installation of CRAN and Github packages of the dartRverse
 #' 
 #' This functions expects the name of one (or several) dartR packages, the repository (CRAN or Github) and in the case of github the branch (main, dev, beta) to install the identified version of the pacakge. If run with no parameter the current installed packages and their versions are printed.
 #' 
@@ -7,6 +7,7 @@
 #' @param branch If Github is used the branch on Github needs to be specified, [either main, beta or dev]
 #' The 'main' repository on Github is identical with the latest CRAN submission. Important changes and fixes are published under 'beta' and tested there, before the are submitted to CRAN. Hence this might be the best chance 
 #' to look for fixes. All 'dev' branches are 'risky' meaning they have not been tested.
+#' @param verbose if set to true the current installed packages are printed.
 #' @return functions returns NULL
 #' @examples 
 #' dartRverse_install()
@@ -16,7 +17,8 @@
 dartRverse_install <- function(
                                 package = NULL,
                                 rep = "CRAN",
-                                branch = "main")
+                                branch = "main", 
+                                verbose=TRUE)
 {
   pkg <- "devtools"
   if (!(requireNamespace(pkg, quietly = TRUE))) {
@@ -33,6 +35,7 @@ dartRverse_install <- function(
   #check package
   if (is.null(package))  #just print current versions
   {
+    if (verbose>0) {
     cli::cat_line()
     cli::cat_line("dartRverse packages:")
     pkg_str <- paste0(deparse(c(dc$core, dc$ip)), collapse = "\n")
@@ -53,7 +56,7 @@ dartRverse_install <- function(
     cli::cat_line()
     }
     
-    
+  }  
     
   return (invisible(1))
     
