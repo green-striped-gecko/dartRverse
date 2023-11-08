@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# `dartRverse` <a href="https://green-striped-gecko.github.io/dartR/"><img src="man/figures/dartRlogo.png" align="right" height="140"/></a>
+# `dartRverse` <a href="https://green-striped-gecko.github.io/dartR/"><img src="man/figures/dartR_logo.png" align="right" height="140"/></a>
 
 ## An accessible genetic analysis platform for conservation, ecology and agriculture - dartRverse
 
@@ -14,10 +14,10 @@
 | main | [![main](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yml/badge.svg?branch=main)](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yml) | [![main](https://github.com/green-striped-gecko/dartR.base/actions/workflows/check-standard.yml/badge.svg?branch=main)](https://github.com/green-striped-gecko/dartR.base/tree/main) | [![main](https://github.com/green-striped-gecko/dartR.data/actions/workflows/check-standard.yml/badge.svg?branch=main)](https://github.com/green-striped-gecko/dartR.data/tree/main) |
 | dev  | [![dev](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartRverse/actions/workflows/check-standard.yml)   | [![dev](https://github.com/green-striped-gecko/dartR.base/actions/workflows/check-standard.yml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartR.base/tree/dev)    | [![dev](https://github.com/green-striped-gecko/dartR.data/actions/workflows/check-standard.yml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartR.data/tree/dev)    |
 
-|      | dartR.captive                                                                                                                                                                              | dartR.popgenomics                                                                                                                                                                                  | dartR.sexlinked                                                                                                                                                                                | dartR.sim                                                                                                                                                                          | dartR.spatial                                                                                                                                                                              |
-|------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| main | [![main](https://github.com/green-striped-gecko/dartR.captive/actions/workflows/check-standard.yml/badge.svg?branch=main)](https://github.com/green-striped-gecko/dartR.captive/tree/main) | [![main](https://github.com/green-striped-gecko/dartR.popgenomics/actions/workflows/check-standard.yml/badge.svg?branch=main)](https://github.com/green-striped-gecko/dartR.popgenomics/tree/main) | [![main](https://github.com/green-striped-gecko/dartR.sexlinked/actions/workflows/check-standard.yml/badge.svg?branch=main)](https://github.com/green-striped-gecko/dartR.sexlinked/tree/main) | [![main](https://github.com/green-striped-gecko/dartR.sim/actions/workflows/check-standard.yml/badge.svg?branch=main)](https://github.com/green-striped-gecko/dartR.sim/tree/main) | [![main](https://github.com/green-striped-gecko/dartR.spatial/actions/workflows/check-standard.yml/badge.svg?branch=main)](https://github.com/green-striped-gecko/dartR.spatial/tree/main) |
-| dev  | [![dev](https://github.com/green-striped-gecko/dartR.captive/actions/workflows/check-standard.yml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartR.captive/tree/dev)    | [![dev](https://github.com/green-striped-gecko/dartR.popgenomics/actions/workflows/check-standard.yml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartR.popgenomics/tree/dev)    | [![dev](https://github.com/green-striped-gecko/dartR.sexlinked/actions/workflows/check-standard.yml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartR.sexlinked/tree/dev)    | [![dev](https://github.com/green-striped-gecko/dartR.sim/actions/workflows/check-standard.yml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartR.sim/tree/dev)    | [![dev](https://github.com/green-striped-gecko/dartR.spatial/actions/workflows/check-standard.yml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartR.spatial/tree/dev)    |
+|      | dartR.captive                                                                                                                                                                              | dartR.popgen                                                                                                                                                                             | dartR.sexlinked                                                                                                                                                                                | dartR.sim                                                                                                                                                                          | dartR.spatial                                                                                                                                                                              |
+|------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| main | [![main](https://github.com/green-striped-gecko/dartR.captive/actions/workflows/check-standard.yml/badge.svg?branch=main)](https://github.com/green-striped-gecko/dartR.captive/tree/main) | [![main](https://github.com/green-striped-gecko/dartR.popgen/actions/workflows/check-standard.yml/badge.svg?branch=main)](https://github.com/green-striped-gecko/dartR.popgen/tree/main) | [![main](https://github.com/green-striped-gecko/dartR.sexlinked/actions/workflows/check-standard.yml/badge.svg?branch=main)](https://github.com/green-striped-gecko/dartR.sexlinked/tree/main) | [![main](https://github.com/green-striped-gecko/dartR.sim/actions/workflows/check-standard.yml/badge.svg?branch=main)](https://github.com/green-striped-gecko/dartR.sim/tree/main) | [![main](https://github.com/green-striped-gecko/dartR.spatial/actions/workflows/check-standard.yml/badge.svg?branch=main)](https://github.com/green-striped-gecko/dartR.spatial/tree/main) |
+| dev  | [![dev](https://github.com/green-striped-gecko/dartR.captive/actions/workflows/check-standard.yml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartR.captive/tree/dev)    | [![dev](https://github.com/green-striped-gecko/dartR.popgen/actions/workflows/check-standard.yml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartR.popgen/tree/dev)    | [![dev](https://github.com/green-striped-gecko/dartR.sexlinked/actions/workflows/check-standard.yml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartR.sexlinked/tree/dev)    | [![dev](https://github.com/green-striped-gecko/dartR.sim/actions/workflows/check-standard.yml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartR.sim/tree/dev)    | [![dev](https://github.com/green-striped-gecko/dartR.spatial/actions/workflows/check-standard.yml/badge.svg?branch=dev)](https://github.com/green-striped-gecko/dartR.spatial/tree/dev)    |
 
 Publication:
 [![](https://img.shields.io/badge/doi-10.1111/1755--0998.12745-00cccc.svg)](https://doi.org/10.1111/1755-0998.12745)
@@ -40,19 +40,14 @@ Additional packages are
 
 - dartR.sim (functions to simulate SNP data)
 - dartR.spatial (spatial analysis)
-- dartR.popgenomics (popgenomics analysis)
+- dartR.popgen (popgen analysis)
 
 `dartR` is a collaboration between the University of Canberra, CSIRO and
 Diversity Arrays Technology, and is supported with funding from the ACT
 Priority Investment Program, CSIRO and the University of Canberra.
 
 <p align="center">
-
-<img src="man/figures/UC.png" height="100"/>    
-<img src="man/figures/csiro_logo.png" height="100"/>    
-<img src="man/figures/DArT-removebg-preview.png" height="100"/>    
-<img src="man/figures/ACT.png" height="100"/>
-
+<img src='man/figures/institutions.png' width="800"/>
 </p>
 
 ## Installation
@@ -69,25 +64,15 @@ This should install dartRverse, dartR.base and dartR.data
 library(dartRverse)
 #> Loading required package: dartR.base
 #> Loading required package: adegenet
-#> Warning: package 'adegenet' was built under R version 4.0.5
 #> Loading required package: ade4
-#> Warning: package 'ade4' was built under R version 4.0.5
-#> The legacy packages maptools, rgdal, and rgeos, underpinning this package
-#> will retire shortly. Please refer to R-spatial evolution reports on
-#> https://r-spatial.org/r/2023/05/15/evolution4.html for details.
-#> This package is now running under evolution status 0
-#> Registered S3 method overwritten by 'spdep':
-#>   method   from
-#>   plot.mst ape
 #> 
-#>    /// adegenet 2.1.4 is loaded ////////////
+#>    /// adegenet 2.1.10 is loaded ////////////
 #> 
 #>    > overview: '?adegenet'
 #>    > tutorials/doc/questions: 'adegenetWeb()' 
 #>    > bug reports/feature requests: adegenetIssues()
 #> Loading required package: ggplot2
 #> Loading required package: dplyr
-#> Warning: package 'dplyr' was built under R version 4.0.5
 #> 
 #> Attaching package: 'dplyr'
 #> The following objects are masked from 'package:stats':
@@ -97,32 +82,21 @@ library(dartRverse)
 #> 
 #>     intersect, setdiff, setequal, union
 #> Loading required package: dartR.data
+#> **** Welcome to dartR.data [Version 1.0.4 ] ****
 #> Registered S3 method overwritten by 'pegas':
 #>   method      from
 #>   print.amova ade4
-#> **** Welcome to dartR.base [Version 0.34 ] ****
+#> **** Welcome to dartR.base [Version 0.55 ] ****
 #> **********************************************
-#> **** Welcome to dartRverse [Version 0.46] ****
+#> **** Welcome to dartRverse [Version 0.50] ****
 #> **********************************************
-#> **** Welcome to dartR.sim [Version 0.61 ] ****
-#> **** Welcome to dartR.popgenomics [Version 0.78 ] ****
-#> Registered S3 method overwritten by 'GGally':
-#>   method from   
-#>   +.gg   ggplot2
-#> Registered S3 method overwritten by 'genetics':
-#>   method      from 
-#>   [.haplotype pegas
-#> **** Welcome to dartR.spatial [Version 0.63 ] ****
-#> **** Welcome to dartR.captive [Version 0.67 ] ****
-#> Warning in library(x, lib.loc = loc, logical.return = TRUE, quietly = TRUE, :
-#> there is no package called 'dartR.sexlinked'
-#> -- Core dartRverse packages -------------------------------------- dartRverse --
-#> v dartR.base 0.34      v dartR.data 1.0.2
-#> -- Installed dartRverse packages   ------------------------------- dartRverse --
-#> v dartR.captive     0.67     v dartR.sim         0.61
-#> v dartR.popgenomics 0.78     v dartR.spatial     0.63
-#> -- Not [yet] installed dartRverse packages ----------------------- dartRverse --
-#> x dartR.sexlinked
+#> ── Core dartRverse packages ────────────────────────────────────── dartRverse ──
+#> ✔ dartR.base 0.55      ✔ dartR.data 1.0.4
+#> ── Installed dartRverse packages   ─────────────────────────────── dartRverse ──
+#> ✔ dartR.captive 0.69     ✔ dartR.sim     0.70
+#> ✔ dartR.popgen  0.22     ✔ dartR.spatial 0.76
+#> ── Not [yet] installed dartRverse packages ─────────────────────── dartRverse ──
+#> ✖ dartR.sexlinked
 ```
 
 will tell you, if the packages are installed and also which other dartR
@@ -130,7 +104,7 @@ packages are missing. In case you want to install additional packages,
 e.g. dartR.popgenomicis, type:
 
 ``` r
-install.packages("dartR.popgenomics")
+install.packages("dartR.popgen")
 ```
 
 You can install the development version of any of the dartR packages
@@ -149,17 +123,15 @@ simply type:
 
 ``` r
 dartRverse_install()
-#> Warning in library(x, lib.loc = loc, logical.return = TRUE, quietly = TRUE, :
-#> there is no package called 'dartR.sexlinked'
 #> 
 #> dartRverse packages:
-#> v dartR.base        0.34 
-#> v dartR.data        1.0.2
-#> v dartR.sim         0.61 
-#> v dartR.popgenomics 0.78 
-#> v dartR.spatial     0.63 
-#> v dartR.captive     0.67 
-#> x dartR.sexlinked
+#> ✔ dartR.base    0.55 
+#> ✔ dartR.data    1.0.4
+#> ✔ dartR.sim     0.70 
+#> ✔ dartR.popgen  0.22 
+#> ✔ dartR.spatial 0.76 
+#> ✔ dartR.captive 0.69 
+#> ✖ dartR.sexlinked
 ```
 
 Please consult [this installation

@@ -12,7 +12,7 @@ dartRverse_install(
 )
 }
 \arguments{
-\item{package}{Name of the package to install, currently [dartR.base, dartR.data, dartR.sim, dartR.spatial, dartR.popgenomics, dartR.sexlinked]}
+\item{package}{Name of the package to install, currently [dartR.base, dartR.data, dartR.sim, dartR.spatial, dartR.popgen, dartR.sexlinked]}
 
 \item{rep}{Which repository is used ('CRAN' or 'Github').}
 

@@ -5,7 +5,7 @@
 #' @importFrom utils packageVersion
 
 core <- c("dartR.base", "dartR.data")
-addons <- c("dartR.sim","dartR.popgenomics","dartR.spatial","dartR.captive","dartR.sexlinked")
+addons <- c("dartR.sim","dartR.popgen","dartR.spatial","dartR.captive","dartR.sexlinked")
 
 dartR_check <- function()
 {
