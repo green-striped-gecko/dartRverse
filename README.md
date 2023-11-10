@@ -86,17 +86,16 @@ library(dartRverse)
 #> Registered S3 method overwritten by 'pegas':
 #>   method      from
 #>   print.amova ade4
-#> **** Welcome to dartR.base [Version 0.55 ] ****
+#> **** Welcome to dartR.base [Version 0.60 ] ****
 #> **********************************************
 #> **** Welcome to dartRverse [Version 0.50] ****
 #> **********************************************
 #> ── Core dartRverse packages ────────────────────────────────────── dartRverse ──
-#> ✔ dartR.base 0.55      ✔ dartR.data 1.0.4
+#> ✔ dartR.base 0.60      ✔ dartR.data 1.0.4
 #> ── Installed dartRverse packages   ─────────────────────────────── dartRverse ──
-#> ✔ dartR.captive 0.69     ✔ dartR.sim     0.70
-#> ✔ dartR.popgen  0.22     ✔ dartR.spatial 0.76
-#> ── Not [yet] installed dartRverse packages ─────────────────────── dartRverse ──
-#> ✖ dartR.sexlinked
+#> ✔ dartR.captive   0.69     ✔ dartR.sim       0.70
+#> ✔ dartR.popgen    0.22     ✔ dartR.spatial   0.76
+#> ✔ dartR.sexlinked 0.23
 ```
 
 will tell you, if the packages are installed and also which other dartR
@@ -125,13 +124,13 @@ simply type:
 dartRverse_install()
 #> 
 #> dartRverse packages:
-#> ✔ dartR.base    0.55 
-#> ✔ dartR.data    1.0.4
-#> ✔ dartR.sim     0.70 
-#> ✔ dartR.popgen  0.22 
-#> ✔ dartR.spatial 0.76 
-#> ✔ dartR.captive 0.69 
-#> ✖ dartR.sexlinked
+#> ✔ dartR.base      0.60 
+#> ✔ dartR.data      1.0.4
+#> ✔ dartR.sim       0.70 
+#> ✔ dartR.popgen    0.22 
+#> ✔ dartR.spatial   0.76 
+#> ✔ dartR.captive   0.69 
+#> ✔ dartR.sexlinked 0.23
 ```
 
 Please consult [this installation
