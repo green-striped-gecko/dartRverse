@@ -1,8 +1,8 @@
 Package: dartRverse
 Title: Install and Load the 'dartRverse' Suits of Packages
 Version: 0.51
-Date: 2023-11-08
-Revision: Balanced Buzzard
+Date: 2023-12-01
+Revision: Crazy Chameleon
 Authors@R: c(
             person("Bernd", "Gruber", email="bernd.gruber@canberra.edu.au", role=c("aut","cre")), 
             person("Arthur", "Georges", email="georges@aerg.edu.au", role="aut"),
