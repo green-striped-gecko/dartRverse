@@ -1,6 +1,6 @@
 Package: dartRverse
 Title: Install and Load the 'dartRverse' Suits of Packages
-Version: 0.50
+Version: 0.51
 Date: 2023-11-08
 Revision: Balanced Buzzard
 Authors@R: c(
@@ -22,7 +22,11 @@ License: GPL (>= 3)
 Depends: R (>= 3.5), dartR.base, dartR.data
 Imports: cli, rlang
 Suggests:  
-   devtools
+   devtools,
+   dartR.sim,
+   dartR.captive,
+   dartR.popgen,
+   dartR.spatial
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 NeedsCompilation: no
