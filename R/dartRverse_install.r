@@ -32,6 +32,11 @@ dartRverse_install <- function(
   err <- NULL
   
   dc <- dartR_check()
+  
+  
+
+  
+  
   #check package
   if (is.null(package))  #just print current versions
   {
@@ -60,11 +65,36 @@ dartRverse_install <- function(
     
   return (invisible(1))
     
-  } else {
+  } else     if (tolower(package)=="all") {
   
-  
-  
-  if (!is.null(rep)) {
+    #check if all packages should be installed
+    #print out instructions
+
+      
+      cli::cat_line("To install all packages from the dartRverse, please restart R and run the following commands (you can copy it from here):", col="green") 
+      cli::cat_line()
+      cli::cat_line("library(dartRverse)", col="blue")
+      cli::cat_line("dartRverse_install('dartR.popgen', rep='CRAN')", col="blue")
+      cli::cat_line("dartRverse_install('dartR.captive', rep='CRAN')", col="blue")
+      cli::cat_line("dartRverse_install('dartR.sim', rep='CRAN')", col="blue")
+      cli::cat_line("dartRverse_install('dartR.spatial', rep='CRAN')", col="blue")
+      cli::cat_line("dartRverse_install('dartR.sexlinked', rep='CRAN')", col="blue")
+      cli::cat_line()
+      cli::cat_line("In case you want to install the latest version from Github, please use the following commands:", col="green")
+      
+      cli::cat_line("dartRverse_install('dartR.popgen', rep='Github', branch='main')", col="blue")
+      cli::cat_line("dartRverse_install('dartR.captive', rep='Github', branch='main')", col="blue")
+      cli::cat_line("dartRverse_install('dartR.sim', rep='Github', branch='main')", col="blue")
+      cli::cat_line("dartRverse_install('dartR.spatial', rep='Github', branch='main')", col="blue")
+      cli::cat_line("dartRverse_install('dartR.sexlinked', rep='Github', branch='main')", col="blue")
+      cli::cat_line()
+      cli::cat_line("You can change the branch to 'beta' or 'dev' to get the latest changes and fixes.", col="green")
+      
+      
+      
+      
+      
+    } else  if (!is.null(rep)) {
     
     #make sure package exists
     if (!package %in% c(core,addons))  {
@@ -90,7 +120,7 @@ dartRverse_install <- function(
                                dependencies = TRUE)
     }
   }
-  }
+  
 }
 
   
