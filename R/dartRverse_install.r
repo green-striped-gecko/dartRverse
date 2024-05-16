@@ -53,11 +53,12 @@ dartRverse_install <- function(
     dvcm <- NA
     dvcd <- NA
 
-    
+    av <- available.packages(repos = "https://cran.r-project.org/")
     
     for (i in 1:length(dc$core)) {
       
-      dvcc[i] <- available.packages(repos = "https://cran.r-project.org/")[dc$core[i], "Version"]
+      if (sum(av[,1]==dc$core[i])) dvcc[i] <- av[dc$core[i], "Version"]  else dvcc[i] <- NA
+     
       
         myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$core[i],"/main/DESCRIPTION")))
         dvcm[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
@@ -69,10 +70,10 @@ dartRverse_install <- function(
     dvic <- NA
     dvim <- NA
     dvid <- NA
+    if (length(dc$ip)>0) {
     for (i in 1:length(dc$ip)) {
       
-      xx <-available.packages(repos = "https://cran.r-project.org/")[dc$ip[i]]
-      if (is.na(xx)) dvic[i]<-"NA" else dvic[i] <- xx["Version"]
+      if (sum(av[,1]==dc$ip[i])) dvic[i] <- av[dc$ip[i], "Version"]  else dvic[i] <- NA
       
       myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$ip[i],"/main/DESCRIPTION")))
       dvim[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
@@ -83,15 +84,16 @@ dartRverse_install <- function(
     
     versions <- paste0(versions, " | ", c(dvcc, dvic), " (CRAN) | ",c(dvcm, dvim)," (Github/main) | ",c(dvcd, dvid), " (Github/dev)")
     
+    }
     dvnc <- NA
     dvnm <- NA
     dvnd <- NA
+    if (length(dc$nip)>0) {
     for (i in 1:length(dc$nip)) {
-      
-      
-      dvnc[i] <- available.packages(repos = "https://cran.r-project.org/")[dc$nip[i], "Version"]
-      
-      
+
+      if (sum(av[,1]==dc$nip[i])) dvnc[i] <- av[dc$nip[i], "Version"]  else dvnc[i] <- NA
+    
+        
       myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$nip[i],"/main/DESCRIPTION")))
       dvnm[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
       
@@ -101,7 +103,7 @@ dartRverse_install <- function(
     
     nversions <- paste0("--- ", " | ",dvnm," (Github/main) | ",dvnd, " (Github/dev)")
     
-    
+    }
     
        
     pkg_str <- paste0(
