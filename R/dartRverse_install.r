@@ -45,12 +45,14 @@ dartRverse_install <- function(
     cli::cat_line("dartRverse packages:")
     pkg_str <- paste0(deparse(c(dc$core, dc$ip)), collapse = "\n")
     versions <- vapply(c(dc$core, dc$ip), package_version_h, character(1)) 
-    #versions <- paste(versions, "(installed)")
+    versions <- cli::style_bold(versions)
+        #versions <- paste(versions, "(installed)")
 
         
     #find versions from github
     dvcc <- NA
     dvcm <- NA
+    dvcb <- NA
     dvcd <- NA
 
     av <- available.packages(repos = "https://cran.r-project.org/")
@@ -62,13 +64,15 @@ dartRverse_install <- function(
       
         myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$core[i],"/main/DESCRIPTION")))
         dvcm[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
-
+        myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$core[i],"/beta/DESCRIPTION")))
+        dvcb[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
         myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$core[i],"/dev/DESCRIPTION")))
         dvcd[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
         }
 
     dvic <- NA
     dvim <- NA
+    dvib <- NA
     dvid <- NA
     if (length(dc$ip)>0) {
     for (i in 1:length(dc$ip)) {
@@ -77,16 +81,18 @@ dartRverse_install <- function(
       
       myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$ip[i],"/main/DESCRIPTION")))
       dvim[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
-      
+      myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$ip[i],"/beta/DESCRIPTION")))
+      dvib[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
       myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$ip[i],"/dev/DESCRIPTION")))
       dvid[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
     }
     
-    versions <- paste0(versions, " | ", c(dvcc, dvic), " (CRAN) | ",c(dvcm, dvim)," (Github/main) | ",c(dvcd, dvid), " (Github/dev)")
+    versions <- paste0(versions, " | ", c(dvcc, dvic), " (CRAN) | ",c(dvcm, dvim)," (Github/main) | ",c(dvcb, dvib)," (Github/beta) | ",c(dvcd, dvid), " (Github/dev)")
     
     }
     dvnc <- NA
     dvnm <- NA
+    dvnb <- NA
     dvnd <- NA
     if (length(dc$nip)>0) {
     for (i in 1:length(dc$nip)) {
@@ -96,12 +102,13 @@ dartRverse_install <- function(
         
       myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$nip[i],"/main/DESCRIPTION")))
       dvnm[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
-      
+      myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$nip[i],"/beta/DESCRIPTION")))
+      dvnb[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
       myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$nip[i],"/dev/DESCRIPTION")))
       dvnd[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
     }
     
-    nversions <- paste0("--- ", " | ",dvnm," (Github/main) | ",dvnd, " (Github/dev)")
+    nversions <- paste0("--- ", " | ",dvnm," (Github/main) | ",dvnb," (Github/beta) | ",dvnd," (Github/dev)")
     
     }
     
