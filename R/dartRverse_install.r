@@ -112,14 +112,13 @@ dartRverse_install <- function(
     
     }
     
-       
+    if (length(c(dc$core, dc$ip)>0)) {   
     pkg_str <- paste0(
       cli::col_green(cli::symbol$tick), " ", cli::col_blue(format(c(dc$core, dc$ip))), " ",
       cli::ansi_align(versions, max(cli::ansi_nchar(versions))))
-    
-    
-    
     cli::cat_line(pkg_str)
+    }
+    
     if (length(dc$nip)>0) {
     pkg_str <- paste0(
       cli::col_red(cli::symbol$cross), " ", cli::col_blue(format(dc$nip)), " ",
