@@ -56,7 +56,7 @@ dartRverse_install <- function(
     dvcd <- NA
 
     av <- available.packages(repos = "https://cran.r-project.org/")
-    
+    if (length(dc$core)>0) {
     for (i in 1:length(dc$core)) {
       
       if (sum(av[,1]==dc$core[i])) dvcc[i] <- av[dc$core[i], "Version"]  else dvcc[i] <- NA
@@ -69,7 +69,7 @@ dartRverse_install <- function(
         myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$core[i],"/dev/DESCRIPTION")))
         dvcd[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
         }
-
+}
     dvic <- NA
     dvim <- NA
     dvib <- NA
@@ -108,7 +108,7 @@ dartRverse_install <- function(
       dvnd[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
     }
     
-    nversions <- paste0("--- ", " | CRAN:",dvnc," | Github:  ",dvnm," (main) | ",dvnb," (beta) | ",dvnd," (dev)")
+    nversions <- paste0(style_bold("--- "), " | CRAN:",dvnc," | Github:  ",dvnm," (main) | ",dvnb," (beta) | ",dvnd," (dev)")
     
     }
     
@@ -140,7 +140,7 @@ dartRverse_install <- function(
     #print out instructions
 
       cli::cat_line()
-      cli::cat_line(cli::style_bold("To install all packages from the dartRverse, please empty you workspace, restart R and run the following commands (you can copy it from here):"), col="black")
+      cli::cat_line(cli::style_bold("To install all packages from the dartRverse, please empty your workspace, restart R and run the following commands (you can copy the commands from here):"), col="black")
       cli::cat_line()
       cli::cat_line("#########################################", col="green")
       cli::cat_line("install.packages('BiocManager')", col="blue")

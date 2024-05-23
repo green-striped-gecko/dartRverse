@@ -54,6 +54,11 @@ dartR_check <- function()
   inform_startup(dartRverse_attach_message(dc$core,"core")) 
   inform_startup(dartRverse_attach_message(dc$ip,"addon"))
   inform_startup(dartRverse_attach_message(dc$nip,"notaddon"))
+  
+  if (length(dc$nip)==length(dc$core)<2) {
+    inform_startup("dartR.base is not installed yet. Please install the missing packages with: dartRverse_install(). To install all packages of the dartRverse, use dartRverse_install('all').")
+  }
+  
 }
 
 is_attached <- function(x) {
