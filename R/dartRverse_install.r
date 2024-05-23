@@ -143,6 +143,7 @@ dartRverse_install <- function(
       cli::cat_line(cli::style_bold("To install all packages from the dartRverse, please empty your workspace, restart R and run the following commands (you can copy the commands from here):"), col="black")
       cli::cat_line()
       cli::cat_line("#########################################", col="green")
+      cli::cat_line(cli::style_bold("# bioconductor package:"),col="green")
       cli::cat_line("install.packages('BiocManager')", col="blue")
       cli::cat_line("BiocManager::install('SNPRelate')", col="blue")
       cli::cat_line(cli::style_bold("# core packages:"),col="green")

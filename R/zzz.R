@@ -55,8 +55,8 @@ dartR_check <- function()
   inform_startup(dartRverse_attach_message(dc$ip,"addon"))
   inform_startup(dartRverse_attach_message(dc$nip,"notaddon"))
   
-  if (length(dc$nip)==length(dc$core)<2) {
-    inform_startup("dartR.base is not installed yet. Please install the missing packages with: dartRverse_install(). To install all packages of the dartRverse, use dartRverse_install('all').")
+  if (length(dc$core)<2) {
+    inform_startup(paste0("\nPlease note: The core dartRverse packages are not installed yet. \nYou can install the missing core packages using: \n",cli::style_bold(cli::col_blue("dartRverse_install('dartR.base,repo='CRAN')\n")),"To install all packages of the dartRverse, use:\n",cli::style_bold(cli::col_blue("dartRverse_install('all')"))))
   }
   
 }
