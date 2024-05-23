@@ -1,7 +1,7 @@
 Package: dartRverse
 Title: Install and Load the 'dartRverse' Suits of Packages
-Version: 0.89
-Date: 2024-17-05
+Version: 0.92
+Date: 2024-23-05
 Revision: Devious Dodo
 Authors@R: c(
             person("Bernd", "Gruber", email="bernd.gruber@canberra.edu.au", role=c("aut","cre")), 
@@ -19,17 +19,17 @@ Description: Provides a single function that supports the installation of all pa
     'GitHub' pages <https://github.com/green-striped-gecko/dartRverse>.
 URL: https://github.com/green-striped-gecko/dartRverse
 License: GPL (>= 3)
-Depends: R (>= 3.5), dartR.base, dartR.data
-Imports: cli, rlang
-Suggests:  
-   devtools,
+Depends: R (>= 3.5)
+Imports: cli, rlang, devtools
+Suggests: 
+   dartR.base,
+   dartR.data,
    dartR.sim,
    dartR.captive,
    dartR.popgen,
    dartR.spatial
-Remotes: github::green-striped-gecko/dartR.sexlinked
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 NeedsCompilation: no
 Packaged: 2023-05-22 13:20:46 UTC; green-striped-gecko
 Maintainer: Bernd Gruber <bernd.gruber@canberra.edu.au>

@@ -87,7 +87,7 @@ dartRverse_install <- function(
       dvid[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
     }
     
-    versions <- paste0(versions, " | ", c(dvcc, dvic), " (CRAN) | ",c(dvcm, dvim)," (Github/main) | ",c(dvcb, dvib)," (Github/beta) | ",c(dvcd, dvid), " (Github/dev)")
+    versions <- paste0(versions, " | CRAN: ", c(dvcc, dvic), " | Github: ",c(dvcm, dvim)," (main) | ",c(dvcb, dvib)," (beta) | ",c(dvcd, dvid), " (dev)")
     
     }
     dvnc <- NA
@@ -108,7 +108,7 @@ dartRverse_install <- function(
       dvnd[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
     }
     
-    nversions <- paste0("--- ", " | ",dvnm," (Github/main) | ",dvnb," (Github/beta) | ",dvnd," (Github/dev)")
+    nversions <- paste0("--- ", " | CRAN:",dvnc," | Github:  ",dvnm," (main) | ",dvnb," (beta) | ",dvnd," (dev)")
     
     }
     
@@ -139,25 +139,34 @@ dartRverse_install <- function(
     #check if all packages should be installed
     #print out instructions
 
-      
-      cli::cat_line("To install all packages from the dartRverse, please restart R and run the following commands (you can copy it from here):", col="green") 
       cli::cat_line()
+      cli::cat_line(cli::style_bold("To install all packages from the dartRverse, please empty you workspace, restart R and run the following commands (you can copy it from here):"), col="black")
+      cli::cat_line()
+      cli::cat_line("#########################################", col="green")
+      cli::cat_line("install.packages('BiocManager')", col="blue")
+      cli::cat_line("BiocManager::install('SNPRelate')", col="blue")
+      cli::cat_line(cli::style_bold("# core packages:"),col="green")
       cli::cat_line("library(dartRverse)", col="blue")
+      cli::cat_line("dartRverse_install('dartR.base', rep='CRAN')", col="blue")
+      cli::cat_line("dartRverse_install('dartR.data', rep='CRAN')", col="blue")
+      cli::cat_line(cli::style_bold("# additional packages:"),col="green")
       cli::cat_line("dartRverse_install('dartR.popgen', rep='CRAN')", col="blue")
       cli::cat_line("dartRverse_install('dartR.captive', rep='CRAN')", col="blue")
       cli::cat_line("dartRverse_install('dartR.sim', rep='CRAN')", col="blue")
       cli::cat_line("dartRverse_install('dartR.spatial', rep='CRAN')", col="blue")
       cli::cat_line("dartRverse_install('dartR.sexlinked', rep='CRAN')", col="blue")
+      cli::cat_line("#########################################", col="green")
       cli::cat_line()
-      cli::cat_line("In case you want to install the latest version from Github, please use the following commands:", col="green")
-      
+      cli::cat_line(cli::style_bold("In case you want to install the latest version from Github, please use the following commands:"), col="black")
+      cli::cat_line(cli::style_bold("[You can change the branch to 'beta' or 'dev' to get the latest changes and fixes.]"), col="black")
+      cli::cat_line()
       cli::cat_line("dartRverse_install('dartR.popgen', rep='Github', branch='main')", col="blue")
       cli::cat_line("dartRverse_install('dartR.captive', rep='Github', branch='main')", col="blue")
       cli::cat_line("dartRverse_install('dartR.sim', rep='Github', branch='main')", col="blue")
       cli::cat_line("dartRverse_install('dartR.spatial', rep='Github', branch='main')", col="blue")
       cli::cat_line("dartRverse_install('dartR.sexlinked', rep='Github', branch='main')", col="blue")
       cli::cat_line()
-      cli::cat_line("You can change the branch to 'beta' or 'dev' to get the latest changes and fixes.", col="green")
+ 
       
       
       

@@ -1,6 +1,5 @@
 #' @import cli
-#' @import dartR.base
-#' @import dartR.data
+#' @import devtools
 #' @importFrom rlang is_installed inform
 #' @importFrom utils packageVersion
 

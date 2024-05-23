@@ -2,8 +2,7 @@
 
 export(dartRverse_install)
 import(cli)
-import(dartR.base)
-import(dartR.data)
+import(devtools)
 importFrom(rlang,inform)
 importFrom(rlang,is_installed)
 importFrom(utils,available.packages)
