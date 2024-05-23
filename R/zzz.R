@@ -27,9 +27,11 @@ dartR_check <- function()
   }))
   
   core <- core[bc]
+  
   installedaddons <- addons[ba]
   if (is.null(ba)) notinstalledaddons <- addons else 
     notinstalledaddons <- addons[!ba]  
+  if (length(core) == 0) notinstalledaddons <- c("dartR.base","dartR.data", notinstalledaddons)
   
   return(pack<- list(core=core, ip=installedaddons, nip = notinstalledaddons))
   

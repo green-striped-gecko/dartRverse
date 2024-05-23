@@ -148,7 +148,7 @@ dartRverse_install <- function(
       cli::cat_line(cli::style_bold("# core packages:"),col="green")
       cli::cat_line("library(dartRverse)", col="blue")
       cli::cat_line("dartRverse_install('dartR.base', rep='CRAN')", col="blue")
-      cli::cat_line("dartRverse_install('dartR.data', rep='CRAN')", col="blue")
+      cli::cat_line("#installs also dartR.data", col="green")
       cli::cat_line(cli::style_bold("# additional packages:"),col="green")
       cli::cat_line("dartRverse_install('dartR.popgen', rep='CRAN')", col="blue")
       cli::cat_line("dartRverse_install('dartR.captive', rep='CRAN')", col="blue")
