@@ -44,8 +44,11 @@ dartRverse_install <- function(
     cli::cat_line()
     cli::cat_line("dartRverse packages:")
     pkg_str <- paste0(deparse(c(dc$core, dc$ip)), collapse = "\n")
-    versions <- vapply(c(dc$core, dc$ip), package_version_h, character(1)) 
-    versions <- cli::style_bold(versions)
+    cversions <- vapply(c(dc$core), package_version_h, character(1)) 
+    cversions <- cli::style_bold(cversions)
+    iversions <- vapply(c(dc$ip), package_version_h, character(1)) 
+    iversions <- cli::style_bold(iversions)
+    
         #versions <- paste(versions, "(installed)")
 
         
@@ -68,7 +71,8 @@ dartRverse_install <- function(
         dvcb[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
         myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$core[i],"/dev/DESCRIPTION")))
         dvcd[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
-        }
+    }
+      versions <- paste0(cversions, " | CRAN: ", c(dvcc), " | Github: ",c(dvcm)," (main) | ",c(dvcb)," (beta) | ",c(dvcd), " (dev)")
 }
     dvic <- NA
     dvim <- NA
@@ -86,10 +90,10 @@ dartRverse_install <- function(
       myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$ip[i],"/dev/DESCRIPTION")))
       dvid[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
     }
-    
-    
-    }
-    versions <- paste0(versions, " | CRAN: ", c(dvcc, dvic), " | Github: ",c(dvcm, dvim)," (main) | ",c(dvcb, dvib)," (beta) | ",c(dvcd, dvid), " (dev)")
+      versions2 <- paste0(iversions, " | CRAN: ", c( dvic), " | Github: ",c(dvim)," (main) | ",c( dvib)," (beta) | ",c(dvid), " (dev)")
+      
+      versions <- c(versions, versions2)  
+  }
     
     
     dvnc <- NA
@@ -110,7 +114,7 @@ dartRverse_install <- function(
       dvnd[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
     }
     
-    nversions <- paste0(style_bold("--- "), " | CRAN:",dvnc," | Github:  ",dvnm," (main) | ",dvnb," (beta) | ",dvnd," (dev)")
+    nversions <- paste0(cli::style_bold("--- "), " | CRAN:",dvnc," | Github:  ",dvnm," (main) | ",dvnb," (beta) | ",dvnd," (dev)")
     
     }
     
