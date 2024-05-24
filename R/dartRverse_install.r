@@ -87,9 +87,11 @@ dartRverse_install <- function(
       dvid[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
     }
     
-    versions <- paste0(versions, " | CRAN: ", c(dvcc, dvic), " | Github: ",c(dvcm, dvim)," (main) | ",c(dvcb, dvib)," (beta) | ",c(dvcd, dvid), " (dev)")
     
     }
+    versions <- paste0(versions, " | CRAN: ", c(dvcc, dvic), " | Github: ",c(dvcm, dvim)," (main) | ",c(dvcb, dvib)," (beta) | ",c(dvcd, dvid), " (dev)")
+    
+    
     dvnc <- NA
     dvnm <- NA
     dvnb <- NA
