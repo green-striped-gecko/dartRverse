@@ -7,10 +7,15 @@
 #' @param branch If Github is used the branch on Github needs to be specified, [either main, beta or dev]
 #' The 'main' repository on Github is identical with the latest CRAN submission. Important changes and fixes are published under 'beta' and tested there, before the are submitted to CRAN. Hence this might be the best chance 
 #' to look for fixes. All 'dev' branches are 'risky' meaning they have not been tested.
+#' To get the current versions availble and which are installed run: dartRverse_install().
+#' To get the code how to install all other packages run: dartRverse_install("all").
 #' @param verbose if set to true the current installed packages are printed.
 #' @return functions returns NULL
 #' @examples 
+#' dartRverse_install("all")
+#' \donttest{
 #' dartRverse_install()
+#' }
 #' @export
 #' @importFrom utils installed.packages install.packages available.packages
 

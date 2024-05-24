@@ -18,7 +18,9 @@ dartRverse_install(
 
 \item{branch}{If Github is used the branch on Github needs to be specified, [either main, beta or dev]
 The 'main' repository on Github is identical with the latest CRAN submission. Important changes and fixes are published under 'beta' and tested there, before the are submitted to CRAN. Hence this might be the best chance 
-to look for fixes. All 'dev' branches are 'risky' meaning they have not been tested.}
+to look for fixes. All 'dev' branches are 'risky' meaning they have not been tested.
+To get the current versions availble and which are installed run: dartRverse_install().
+To get the code how to install all other packages run: dartRverse_install("all").}
 
 \item{verbose}{if set to true the current installed packages are printed.}
 }
@@ -29,5 +31,8 @@ functions returns NULL
 This functions expects the name of one (or several) dartR packages, the repository (CRAN or Github) and in the case of github the branch (main, dev, beta) to install the identified version of the pacakge. If run with no parameter the current installed packages and their versions are printed.
 }
 \examples{
+dartRverse_install("all")
+\donttest{
 dartRverse_install()
+}
 }
