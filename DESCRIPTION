@@ -1,7 +1,7 @@
 Package: dartRverse
 Title: Install and Load the 'dartRverse' Suits of Packages
-Version: 1.0.1
-Date: 2024-24-05
+Version: 1.0.2
+Date: 2024-05-24
 Revision: Devious Dodo
 Authors@R: c(
             person("Bernd", "Gruber", email="bernd.gruber@canberra.edu.au", role=c("aut","cre")), 
