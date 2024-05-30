@@ -43,6 +43,8 @@ Additional packages are
 - dartR.sim (functions to simulate SNP data)
 - dartR.spatial (spatial analysis)
 - dartR.popgen (popgen analysis)
+- dartR.captive (relatedness and captive breeding)
+- dartR.sexlinked (identification of sex linked SNPs)
 
 `dartR` is a collaboration between the University of Canberra, CSIRO and
 Diversity Arrays Technology, and is supported with funding from the ACT
@@ -54,13 +56,14 @@ Priority Investment Program, CSIRO and the University of Canberra.
 
 ## Installation
 
-`dartRverse` is on CRAN, so to install it simply type:
+`dartRverse` is on CRAN, so to install it, simply type:
 
 ``` r
 install.packages("dartRverse")
 ```
 
-This should install dartRverse, dartR.base and dartR.data
+This installs dartRverse, which is used to handle and install the
+additional packages
 
 ``` r
 library(dartRverse)
@@ -68,41 +71,101 @@ library(dartRverse)
 #> **** Welcome to dartRverse [Version 0.93] ****
 #> **********************************************
 #> ── Core dartRverse packages ────────────────────────────────────── dartRverse ──
-#> ✔ dartR.base 0.94      ✔ dartR.data 1.0.5
+#> ✔ dartR.base 0.95      ✔ dartR.data 1.0.8
 #> ── Installed dartRverse packages   ─────────────────────────────── dartRverse ──
 #> ✔ dartR.captive   0.89     ✔ dartR.sim       0.88
 #> ✔ dartR.popgen    0.88     ✔ dartR.spatial   0.88
 #> ✔ dartR.sexlinked 0.96
 ```
 
-will tell you, if the packages are installed and also which other dartR
-packages are missing. In case you want to install additional packages,
-e.g. dartR.popgenomicis, type:
+will tell you, which packages are installed and also which other
+dartRverse packages are missing. As a minimum you need to install
+**dartR.base** \[which in turn will install dartR.data\] to use dartR.
+All packages are on CRAN, so you can simply type:
+
+``` r
+install.packages("dartR.base")
+```
+
+to install the core packages of the dartRverse. The core packages are
+handling the basic import and export functions, reporting, filtering and
+some basic analysis (e.g PCoA).
+
+In case you want to install the complete suit of packages (bring some
+time with you), we recommend to use the code printed with the command:
+
+``` r
+dartRverse_install("all")
+#> 
+#> To install all packages from the dartRverse, please empty your workspace, restart R and run the following commands (you can copy the commands from here):
+#> 
+#> #########################################
+#> # bioconductor package:
+#> install.packages('BiocManager')
+#> BiocManager::install('SNPRelate')
+#> # core packages:
+#> library(dartRverse)
+#> dartRverse_install('dartR.base', rep='CRAN')
+#> #installs also dartR.data
+#> # additional packages:
+#> dartRverse_install('dartR.popgen', rep='CRAN')
+#> dartRverse_install('dartR.captive', rep='CRAN')
+#> dartRverse_install('dartR.sim', rep='CRAN')
+#> dartRverse_install('dartR.spatial', rep='CRAN')
+#> dartRverse_install('dartR.sexlinked', rep='CRAN')
+#> #########################################
+#> 
+#> In case you want to install the latest version from Github, please use the following commands:
+#> [You can change the branch to 'beta' or 'dev' to get the latest changes and fixes.]
+#> 
+#> dartRverse_install('dartR.popgen', rep='Github', branch='main')
+#> dartRverse_install('dartR.captive', rep='Github', branch='main')
+#> dartRverse_install('dartR.sim', rep='Github', branch='main')
+#> dartRverse_install('dartR.spatial', rep='Github', branch='main')
+#> dartRverse_install('dartR.sexlinked', rep='Github', branch='main')
+```
+
+To make sure there are no packages already in your current R session, we
+recommend to clear you workspace, restart R and copy the code printed
+above into your restarted R console.
+
+In case you want to intall a specific package say dartR.popgen you can
+either use the CRAN version typing:
 
 ``` r
 install.packages("dartR.popgen")
 ```
 
-You can install the development version of any of the dartR packages
-from GitHub with:
+or use the dartRverse_install function, specifying the package and the
+repository. In case you want to use github versions, you can also
+specify the branch:
 
 ``` r
-library(dartRverse)
-dartRverse_install(package = "dartR.base", rep = "github", branch = "dev")
+#installs the dev branch from github
+dartRverse_install("dartR.popgen", repository = "github", branch = "dev")
 ```
 
-This installs the development branch (‘dev’) of the Github version of
-dart.base. All other packages/branches can be installed accordingly.
+On github there are three branches you might want to choose: main, beta
+and dev
+
+- main: is the same version as on CRAN \[so same as using
+  install.packages()\]
+- beta: is the next version to be released on CRAN. It is tested and
+  should be stable
+- dev: is the development version. It is not tested and might not work
+  properly. So use it on your on risk, or if we announce a bug fix or
+  new feature that you want to test.
 
 To check which packages are already installed (and which version),
 simply type:
 
 ``` r
+#takes a while to load all the version numbers....
 dartRverse_install()
 #> 
 #> dartRverse packages:
-#> ✔ dartR.base      0.94 | CRAN: 0.65 | Github: 0.88 (main) | 0.88 (beta) | 0.90 (dev)     
-#> ✔ dartR.data      1.0.5 | CRAN: 1.0.2 | Github: 1.0.4 (main) | 1.0.5 (beta) | 1.0.6 (dev)
+#> ✔ dartR.base      0.95 | CRAN: 0.65 | Github: 0.88 (main) | 0.88 (beta) | 0.95 (dev)     
+#> ✔ dartR.data      1.0.8 | CRAN: 1.0.8 | Github: 1.0.4 (main) | 1.0.8 (beta) | 1.0.8 (dev)
 #> ✔ dartR.sim       0.88 | CRAN: 0.70 | Github: 0.70 (main) | 0.89 (beta) | 0.89 (dev)     
 #> ✔ dartR.popgen    0.88 | CRAN: 0.32 | Github: 0.32 (main) | 0.88 (beta) | 0.88 (dev)     
 #> ✔ dartR.spatial   0.88 | CRAN: 0.78 | Github: 0.78 (main) | 0.89 (beta) | 0.89 (dev)     
@@ -110,9 +173,9 @@ dartRverse_install()
 #> ✔ dartR.sexlinked 0.96 | CRAN: NA | Github: 0.24 (main) | 0.89 (beta) | 0.96 (dev)
 ```
 
-Please consult [this installation
-tutorial](https://github.com/green-striped-gecko/dartR/wiki/Installation-tutorial)
-if you run into any problems during setup.
+The figures in bold are you currently installed versions and the other
+version numbers are the current versions on CRAN and Github (for the
+three branches).
 
 ## Usage
 
@@ -216,4 +279,4 @@ Have fun working with `dartR`!
 
 Cheers,
 
-Bernd, Arthur, Luis, Carlo & Olly
+Bernd, Arthur, Luis, Carlo, Diana, Florian & Olly
