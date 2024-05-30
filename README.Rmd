@@ -220,7 +220,7 @@ Please acknowledge `dartR` if you use it in your study. Copy and paste
 the following code to the R console to retrieve the citation
 information:
 
-```{r, eval = FALSE}
+```{r}
 citation("dartRverse")
 ```
 

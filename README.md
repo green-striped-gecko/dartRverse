@@ -268,6 +268,21 @@ information:
 
 ``` r
 citation("dartRverse")
+#> To cite dartR in publications use:
+#> 
+#>   Gruber, B, Unmack, PJ, Berry, OF, Georges, A. (2018). dartr: An r
+#>   package to facilitate analysis of SNP data generated from reduced
+#>   representation genome sequencing. Molecular Ecology Resources 18:
+#>   691-699. https://doi.org/10.1111/1755-0998.12745
+#> 
+#>   Mijangos, J. L., Gruber, B., Berry, O., Pacioni, C., & Georges, A.
+#>   (2022). dartR v2: An accessible genetic analysis platform for
+#>   conservation, ecology and agriculture. Methods in Ecology and
+#>   Evolution, (early access). https://doi.org/10.1111/2041-210X.13918
+#> 
+#> To see these entries in BibTeX format, use 'print(<citation>,
+#> bibtex=TRUE)', 'toBibtex(.)', or set
+#> 'options(citation.bibtex.max=999)'.
 ```
 
 Check out our
