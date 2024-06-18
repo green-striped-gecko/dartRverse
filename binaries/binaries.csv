@@ -1,15 +1,10 @@
 os,software,files
 windows,epos,bootSfs.exe
 windows,epos,epos.exe
-windows,epos,epos2ages.exe
 windows,epos,epos2plot.exe
 windows,epos,libblas.dll
 windows,epos,libgsl.dll
 windows,epos,libgslcblas.dll
-windows,epos,ms2sfs.exe
-windows,epos,plotSum.exe
-windows,epos,bootSfs
-windows,epos,bootSfs
 windows,gone,script_GONE.sh
 windows,gone,PROGRAMMES
 windows ,Neestimator,Ne2-1.exe
