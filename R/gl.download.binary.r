@@ -28,6 +28,8 @@ gl.download.binary <- function(software=NULL,
  
 {
 
+  
+  
   oses <- c("windows","mac","linux")
   
   #set quiet depending on verbose
@@ -35,7 +37,11 @@ gl.download.binary <- function(software=NULL,
   #check if the binary is available
   #available software
   
-  if (is.null(os)) os <- "windows"
+  #if no os then use the current one
+  if (is.null(os)) {
+    os <- tolower(Sys.info()['sysname'] )
+    if (os=="darwin") os <- "mac"
+  }
   if (is.na(osm <- pmatch(os, oses))) {
     stop(paste0("Specified os: ",os, " not supported. Please use ", paste0(c("windows","mac","linux"), collapse=", ")))
   } else os <- oses[osm]
@@ -73,7 +79,7 @@ gl.download.binary <- function(software=NULL,
     ly <- NA
     for (i in 1:nrow(dc)) {
       
-      lx[1] <- paste0(cli::col_green(soft[i]), " ")
+      lx <- paste0(cli::col_green(soft[i]), " ")
       for (ii in 1:ncol(dc))   lx[ii+1] <-  ifelse(dc[i,ii]==1, cli::col_green(cli::symbol$tick), col_red(cli::symbol$cross))
       ly[i] <- ansi_columns(lx, width = 65, align = "center")
       #cli::cat_line(lx)
@@ -100,9 +106,10 @@ gl.download.binary <- function(software=NULL,
   
   xx <- unzip(tmpfile, exdir=out.dir)
   
-  if (quiet==FALSE) cat(paste0("Unzipped binary to ",out.dir,"/",software,"\n"))
+  if (quiet==FALSE) cli::cat_line(cli::col_green(paste0("Unzipped binary to ",out.dir,"/",software)))
+  
+  invisible(file.path(out.dir,software))
   }
-  invisible(NULL)  
 }
 
   
