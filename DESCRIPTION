@@ -1,32 +1,36 @@
 Package: dartRverse
-Title: Easily Install and Load the 'dartRverse' Suits of Packages
-Version: 0.44
-Date: 2023-06-06
+Title: Install and Load the 'dartRverse' Suits of Packages
+Version: 1.0.2
+Date: 2024-05-24
+Revision: Devious Dodo
 Authors@R: c(
             person("Bernd", "Gruber", email="bernd.gruber@canberra.edu.au", role=c("aut","cre")), 
             person("Arthur", "Georges", email="georges@aerg.edu.au", role="aut"),
             person("Jose L.", "Mijangos", email="Luis.MijangosAraujo@canberra.edu.au", role="aut"), 
             person("Carlo", "Pacioni",email="carlo.pacioni@delwp.vic.gov.au",role="aut"),
             person("Peter J.", "Unmack", email="peter.mail2@unmack.net", role="aut"),
-            person("Oliver", "Berry", email="oliver.berry@csiro.au", role="aut" ),
-            person("Lindsay V.", "Clark", email="lvclark@illinois.edu", role="ctb"),
-            person("Floriaan", "Devloo-Delva",email="Floriaan.Devloo-Delva@csiro.au", role="ctb"),
-            person("Eric","Archer", email="eric.archer@noaa.gov", role="ctb")
+            person("Oliver", "Berry", email="oliver.berry@csiro.au", role="aut" )
             )
-Description: The 'dartRverse' is a set of packages that work together to analyse SNP data. It works similar to 'tidyverse' and support the installation and maintenance of packages. It borrowed code and ideas from the tidyverse package.
+Description: Provides a single function that supports the installation of all packages 
+    belonging to the 'dartRverse'. The 'dartRverse' is a set of packages that work 
+    together to analyse SNP (single nuclear polymorphism) data. All packages aim to have a similar 'look and feel' 
+    and are based on the same type of data structure ('genlight'), with additional
+    metadata for loci and individuals (samples). For more information visit the
+    'GitHub' pages <https://github.com/green-striped-gecko/dartRverse>.
 URL: https://github.com/green-striped-gecko/dartRverse
 License: GPL (>= 3)
-Depends: R (>= 3.5), dartR.base, dartR.data
-Imports: cli, rlang
-Suggests:  dartR.sim, dartR.popgenomics, dartR.spatial, devtools
-Remotes: github::green-striped-gecko/dartR.base,
-         github::green-striped-gecko/dartR.popgenomics, 
-         github::green-striped-gecko/dartR.sim,
-         github::green-striped-gecko/dartR.spatial
+Depends: R (>= 3.5)
+Imports: cli, rlang, devtools
+Suggests: 
+   dartR.base,
+   dartR.data,
+   dartR.sim,
+   dartR.captive,
+   dartR.popgen,
+   dartR.spatial
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 NeedsCompilation: no
 Packaged: 2023-05-22 13:20:46 UTC; green-striped-gecko
-Author: Bernd Gruber [aut, cre],
 Maintainer: Bernd Gruber <bernd.gruber@canberra.edu.au>
 Repository: CRAN
