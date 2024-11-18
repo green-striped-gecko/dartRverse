@@ -54,7 +54,7 @@ gl.download.binary <- function(software=NULL,
     all.files <- unlist(lapply(content(req)$tree, "["), use.names = F)
     all.files <- all.files[grep(".zip", all.files)]
     all.files <- gsub("binaries/", "", all.files)
-    all.files <- gsub(".zip", "", all.files)
+    all.files <- gsub(tolower(".zip"), "", all.files)
     
     
     
