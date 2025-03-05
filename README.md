@@ -6,6 +6,9 @@
 ## An accessible genetic analysis platform for conservation, ecology and agriculture - dartRverse
 
 <!-- badges: start -->
+### Downloads
+
+[![Downloads from Rstudio mirror](https://cranlogs.r-pkg.org/badges/grand-total/dartRverse)](https://cran.r-project.org/package=dartRverse)
 
 ### Repositories
 
