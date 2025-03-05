@@ -26,6 +26,7 @@
 
 Publication:
 [![](https://img.shields.io/badge/doi-10.1111/1755--0998.12745-00cccc.svg)](https://doi.org/10.1111/1755-0998.12745)
+[![](https://img.shields.io/badge/doi-10.1111/2041--210X.13918-00cccc.svg)](https://doi.org/10.1111/2041-210X.13918)
 
 Zenodo:
 [![DOI](https://zenodo.org/badge/86640709.svg)](https://zenodo.org/badge/latestdoi/86640709)
