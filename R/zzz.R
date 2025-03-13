@@ -40,10 +40,10 @@ dartR_check <- function()
 .onAttach <- function(...) {
  packageStartupMessage(
     cli::col_blue(
-    paste0("**********************************************",
+    paste0("***********************************************",
            "\n**** Welcome to dartRverse [Version ",
       utils::packageVersion("dartRverse"),  "] ****\n",
-           "**********************************************"
+           "***********************************************"
     ), collapse="\n")
   )
   dc <- dartR_check()
