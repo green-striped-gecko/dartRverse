@@ -187,6 +187,9 @@ manipulating, filtering, exploring and analysing the data.
 
 <img src="man/figures/Figure_1.png" width="800"/>
 
+<iframe src="man/figures/mindmap.html" width="100%" height="600px" frameborder="0"></iframe>
+
+
 </p>
 
 We use the prefix ‘gl’ in function names to acknowledge the use of the
