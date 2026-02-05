@@ -107,6 +107,7 @@ dartRverse_install("all")
 #> # bioconductor package:
 #> install.packages('BiocManager')
 #> BiocManager::install('SNPRelate')
+#> BiocManager::install('snpStats')
 #> # core packages:
 #> library(dartRverse)
 #> dartRverse_install('dartR.base', rep='CRAN')
