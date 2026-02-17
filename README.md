@@ -6,9 +6,6 @@
 ## An accessible genetic analysis platform for conservation, ecology and agriculture - dartRverse
 
 <!-- badges: start -->
-### Downloads
-
-[![Downloads from Rstudio mirror](https://cranlogs.r-pkg.org/badges/grand-total/dartRverse)](https://cran.r-project.org/package=dartRverse)
 
 ### Repositories
 
@@ -70,15 +67,15 @@ additional packages
 
 ``` r
 library(dartRverse)
-#> **********************************************
-#> **** Welcome to dartRverse [Version 0.93] ****
-#> **********************************************
+#> ***********************************************
+#> **** Welcome to dartRverse [Version 1.0.6] ****
+#> ***********************************************
 #> ── Core dartRverse packages ────────────────────────────────────── dartRverse ──
-#> ✔ dartR.base 0.95      ✔ dartR.data 1.0.8
+#> ✔ dartR.base 1.0.7     ✔ dartR.data 1.0.8
 #> ── Installed dartRverse packages   ─────────────────────────────── dartRverse ──
-#> ✔ dartR.captive   0.89     ✔ dartR.sim       0.88
-#> ✔ dartR.popgen    0.88     ✔ dartR.spatial   0.88
-#> ✔ dartR.sexlinked 0.96
+#> ✔ dartR.captive   1.0.2     ✔ dartR.sim       0.71 
+#> ✔ dartR.popgen    1.0.0     ✔ dartR.spatial   1.0.3
+#> ✔ dartR.sexlinked 1.0.5
 ```
 
 will tell you, which packages are installed and also which other
@@ -103,9 +100,10 @@ dartRverse_install("all")
 #> To install all packages from the dartRverse, please empty your workspace, restart R and run the following commands (you can copy the commands from here):
 #> 
 #> #########################################
-#> # bioconductor package:
+#> # bioconductor packages:
 #> install.packages('BiocManager')
 #> BiocManager::install('SNPRelate')
+#> BiocManager::install('snpStats')
 #> # core packages:
 #> library(dartRverse)
 #> dartRverse_install('dartR.base', rep='CRAN')
@@ -167,13 +165,13 @@ simply type:
 dartRverse_install()
 #> 
 #> dartRverse packages:
-#> ✔ dartR.base      0.95 | CRAN: 0.65 | Github: 0.88 (main) | 0.88 (beta) | 0.95 (dev)     
-#> ✔ dartR.data      1.0.8 | CRAN: 1.0.8 | Github: 1.0.4 (main) | 1.0.8 (beta) | 1.0.8 (dev)
-#> ✔ dartR.sim       0.88 | CRAN: 0.70 | Github: 0.70 (main) | 0.89 (beta) | 0.89 (dev)     
-#> ✔ dartR.popgen    0.88 | CRAN: 0.32 | Github: 0.32 (main) | 0.88 (beta) | 0.88 (dev)     
-#> ✔ dartR.spatial   0.88 | CRAN: 0.78 | Github: 0.78 (main) | 0.89 (beta) | 0.89 (dev)     
-#> ✔ dartR.captive   0.89 | CRAN: 0.75 | Github: 0.75 (main) | 0.90 (beta) | 0.90 (dev)     
-#> ✔ dartR.sexlinked 0.96 | CRAN: NA | Github: 0.24 (main) | 0.89 (beta) | 0.96 (dev)
+#> ✔ dartR.base      1.0.7 | CRAN: 1.0.7 | Github: 1.0.5 (main) | 1.0.6 (beta) | 1.1.1 (dev) 
+#> ✔ dartR.data      1.0.8 | CRAN: 1.0.8 | Github: 1.0.8 (main) | 1.0.8 (beta) | 1.0.9 (dev) 
+#> ✔ dartR.sim       0.71 | CRAN: 0.71 | Github: 0.94 (main) | 0.95 (beta) | 0.71 (dev)      
+#> ✔ dartR.popgen    1.0.0 | CRAN: 1.0.0 | Github: 1.0.5 (main) | 1.0.5 (beta) | 1.0.6 (dev) 
+#> ✔ dartR.spatial   1.0.3 | CRAN: 1.0.3 | Github: 0.92 (main) | 1.0.3 (beta) | 1.0.3 (dev)  
+#> ✔ dartR.captive   1.0.2 | CRAN: 1.0.2 | Github: 1.0.2 (main) | 1.0.2 (beta) | 1.0.35 (dev)
+#> ✔ dartR.sexlinked 1.0.5 | CRAN: 1.0.5 | Github: 1.0.5 (main) | 1.0.5 (beta) | 1.0.5 (dev)
 ```
 
 The figures in bold are you currently installed versions and the other

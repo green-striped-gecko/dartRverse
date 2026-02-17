@@ -38,12 +38,13 @@ dartR_check <- function()
 }
 
 .onAttach <- function(...) {
+  welcome <- paste0("\n**** Welcome to dartRverse [Version ",
+  utils::packageVersion("dartRverse"),  "] ****\n")
  packageStartupMessage(
     cli::col_blue(
-    paste0("***********************************************",
-           "\n**** Welcome to dartRverse [Version ",
-      utils::packageVersion("dartRverse"),  "] ****\n",
-           "***********************************************"
+    paste0(strrep("*", nchar(welcome)-2),
+           welcome,
+           strrep("*", nchar(welcome)-2)
     ), collapse="\n")
   )
   dc <- dartR_check()
@@ -56,7 +57,7 @@ dartR_check <- function()
   inform_startup(dartRverse_attach_message(dc$nip,"notaddon"))
   
   if (length(dc$core)<2) {
-    inform_startup(paste0("\nPlease note: The core dartRverse packages are not installed yet. \nYou can install the missing core packages using: \n",cli::style_bold(cli::col_blue("install.packages('BiocManager')\nBiocManager::install('SNPRelate')\ndartRverse_install('dartR.base',rep='CRAN')\n")),"To install all packages of the dartRverse, use:\n",cli::style_bold(cli::col_blue("dartRverse_install('all')"))))
+    inform_startup(paste0("\nPlease note: The core dartRverse packages are not installed yet. \nYou can install the missing core packages using: \n",cli::style_bold(cli::col_blue("install.packages('BiocManager')\nBiocManager::install('SNPRelate')\nBiocManager::install('snpStats')\ndartRverse_install('dartR.base',rep='CRAN')\n")),"To install all packages of the dartRverse, use:\n",cli::style_bold(cli::col_blue("dartRverse_install('all')"))))
   }
   
 }
