@@ -8,27 +8,23 @@ addons <- c("dartR.sim","dartR.popgen","dartR.spatial","dartR.captive","dartR.se
 
 dartR_check <- function()
 {
-  
-  ba <- unlist(lapply(addons, function(x)  
-  {
-    if(!paste0("package:",x) %in% search())  suppressMessages(suppressWarnings(attachNamespace(x)))
-    return(TRUE)
-  }))
-  
+
   
   bc <- unlist(lapply(core, function(x)  
   {
-    if ( requireNamespace(x, quietly = TRUE)) {
-      if (x=="dartR.base") ppos <- 2 else ppos<- 3
-      if (!paste0("package:",x) %in% search()) suppressMessages(suppressWarnings(attachNamespace(x, pos=ppos)))
-      return(TRUE)
-    } else return(FALSE)
+    loc <- if (x %in% loadedNamespaces()) dirname(getNamespaceInfo(x, "path"))
+    
+   suppressMessages(suppressWarnings(require(x, lib.loc = loc,  quietly = TRUE, character.only = TRUE )))
     
   }))
   
-  if (requireNamespace("adegenet", quietly = TRUE))   if (!"package:adegenet" %in% search()) suppressMessages(suppressWarnings(attachNamespace("adegenet", pos=255)))
- 
- 
+  ba <- unlist(lapply(addons, function(x)  
+  {
+    loc <- if (x %in% loadedNamespaces()) dirname(getNamespaceInfo(x, "path"))
+    
+   suppressMessages(suppressWarnings(require(x, lib.loc = loc,  quietly = TRUE, character.only = TRUE )))
+    
+  }))
   
   core <- core[bc]
   
@@ -42,13 +38,12 @@ dartR_check <- function()
 }
 
 .onAttach <- function(...) {
-  welcome <- paste0("\n**** Welcome to dartRverse [Version ",
-  utils::packageVersion("dartRverse"),  "] ****\n")
  packageStartupMessage(
     cli::col_blue(
-    paste0(strrep("*", nchar(welcome)-2),
-           welcome,
-           strrep("*", nchar(welcome)-2)
+    paste0("***********************************************",
+           "\n**** Welcome to dartRverse [Version ",
+      utils::packageVersion("dartRverse"),  "] ****\n",
+           "***********************************************"
     ), collapse="\n")
   )
   dc <- dartR_check()
@@ -61,7 +56,7 @@ dartR_check <- function()
   inform_startup(dartRverse_attach_message(dc$nip,"notaddon"))
   
   if (length(dc$core)<2) {
-    inform_startup(paste0("\nPlease note: The core dartRverse packages are not installed yet. \nYou can install the missing core packages using: \n",cli::style_bold(cli::col_blue("install.packages('BiocManager')\nBiocManager::install('SNPRelate')\nBiocManager::install('snpStats')\ndartRverse_install('dartR.base',rep='CRAN')\n")),"To install all packages of the dartRverse, use:\n",cli::style_bold(cli::col_blue("dartRverse_install('all')"))))
+    inform_startup(paste0("\nPlease note: The core dartRverse packages are not installed yet. \nYou can install the missing core packages using: \n",cli::style_bold(cli::col_blue("install.packages('BiocManager')\nBiocManager::install('SNPRelate')\ndartRverse_install('dartR.base',rep='CRAN')\n")),"To install all packages of the dartRverse, use:\n",cli::style_bold(cli::col_blue("dartRverse_install('all')"))))
   }
   
 }
