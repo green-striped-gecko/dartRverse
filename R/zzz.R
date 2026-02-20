@@ -8,23 +8,27 @@ addons <- c("dartR.sim","dartR.popgen","dartR.spatial","dartR.captive","dartR.se
 
 dartR_check <- function()
 {
-
-  
-  bc <- unlist(lapply(core, function(x)  
-  {
-    loc <- if (x %in% loadedNamespaces()) dirname(getNamespaceInfo(x, "path"))
-    
-   suppressMessages(suppressWarnings(require(x, lib.loc = loc,  quietly = TRUE, character.only = TRUE )))
-    
-  }))
   
   ba <- unlist(lapply(addons, function(x)  
   {
-    loc <- if (x %in% loadedNamespaces()) dirname(getNamespaceInfo(x, "path"))
-    
-   suppressMessages(suppressWarnings(require(x, lib.loc = loc,  quietly = TRUE, character.only = TRUE )))
+    if(!paste0("package:",x) %in% search())  suppressMessages(suppressWarnings(attachNamespace(x)))
+    return(TRUE)
+  }))
+  
+  
+  bc <- unlist(lapply(core, function(x)  
+  {
+    if ( requireNamespace(x, quietly = TRUE)) {
+      if (x=="dartR.base") ppos <- 2 else ppos<- 3
+      if (!paste0("package:",x) %in% search()) suppressMessages(suppressWarnings(attachNamespace(x, pos=ppos)))
+      return(TRUE)
+    } else return(FALSE)
     
   }))
+  
+  if (requireNamespace("adegenet", quietly = TRUE))   if (!"package:adegenet" %in% search()) suppressMessages(suppressWarnings(attachNamespace("adegenet", pos=255)))
+ 
+ 
   
   core <- core[bc]
   
