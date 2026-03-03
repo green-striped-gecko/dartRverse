@@ -105,6 +105,7 @@ gl.download.binary <- function(software=NULL,
   if (quiet==FALSE) cat("Downloaded binary to ",tmpfile,"\n")
   
   xx <- unzip(tmpfile, exdir=out.dir)
+  if (os!="windows") Sys.chmod(xx, mode = "0755")
   
   if (quiet==FALSE) cli::cat_line(cli::col_green(paste0("Unzipped binary to ",out.dir,"/",software)))
   
