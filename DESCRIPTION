@@ -1,14 +1,15 @@
 Package: dartRverse
 Title: Install and Load the 'dartRverse' Suits of Packages
-Version: 1.0.6
-Date: 2025-02-17
-Revision: Devious Dodo
+Version: 1.2.2
+Date: 2026-02-17
+Revision: Elastic Elapid
 Authors@R: c(
             person("Bernd", "Gruber", email="bernd.gruber@canberra.edu.au", role=c("aut","cre")), 
             person("Arthur", "Georges", email="georges@aerg.edu.au", role="aut"),
             person("Jose L.", "Mijangos", email="Luis.MijangosAraujo@canberra.edu.au", role="aut"), 
             person("Carlo", "Pacioni",email="carlo.pacioni@delwp.vic.gov.au",role="aut"),
             person("Peter J.", "Unmack", email="peter.mail2@unmack.net", role="aut"),
+            person("Emily","Stringer", email="emily.stringer@canberra.edu.au", role="ctb"),
             person("Oliver", "Berry", email="oliver.berry@csiro.au", role="aut" )
             )
 Description: Provides a single function that supports the installation of all packages 
@@ -29,7 +30,7 @@ Suggests:
    dartR.popgen,
    dartR.spatial
 Encoding: UTF-8
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 NeedsCompilation: no
 Packaged: 2023-05-22 13:20:46 UTC; green-striped-gecko
 Maintainer: Bernd Gruber <bernd.gruber@canberra.edu.au>
