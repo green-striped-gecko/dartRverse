@@ -26,6 +26,7 @@ Authors:
   \item Jose L. Mijangos \email{Luis.MijangosAraujo@canberra.edu.au}
   \item Carlo Pacioni \email{carlo.pacioni@delwp.vic.gov.au}
   \item Peter J. Unmack \email{peter.mail2@unmack.net}
+  \item Emily Stringer \email{emily.stringer@canberra.edu.au}
   \item Oliver Berry \email{oliver.berry@csiro.au}
 }
 
