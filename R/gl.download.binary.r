@@ -94,16 +94,17 @@ gl.download.binary <- function(software=NULL,
   
   
   zipfile <- paste0(software,"_",os,".zip")
-  webpath <- paste0("https://raw.github.com/green-striped-gecko/dartRverse/", branch,"/binaries/",zipfile)
+  webpath <- paste0("https://raw.githubusercontent.com/green-striped-gecko/dartRverse/", branch,"/binaries/",zipfile)
   
-  if (!url.exists(webpath)) {
-    stop(paste0("Binary for ",software," on ",os," not available. Please check the dartRverse binary folder on github for available binariers."))
-  }
   #download to temp file
   tmpfile <- tempfile()
-  download.file(webpath, destfile=tmpfile, quiet = quiet, mode="wb")
-  if (quiet==FALSE) cat("Downloaded binary to ",tmpfile,"\n")
-  
+  result <- tryCatch(
+    download.file(webpath, destfile = tmpfile, quiet = quiet, mode = "wb"),
+    error = function(e) 1
+  )
+  if (result != 0) {
+    stop(paste0("Binary for ", software, " on ", os, " not available. Please check the dartRverse binary folder on github for available binaries."))
+  }
   xx <- unzip(tmpfile, exdir=out.dir)
   if (os!="windows") Sys.chmod(xx, mode = "0755")
   
