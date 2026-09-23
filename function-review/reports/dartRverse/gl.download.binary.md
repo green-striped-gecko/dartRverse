@@ -178,7 +178,7 @@ binaries.
 - `R CMD check --no-manual`: 0 errors, 0 warnings, 2 notes (untracked local scaffold files; clock check).
 - End to end at `verbose = 3`: listing on `main` and `gl.download.binary("Stairway2")` on mac ran.
 - NEWS.md created (no NEWS file existed). Callers: no calls in dartr2shiny; sibling mentions use lower-case names.
-- PR: pending.
+- PR: #41.
 
 ```json
 {
@@ -206,7 +206,7 @@ binaries.
     "Windows execution: no machine",
     "Google Group / GitHub issues: not searched"
   ],
-  "status": "awaiting-approval",
-  "pr": null
+  "status": "pr-open",
+  "pr": 41
 }
 ```
