@@ -1,20 +1,27 @@
 #' Checks installed package and Supports installation of CRAN and Github packages of the dartRverse
 #' 
-#' This functions expects the name of one (or several) dartR packages, the repository (CRAN or Github) and in the case of github the branch (main, dev, beta) to install the identified version of the pacakge. If run with no parameter the current installed packages and their versions are printed.
+#' This function expects the name of one (or several) dartR packages, the repository (CRAN or Github) and in the case of github the branch (main, dev, beta) to install the identified version of the package. If run with no parameter the current installed packages and their versions are printed.
 #' 
-#' @param package Name of the package to install, currently [dartR.base, dartR.data, dartR.sim, dartR.spatial, dartR.popgen, dartR.sexlinked]
-#' @param rep Which repository is used ('CRAN' or 'Github'). 
-#' @param branch If Github is used the branch on Github needs to be specified, [either main, beta or dev]
-#' The 'main' repository on Github is identical with the latest CRAN submission. Important changes and fixes are published under 'beta' and tested there, before the are submitted to CRAN. Hence this might be the best chance 
+#' All dartR packages depend on dartR.base, which imports the Bioconductor packages SNPRelate and snpStats. These cannot be installed from CRAN, so the function stops and shows the commands to install them if they are missing.
+#' If a package is already loaded, the new version is only used after R is restarted; the function says so after installing.
+#' 
+#' @param package Name(s) of the package(s) to install: dartR.base, dartR.data, dartR.sim, dartR.popgen, dartR.spatial, dartR.captive or dartR.sexlinked. Use "all" to print the commands that install the whole dartRverse. If NULL, the installed packages and the versions available on CRAN and Github are printed [default NULL].
+#' @param rep Which repository is used: 'CRAN' or 'Github' (partial matching, any case) [default 'CRAN'].
+#' @param branch If Github is used, the branch to install from: main, beta or dev [default 'main'].
+#' The 'main' repository on Github is identical with the latest CRAN submission. Important changes and fixes are published under 'beta' and tested there, before they are submitted to CRAN. Hence this might be the best chance 
 #' to look for fixes. All 'dev' branches are 'risky' meaning they have not been tested.
-#' To get the current versions availble and which are installed run: dartRverse_install().
+#' To get the current versions available and which are installed run: dartRverse_install().
 #' To get the code how to install all other packages run: dartRverse_install("all").
-#' @param verbose if set to true the current installed packages are printed.
-#' @return functions returns NULL
+#' @param verbose If TRUE, the version table is printed when package is NULL; it has no effect otherwise [default TRUE].
+#' @return Invisibly: 1 when the version table is requested, NULL otherwise.
 #' @examples 
+#' # print the commands that install the whole dartRverse
 #' dartRverse_install("all")
-#' \donttest{
+#' \dontrun{
+#' # installed packages and available versions (needs internet)
 #' dartRverse_install()
+#' # install the dev version of dartR.popgen from Github
+#' dartRverse_install("dartR.popgen", rep = "Github", branch = "dev")
 #' }
 #' @export
 #' @importFrom utils installed.packages install.packages available.packages
@@ -25,15 +32,6 @@ dartRverse_install <- function(
                                 branch = "main", 
                                 verbose=TRUE)
 {
-  pkg <- "devtools"
-  if (!(requireNamespace(pkg, quietly = TRUE))) {
-    cat(cli::col_red(
-      "Package",
-      pkg,
-      " needed for this function to work. Please install it.\n"
-    ))
-    return(-1)
-  }
   err <- NULL
   
   dc <- dartR_check()
@@ -63,19 +61,34 @@ dartRverse_install <- function(
     dvcb <- NA
     dvcd <- NA
 
-    av <- available.packages(repos = "https://cran.r-project.org/")
+    # a failed remote read shows "?" instead of stopping the whole table
+    failed <- character(0)
+    av <- tryCatch(suppressWarnings(available.packages(repos = "https://cran.r-project.org/")),
+                   error = function(e) NULL)
+    if (is.null(av) || nrow(av) == 0) failed <- c(failed, "CRAN")
+    cran_version <- function(p) {
+      if ("CRAN" %in% failed) return("?")
+      if (p %in% rownames(av)) av[p, "Version"] else NA
+    }
+    gh_version <- function(p, b) {
+      tryCatch({
+        myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/", p, "/", b, "/DESCRIPTION")), warn = FALSE)
+        gsub(pattern = "Version: ", "", myfile[grep("Version: ", myfile)])
+      }, error = function(e) {
+        failed <<- c(failed, "Github")
+        "?"
+      }, warning = function(w) {
+        failed <<- c(failed, "Github")
+        "?"
+      })
+    }
     if (length(dc$core)>0) {
     for (i in 1:length(dc$core)) {
       
-      if (sum(av[,1]==dc$core[i])) dvcc[i] <- av[dc$core[i], "Version"]  else dvcc[i] <- NA
-     
-      
-        myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$core[i],"/main/DESCRIPTION")))
-        dvcm[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
-        myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$core[i],"/beta/DESCRIPTION")))
-        dvcb[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
-        myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$core[i],"/dev/DESCRIPTION")))
-        dvcd[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
+      dvcc[i] <- cran_version(dc$core[i])
+      dvcm[i] <- gh_version(dc$core[i], "main")
+      dvcb[i] <- gh_version(dc$core[i], "beta")
+      dvcd[i] <- gh_version(dc$core[i], "dev")
     }
       versions <- paste0(cversions, " | CRAN: ", c(dvcc), " | Github: ",c(dvcm)," (main) | ",c(dvcb)," (beta) | ",c(dvcd), " (dev)")
 }
@@ -86,14 +99,10 @@ dartRverse_install <- function(
     if (length(dc$ip)>0) {
     for (i in 1:length(dc$ip)) {
       
-      if (sum(av[,1]==dc$ip[i])) dvic[i] <- av[dc$ip[i], "Version"]  else dvic[i] <- NA
-      
-      myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$ip[i],"/main/DESCRIPTION")))
-      dvim[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
-      myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$ip[i],"/beta/DESCRIPTION")))
-      dvib[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
-      myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$ip[i],"/dev/DESCRIPTION")))
-      dvid[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
+      dvic[i] <- cran_version(dc$ip[i])
+      dvim[i] <- gh_version(dc$ip[i], "main")
+      dvib[i] <- gh_version(dc$ip[i], "beta")
+      dvid[i] <- gh_version(dc$ip[i], "dev")
     }
       versions2 <- paste0(iversions, " | CRAN: ", c( dvic), " | Github: ",c(dvim)," (main) | ",c( dvib)," (beta) | ",c(dvid), " (dev)")
       
@@ -108,15 +117,10 @@ dartRverse_install <- function(
     if (length(dc$nip)>0) {
     for (i in 1:length(dc$nip)) {
 
-      if (sum(av[,1]==dc$nip[i])) dvnc[i] <- av[dc$nip[i], "Version"]  else dvnc[i] <- NA
-    
-        
-      myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$nip[i],"/main/DESCRIPTION")))
-      dvnm[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
-      myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$nip[i],"/beta/DESCRIPTION")))
-      dvnb[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
-      myfile <- readLines(url(paste0("https://raw.githubusercontent.com/green-striped-gecko/",dc$nip[i],"/dev/DESCRIPTION")))
-      dvnd[i]<- gsub(pattern = "Version: ","", myfile[grep("Version: ", myfile)])
+      dvnc[i] <- cran_version(dc$nip[i])
+      dvnm[i] <- gh_version(dc$nip[i], "main")
+      dvnb[i] <- gh_version(dc$nip[i], "beta")
+      dvnd[i] <- gh_version(dc$nip[i], "dev")
     }
     
     nversions <- paste0(cli::style_bold("--- "), " | CRAN:",dvnc," | Github:  ",dvnm," (main) | ",dvnb," (beta) | ",dvnd," (dev)")
@@ -140,11 +144,15 @@ dartRverse_install <- function(
     cli::cat_line()
     }
     
+    if (length(failed) > 0) {
+      cli::cat_line(cli::col_red(paste0("Versions shown as ? could not be read from ", paste(unique(failed), collapse = " and "), ". Check your internet connection.")))
+    }
+    
   }  
     
   return (invisible(1))
     
-  } else     if (tolower(package)=="all") {
+  } else     if (identical(tolower(package), "all")) {
   
     #check if all packages should be installed
     #print out instructions
@@ -184,34 +192,45 @@ dartRverse_install <- function(
       
       
       
-    } else  if (!is.null(rep)) {
+    } else {
     
-    #make sure package exists
-    if (!package %in% c(core,addons))  {
-      cat(cli::col_red(
-        "\n"
-      ))
-      return(-1)
+    #make sure all packages exist before installing any
+    bad <- package[!package %in% c(core,addons)]
+    if (length(bad) > 0) {
+      stop(paste0("Unknown dartRverse package: ", paste(bad, collapse = ", "), ". Use one of: ", paste(c(core, addons), collapse = ", ")))
+    }
+    reps <- c("CRAN", "GITHUB")
+    if (is.null(rep) || length(rep) != 1 || is.na(rp <- pmatch(toupper(rep), reps))) {
+      stop("rep must be 'CRAN' or 'Github'.")
+    }
+    rep <- reps[rp]
+    
+    # dartR.base (a dependency of every dartR package) imports these Bioconductor packages, which install.packages cannot find on CRAN
+    bioc <- c("SNPRelate", "snpStats")
+    missing.bioc <- bioc[!vapply(bioc, rlang::is_installed, logical(1))]
+    if (length(missing.bioc) > 0) {
+      stop(paste0("Bioconductor package(s) ", paste(missing.bioc, collapse = ", "), " must be installed first. Please run:\n",
+                  "install.packages('BiocManager')\n",
+                  paste0("BiocManager::install('", missing.bioc, "')", collapse = "\n")))
     }
     
-    
-    if (!is.na(pmatch(toupper(rep), "CRAN"))) {
-      ps <- paste0("package:",package)
-      if (ps %in% search()) detach(ps, unload = TRUE, character.only = TRUE, force=TRUE)
-        cat(cli::col_green(paste0("  Installing ",package ," from CRAN (latest version)\n")))
-      install.packages(package)
+    for (pk in package) {
+      # a namespace imported by another loaded dartR package cannot be unloaded, so the old version stays in use until R restarts
+      was.loaded <- pk %in% loadedNamespaces()
+      ps <- paste0("package:",pk)
+      if (ps %in% search()) suppressWarnings(detach(ps, unload = TRUE, character.only = TRUE, force=TRUE))
+      if (rep == "CRAN") {
+        cat(cli::col_green(paste0("  Installing ",pk ," from CRAN (latest version)\n")))
+        install.packages(pk)
+      } else {
+        cat(cli::col_green(paste0("  Installing ",pk," from Github from branch [",branch,"] \n")))
+        remotes::install_github(paste0("green-striped-gecko/",pk),
+                                ref = branch,
+                                dependencies = TRUE)
+      }
+      if (was.loaded) cat(cli::style_bold(cli::col_red(paste0("  Restart R to use the new version of ", pk, "\n"))))
     }
-    if (!is.na(pmatch(toupper(rep), "GITHUB"))) {
-        cat(cli::col_green(paste0("  Installing ",package," from Github from branch [",branch,"] \n")))
-      ps <- paste0("package:",package)
-      if (ps %in% search()) detach(ps, unload = TRUE, character.only = TRUE, force=TRUE)
-      devtools::install_github(paste0("green-striped-gecko/",package),
-                               ref = branch,
-                               dependencies = TRUE)
-    }
+    return(invisible(NULL))
   }
   
 }
-
-  
- 
