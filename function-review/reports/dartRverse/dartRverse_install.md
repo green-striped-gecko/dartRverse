@@ -195,7 +195,7 @@ Proposed change: none.
 - NEWS.md entry added. Callers: none in sibling `R/` code or dartr2shiny.
 - Addendum (approved by Luis in chat): `NEWS.md` heading `# dartRverse (development version)` gave the R CMD check note "No news entries found" on R 4.4.2; renamed to `# dartRverse 1.2.2.9000`, which `tools:::.build_news_db_from_package_NEWS_md()` parses.
 - Rebased onto `dev` after #41 merged; `DESCRIPTION`/`NAMESPACE` conflicts resolved (RCurl stays removed).
-- PR: pending.
+- PR: #43.
 
 ```json
 {
@@ -222,7 +222,7 @@ Proposed change: none.
     "clean-library install (F2) and Linux devtools install (F7): not run",
     "Google Group / GitHub issues: not searched"
   ],
-  "status": "awaiting-approval",
-  "pr": null
+  "status": "pr-open",
+  "pr": 43
 }
 ```
