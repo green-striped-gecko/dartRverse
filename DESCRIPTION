@@ -21,7 +21,7 @@ Description: Provides a single function that supports the installation of all pa
 URL: https://github.com/green-striped-gecko/dartRverse
 License: GPL (>= 3)
 Depends: R (>= 3.5)
-Imports: cli, rlang, devtools, RCurl, httr
+Imports: cli, rlang, devtools, httr
 Suggests: 
    dartR.base,
    dartR.data,

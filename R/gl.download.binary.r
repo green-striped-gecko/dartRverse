@@ -1,22 +1,22 @@
-#' Support function to download binaries from github 
-#' 
-#' This functions supports the download of binaries from github. Those binaries are compiled files that allow to run dartR functions that integrate third party software such as epos (gl.run.epos), NeEstimator (gl.LDNe) or Structure (gl.run.structure). Please be aware this is just to allow for easy install and use of dartR functions seemlessly. We have explicitely asked the authors of the software for permission to include those binaries here. Understandably some authors prefer to direct users to their own websites to download the software. Here a comment is issued by the function how to do so. Please note: **The third party packages are the work of others and please make the effort to cite them accordingly**. You find the citations under the help pages of the respective functions, for example ?gl.run.epos.
-#' 
-#' @param software name of the software package to download. Currently supported are: "epos", "NeEstimator", "Stairway2" and  "Gone". Please note, depending on the software several files will be downloaded
-#' @param os the operating system to download the binary for. Currently supported are: "windows", "mac" and "linux". Please be aware some binaries are not available for all operating systems.
-#' @param branch which branch to download from (leave empty for the main branch and there should not be a reason to change that)
-#' @param out.dir the path where to save the binary. If left empty the binary will be saved in the temporary directory.
-#' @param verbose .If zero, suppresses output messages. Default is zero
-
-#' @return functions returns NULL
-#' @examples 
-#' gl.download.binary
-#' \donttest{
-#' dartRverse_install()
+#' Support function to download binaries from github
+#'
+#' This function supports the download of binaries from github. Those binaries are compiled files that allow to run dartR functions that integrate third party software such as epos (gl.run.epos), NeEstimator (gl.LDNe) or Structure (gl.run.structure). Please be aware this is just to allow for easy install and use of dartR functions. We have explicitly asked the authors of the software for permission to include those binaries here. Understandably some authors prefer to direct users to their own websites to download the software. Here a comment is issued by the function how to do so. Please note: **The third party packages are the work of others and please make the effort to cite them accordingly**. You find the citations under the help pages of the respective functions, for example ?gl.run.epos.
+#'
+#' @param software Name of the software package to download, one of "beagle", "colony", "eems", "emibd9", "epos", "faststructure", "gone", "ms", "neestimator", "plink", "popcluster", "stairway2" and "structure". Upper case is converted to lower case. Depending on the software several files will be downloaded. If NULL, a table of the binaries available for each operating system is printed [default NULL].
+#' @param os The operating system to download the binary for: "windows", "mac" or "linux" (partial matching is allowed). Some binaries are not available for all operating systems. If NULL, the current operating system is used [default NULL].
+#' @param branch Which branch of the dartRverse github repository to download from, or to list the binaries of. There should be no reason to change it [default "main"].
+#' @param out.dir The path where to save the binary [default tempdir()].
+#' @param verbose If 0, download progress and messages are suppressed; any other value prints them [default 2].
+#' @return When software is given, invisibly, the path of the folder that holds the unzipped binary (out.dir/software). When software is NULL, NULL (the table of available binaries is printed).
+#' @examples
+#' \dontrun{
+#' # list the binaries available for each operating system
+#' gl.download.binary()
+#' # download PLINK for the current operating system into tempdir()
+#' path <- gl.download.binary("plink")
 #' }
 #' @export
 #' @importFrom utils installed.packages install.packages available.packages
-#' @importFrom RCurl url.exists
 #' @importFrom utils download.file unzip
 #' @importFrom httr GET content
 
@@ -31,6 +31,14 @@ gl.download.binary <- function(software=NULL,
   
   
   oses <- c("windows","mac","linux")
+  
+  # file names on github are lower case and the host is case-sensitive
+  if (!is.null(software)) {
+    if (!is.character(software) || length(software) != 1) {
+      stop("software must be a single character string, e.g. \"plink\". Use gl.download.binary() to list the available binaries.")
+    }
+    software <- tolower(software)
+  }
   
   #set quiet depending on verbose
   if (verbose==0) quiet <- TRUE else quiet <- FALSE
@@ -49,9 +57,21 @@ gl.download.binary <- function(software=NULL,
   
   if (is.null(software)) { #show all binaries in the folder
     
-    req  <- GET("https://api.github.com/repos/green-striped-gecko/dartRverse/git/trees/dev?recursive=1")
+    req <- tryCatch(
+      GET(paste0("https://api.github.com/repos/green-striped-gecko/dartRverse/git/trees/", branch, "?recursive=1")),
+      error = function(e) e
+    )
+    browse <- paste0("https://github.com/green-striped-gecko/dartRverse/tree/", branch, "/binaries")
+    if (inherits(req, "error")) {
+      stop(paste0("Could not reach github to list the binaries (", conditionMessage(req), "). Check your internet connection or browse ", browse))
+    }
+    tree <- content(req)$tree
+    # unauthenticated API calls are limited to 60 per hour; the body then holds only a message
+    if (is.null(tree)) {
+      stop(paste0("Github did not return the list of binaries (", content(req)$message, "). Try again later or browse ", browse))
+    }
     
-    all.files <- unlist(lapply(content(req)$tree, "["), use.names = F)
+    all.files <- unlist(lapply(tree, "["), use.names = F)
     all.files <- all.files[grep(".zip", all.files)]
     all.files <- gsub("binaries/", "", all.files)
     all.files <- gsub(tolower(".zip"), "", all.files)
@@ -98,12 +118,24 @@ gl.download.binary <- function(software=NULL,
   
   #download to temp file
   tmpfile <- tempfile()
-  result <- tryCatch(
-    download.file(webpath, destfile = tmpfile, quiet = quiet, mode = "wb"),
-    error = function(e) 1
+  # collect download.file warnings (they carry the HTTP status) instead of printing them
+  msgs <- character(0)
+  result <- withCallingHandlers(
+    tryCatch(
+      download.file(webpath, destfile = tmpfile, quiet = quiet, mode = "wb"),
+      error = function(e) conditionMessage(e)
+    ),
+    warning = function(w) {
+      msgs <<- c(msgs, conditionMessage(w))
+      invokeRestart("muffleWarning")
+    }
   )
-  if (result != 0) {
-    stop(paste0("Binary for ", software, " on ", os, " not available. Please check the dartRverse binary folder on github for available binaries."))
+  if (!(is.numeric(result) && result == 0)) {
+    msgs <- c(msgs, as.character(result))
+    if (any(grepl("404", msgs))) {
+      stop(paste0("Binary for ", software, " on ", os, " not available. Use gl.download.binary() to list the available binaries."))
+    }
+    stop(paste0("Download of ", webpath, " failed (", paste(unique(msgs), collapse = "; "), "). Check your internet connection or proxy settings."))
   }
   xx <- unzip(tmpfile, exdir=out.dir)
   if (os!="windows") Sys.chmod(xx, mode = "0755")
