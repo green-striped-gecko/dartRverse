@@ -13,25 +13,27 @@ gl.download.binary(
 )
 }
 \arguments{
-\item{software}{name of the software package to download. Currently supported are: "epos", "NeEstimator", "Stairway2" and  "Gone". Please note, depending on the software several files will be downloaded}
+\item{software}{Name of the software package to download, one of "beagle", "colony", "eems", "emibd9", "epos", "faststructure", "gone", "ms", "neestimator", "plink", "popcluster", "stairway2" and "structure". Upper case is converted to lower case. Depending on the software several files will be downloaded. If NULL, a table of the binaries available for each operating system is printed [default NULL].}
 
-\item{os}{the operating system to download the binary for. Currently supported are: "windows", "mac" and "linux". Please be aware some binaries are not available for all operating systems.}
+\item{os}{The operating system to download the binary for: "windows", "mac" or "linux" (partial matching is allowed). Some binaries are not available for all operating systems. If NULL, the current operating system is used [default NULL].}
 
-\item{branch}{which branch to download from (leave empty for the main branch and there should not be a reason to change that)}
+\item{branch}{Which branch of the dartRverse github repository to download from, or to list the binaries of. There should be no reason to change it [default "main"].}
 
-\item{out.dir}{the path where to save the binary. If left empty the binary will be saved in the temporary directory.}
+\item{out.dir}{The path where to save the binary [default tempdir()].}
 
-\item{verbose}{.If zero, suppresses output messages. Default is zero}
+\item{verbose}{If 0, download progress and messages are suppressed; any other value prints them [default 2].}
 }
 \value{
-functions returns NULL
+When software is given, invisibly, the path of the folder that holds the unzipped binary (out.dir/software). When software is NULL, NULL (the table of available binaries is printed).
 }
 \description{
-This functions supports the download of binaries from github. Those binaries are compiled files that allow to run dartR functions that integrate third party software such as epos (gl.run.epos), NeEstimator (gl.LDNe) or Structure (gl.run.structure). Please be aware this is just to allow for easy install and use of dartR functions seemlessly. We have explicitely asked the authors of the software for permission to include those binaries here. Understandably some authors prefer to direct users to their own websites to download the software. Here a comment is issued by the function how to do so. Please note: **The third party packages are the work of others and please make the effort to cite them accordingly**. You find the citations under the help pages of the respective functions, for example ?gl.run.epos.
+This function supports the download of binaries from github. Those binaries are compiled files that allow to run dartR functions that integrate third party software such as epos (gl.run.epos), NeEstimator (gl.LDNe) or Structure (gl.run.structure). Please be aware this is just to allow for easy install and use of dartR functions. We have explicitly asked the authors of the software for permission to include those binaries here. Understandably some authors prefer to direct users to their own websites to download the software. Here a comment is issued by the function how to do so. Please note: **The third party packages are the work of others and please make the effort to cite them accordingly**. You find the citations under the help pages of the respective functions, for example ?gl.run.epos.
 }
 \examples{
-gl.download.binary
-\donttest{
-dartRverse_install()
+\dontrun{
+# list the binaries available for each operating system
+gl.download.binary()
+# download PLINK for the current operating system into tempdir()
+path <- gl.download.binary("plink")
 }
 }
