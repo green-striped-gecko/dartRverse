@@ -12,27 +12,35 @@ dartRverse_install(
 )
 }
 \arguments{
-\item{package}{Name of the package to install, currently [dartR.base, dartR.data, dartR.sim, dartR.spatial, dartR.popgen, dartR.sexlinked]}
+\item{package}{Name(s) of the package(s) to install: dartR.base, dartR.data, dartR.sim, dartR.popgen, dartR.spatial, dartR.captive or dartR.sexlinked. Use "all" to print the commands that install the whole dartRverse. If NULL, the installed packages and the versions available on CRAN and Github are printed [default NULL].}
 
-\item{rep}{Which repository is used ('CRAN' or 'Github').}
+\item{rep}{Which repository is used: 'CRAN' or 'Github' (partial matching, any case) [default 'CRAN'].}
 
-\item{branch}{If Github is used the branch on Github needs to be specified, [either main, beta or dev]
-The 'main' repository on Github is identical with the latest CRAN submission. Important changes and fixes are published under 'beta' and tested there, before the are submitted to CRAN. Hence this might be the best chance 
+\item{branch}{If Github is used, the branch to install from: main, beta or dev [default 'main'].
+The 'main' repository on Github is identical with the latest CRAN submission. Important changes and fixes are published under 'beta' and tested there, before they are submitted to CRAN. Hence this might be the best chance 
 to look for fixes. All 'dev' branches are 'risky' meaning they have not been tested.
-To get the current versions availble and which are installed run: dartRverse_install().
+To get the current versions available and which are installed run: dartRverse_install().
 To get the code how to install all other packages run: dartRverse_install("all").}
 
-\item{verbose}{if set to true the current installed packages are printed.}
+\item{verbose}{If TRUE, the version table is printed when package is NULL; it has no effect otherwise [default TRUE].}
 }
 \value{
-functions returns NULL
+Invisibly: 1 when the version table is requested, NULL otherwise.
 }
 \description{
-This functions expects the name of one (or several) dartR packages, the repository (CRAN or Github) and in the case of github the branch (main, dev, beta) to install the identified version of the pacakge. If run with no parameter the current installed packages and their versions are printed.
+This function expects the name of one (or several) dartR packages, the repository (CRAN or Github) and in the case of github the branch (main, dev, beta) to install the identified version of the package. If run with no parameter the current installed packages and their versions are printed.
+}
+\details{
+All dartR packages depend on dartR.base, which imports the Bioconductor packages SNPRelate and snpStats. These cannot be installed from CRAN, so the function stops and shows the commands to install them if they are missing.
+If a package is already loaded, the new version is only used after R is restarted; the function says so after installing.
 }
 \examples{
+# print the commands that install the whole dartRverse
 dartRverse_install("all")
-\donttest{
+\dontrun{
+# installed packages and available versions (needs internet)
 dartRverse_install()
+# install the dev version of dartR.popgen from Github
+dartRverse_install("dartR.popgen", rep = "Github", branch = "dev")
 }
 }

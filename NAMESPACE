@@ -3,7 +3,6 @@
 export(dartRverse_install)
 export(gl.download.binary)
 import(cli)
-import(devtools)
 importFrom(httr,GET)
 importFrom(httr,content)
 importFrom(rlang,inform)
