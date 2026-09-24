@@ -1,5 +1,4 @@
 #' @import cli
-#' @import devtools
 #' @importFrom rlang is_installed inform
 #' @importFrom utils packageVersion
 

@@ -206,7 +206,7 @@ binaries.
     "Windows execution: no machine",
     "Google Group / GitHub issues: not searched"
   ],
-  "status": "pr-open",
+  "status": "done",
   "pr": 41
 }
 ```
