@@ -1,4 +1,4 @@
-# dartRverse 1.2.2.9000
+# dartRverse 1.2.6
 
 * Startup message: a dartRverse package that is installed but fails to
   load is now listed under "Installed but failed to load" with its error,
