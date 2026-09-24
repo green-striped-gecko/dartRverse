@@ -1,5 +1,10 @@
 # dartRverse 1.2.2.9000
 
+* Startup message: a dartRverse package that is installed but fails to
+  load is now listed under "Installed but failed to load" with its error,
+  instead of "Not [yet] installed". A single missing core package is now
+  listed. The install advice includes snpStats.
+  `options(dartRverse.quiet = TRUE)` now also hides the welcome banner.
 * `dartRverse_install()`: an unknown package name now stops with an error
   listing the valid names (it used to return `-1`), and an unrecognised or
   NULL `rep` stops with an error (it used to do nothing). Several packages

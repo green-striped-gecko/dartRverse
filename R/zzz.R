@@ -8,36 +8,40 @@ addons <- c("dartR.sim","dartR.popgen","dartR.spatial","dartR.captive","dartR.se
 dartR_check <- function()
 {
 
-  
-  bc <- unlist(lapply(core, function(x)  
-  {
+  # require() returns FALSE both when a package is absent and when it is installed but fails to load; keep the load error so the banner can tell the two apart
+  failed <- character(0)
+  try_attach <- function(x) {
     loc <- if (x %in% loadedNamespaces()) dirname(getNamespaceInfo(x, "path"))
-    
-   suppressMessages(suppressWarnings(require(x, lib.loc = loc,  quietly = TRUE, character.only = TRUE )))
-    
-  }))
+    msg <- character(0)
+    ok <- withCallingHandlers(
+      suppressMessages(require(x, lib.loc = loc,  quietly = TRUE, character.only = TRUE )),
+      warning = function(w) {
+        msg <<- c(msg, conditionMessage(w))
+        invokeRestart("muffleWarning")
+      })
+    if (!ok && is_pkg_installed(x)) {
+      failed[x] <<- if (length(msg) > 0) gsub("\\s+", " ", msg[length(msg)]) else "unknown error"
+    }
+    ok
+  }
   
-  ba <- unlist(lapply(addons, function(x)  
-  {
-    loc <- if (x %in% loadedNamespaces()) dirname(getNamespaceInfo(x, "path"))
-    
-   suppressMessages(suppressWarnings(require(x, lib.loc = loc,  quietly = TRUE, character.only = TRUE )))
-    
-  }))
+  bc <- vapply(core, try_attach, logical(1))
   
-  core <- core[bc]
+  ba <- vapply(addons, try_attach, logical(1))
   
+  installedcore <- core[bc]
   installedaddons <- addons[ba]
-  if (is.null(ba)) notinstalledaddons <- addons else 
-    notinstalledaddons <- addons[!ba]  
-  if (length(core) == 0) notinstalledaddons <- c("dartR.base","dartR.data", notinstalledaddons)
+  # missing core packages are listed too, also when only one of them is missing
+  notinstalled <- c(core[!bc], addons[!ba])
   
-  return(pack<- list(core=core, ip=installedaddons, nip = notinstalledaddons))
+  return(pack<- list(core=installedcore, ip=installedaddons, nip = notinstalled, failed = failed))
   
 }
 
+is_pkg_installed <- function(x) nzchar(system.file(package = x))
+
 .onAttach <- function(...) {
- packageStartupMessage(
+ inform_startup(
     cli::col_blue(
     paste0("***********************************************",
            "\n**** Welcome to dartRverse [Version ",
@@ -52,10 +56,13 @@ dartR_check <- function()
   #dartRverse_attach() 
   inform_startup(dartRverse_attach_message(dc$core,"core")) 
   inform_startup(dartRverse_attach_message(dc$ip,"addon"))
-  inform_startup(dartRverse_attach_message(dc$nip,"notaddon"))
+  # packages that are installed but failed to load get their own section
+  notinstalled <- setdiff(dc$nip, names(dc$failed))
+  inform_startup(dartRverse_attach_message(notinstalled,"notaddon"))
+  inform_startup(dartRverse_attach_message(names(dc$failed),"failed", dc$failed))
   
-  if (length(dc$core)<2) {
-    inform_startup(paste0("\nPlease note: The core dartRverse packages are not installed yet. \nYou can install the missing core packages using: \n",cli::style_bold(cli::col_blue("install.packages('BiocManager')\nBiocManager::install('SNPRelate')\ndartRverse_install('dartR.base',rep='CRAN')\n")),"To install all packages of the dartRverse, use:\n",cli::style_bold(cli::col_blue("dartRverse_install('all')"))))
+  if (any(c("dartR.base","dartR.data") %in% notinstalled)) {
+    inform_startup(paste0("\nPlease note: The core dartRverse packages are not installed yet. \nYou can install the missing core packages using: \n",cli::style_bold(cli::col_blue("install.packages('BiocManager')\nBiocManager::install('SNPRelate')\nBiocManager::install('snpStats')\ndartRverse_install('dartR.base',rep='CRAN')\n")),"To install all packages of the dartRverse, use:\n",cli::style_bold(cli::col_blue("dartRverse_install('all')"))))
   }
   
 }
