@@ -125,7 +125,7 @@ Proposed change: none.
 - Snapshot: 17/17 pass, 0 warnings. Diffs from baseline map to changes 1, 2, 3, 4. No unexplained diff.
 - `R CMD check --no-manual`: 0 errors, 0 warnings, 3 notes (untracked scaffold files; clock; the `NEWS.md` heading that #43 fixes).
 - NEWS entry added. Callers of `dartR_check()`: `dartRverse_install()` only; none in siblings or dartr2shiny.
-- PR: pending.
+- PR: #44.
 
 ```json
 {
@@ -148,7 +148,7 @@ Proposed change: none.
     "real broken installation: shared R library in use",
     "Google Group / GitHub issues: not searched"
   ],
-  "status": "awaiting-approval",
-  "pr": null
+  "status": "pr-open",
+  "pr": 44
 }
 ```
