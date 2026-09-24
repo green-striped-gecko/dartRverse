@@ -5,7 +5,16 @@
 test_that("listing mode prints the table and returns NULL", {
   skip_on_cran()
   skip_if_offline("api.github.com")
-  out <- capture.output(res <- gl.download.binary(verbose = 0))
+  # GitHub throttles shared CI runners; that is not a failure of the function
+  out <- tryCatch(
+    capture.output(res <- gl.download.binary(verbose = 0)),
+    error = function(e) {
+      if (grepl("rate limit", conditionMessage(e))) {
+        skip("GitHub API rate limit exceeded")
+      }
+      stop(e)
+    }
+  )
   expect_null(res)
   expect_true(any(grepl("Available binaries", out)))
 })
@@ -57,6 +66,23 @@ test_that("listing mode uses branch", {
     .package = "dartRverse"
   )
   expect_match(urls, "/git/trees/main\\?recursive=1$")
+})
+
+# Listing sends GITHUB_PAT when set, and no header when unset
+test_that("listing mode authenticates with GITHUB_PAT", {
+  captured <- list()
+  capture_get <- function(url, ...) {
+    captured[[length(captured) + 1]] <<- list(...)
+    stop("captured")
+  }
+  with_mocked_bindings({
+    withr::with_envvar(c(GITHUB_PAT = "abc123"),
+      try(gl.download.binary(verbose = 0), silent = TRUE))
+    withr::with_envvar(c(GITHUB_PAT = NA),
+      try(gl.download.binary(verbose = 0), silent = TRUE))
+  }, GET = capture_get, .package = "dartRverse")
+  expect_equal(captured[[1]][[1]]$headers[["Authorization"]], "token abc123")
+  expect_null(captured[[2]][[1]])
 })
 
 # Review change 3: API refusal gives a clear message
