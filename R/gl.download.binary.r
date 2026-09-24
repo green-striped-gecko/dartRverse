@@ -18,7 +18,7 @@
 #' @export
 #' @importFrom utils installed.packages install.packages available.packages
 #' @importFrom utils download.file unzip
-#' @importFrom httr GET content
+#' @importFrom httr GET content add_headers
 
 gl.download.binary <- function(software=NULL,
                                os=NULL,
@@ -57,8 +57,11 @@ gl.download.binary <- function(software=NULL,
   
   if (is.null(software)) { #show all binaries in the folder
     
+    # send a GitHub token if one is set (limit 5000/h instead of 60/h per IP)
+    pat <- Sys.getenv("GITHUB_PAT")
+    auth <- if (nzchar(pat)) add_headers(Authorization = paste("token", pat)) else NULL
     req <- tryCatch(
-      GET(paste0("https://api.github.com/repos/green-striped-gecko/dartRverse/git/trees/", branch, "?recursive=1")),
+      GET(paste0("https://api.github.com/repos/green-striped-gecko/dartRverse/git/trees/", branch, "?recursive=1"), auth),
       error = function(e) e
     )
     browse <- paste0("https://github.com/green-striped-gecko/dartRverse/tree/", branch, "/binaries")
@@ -66,7 +69,7 @@ gl.download.binary <- function(software=NULL,
       stop(paste0("Could not reach github to list the binaries (", conditionMessage(req), "). Check your internet connection or browse ", browse))
     }
     tree <- content(req)$tree
-    # unauthenticated API calls are limited to 60 per hour; the body then holds only a message
+    # when the API rate limit is hit the body holds only a message
     if (is.null(tree)) {
       stop(paste0("Github did not return the list of binaries (", content(req)$message, "). Try again later or browse ", browse))
     }
