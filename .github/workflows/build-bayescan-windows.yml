@@ -84,14 +84,16 @@ jobs:
         run: |
           Expand-Archive bayescan_windows.zip -DestinationPath run
           New-Item -ItemType Directory out | Out-Null
-          & run\bayescan\bayescan.exe BayeScan2.1\input_examples\test_SNPs.txt -od out -o r -threads 2 -n 500 -thin 2 -nbp 5 -pilot 500 -burn 500 | Select-Object -First 1
+          & run\bayescan\bayescan.exe BayeScan2.1\input_examples\test_SNPs.txt -od out -o r -threads 2 -n 500 -thin 2 -nbp 5 -pilot 500 -burn 500 *> run.log
+          "exit status: $LASTEXITCODE"
+          Get-Content run.log -TotalCount 1
           if ($LASTEXITCODE -ne 0) { exit 1 }
           Get-Content out\r_fst.txt -TotalCount 4
           "rows: " + ((Get-Content out\r_fst.txt).Count - 1)
           # -d reads a list of loci to discard (6 of the 1000 in the example)
           New-Item -ItemType Directory outd | Out-Null
-          & run\bayescan\bayescan.exe BayeScan2.1\input_examples\test_SNPs.txt -d BayeScan2.1\input_examples\discarded.txt -od outd -o r -threads 2 -n 200 -thin 2 -nbp 2 -pilot 200 -burn 200 | Out-Null
-          if ($LASTEXITCODE -ne 0) { exit 1 }
+          & run\bayescan\bayescan.exe BayeScan2.1\input_examples\test_SNPs.txt -d BayeScan2.1\input_examples\discarded.txt -od outd -o r -threads 2 -n 200 -thin 2 -nbp 2 -pilot 200 -burn 200 *> rund.log
+          if ($LASTEXITCODE -ne 0) { "exit status: $LASTEXITCODE"; exit 1 }
           $n = (Get-Content outd\r_fst.txt).Count - 1
           "rows with -d: " + $n
           if ($n -ne 994) { exit 1 }
