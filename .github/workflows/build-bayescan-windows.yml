@@ -35,8 +35,18 @@ jobs:
         run: |
           cd BayeScan2.1/source
           g++ --version | head -1
+          # MinGW declares the POSIX function fstat(), which clashes with
+          # BayeScan's global variable fstat. This header, included before
+          # each source file, loads the system headers BayeScan uses and then
+          # renames BayeScan's variable; the source files are not changed.
+          printf '%s\n' algorithm fstream iomanip iostream limits.h math.h \
+            omp.h sstream stdio.h stdlib.h string.h time.h vector sys/stat.h \
+            | sed 's/.*/#include <&>/' > ../prelude.h
+          echo '#define fstat bayescan_fstat' >> ../prelude.h
+          cat ../prelude.h
           # C++14: from C++17 std::beta clashes with BayeScan's global beta
-          g++ -std=gnu++14 -O3 -fopenmp -static -o bayescan.exe start.cpp beta.cpp \
+          g++ -std=gnu++14 -O3 -fopenmp -static -include ../prelude.h \
+            -o bayescan.exe start.cpp beta.cpp \
             dirichlet.cpp RJupdates.cpp MHupdates.cpp likelihood.cpp \
             read_write.cpp anyoption.cpp
           objdump -p bayescan.exe | grep "DLL Name"
@@ -58,8 +68,12 @@ jobs:
           This binary was built from the unmodified BayeScan 2.1 source on GitHub
           Actions (windows-latest, MSYS2 MINGW64, $gccv), 64-bit,
           linked statically so that no MinGW DLLs are needed:
-            g++ -std=gnu++14 -O3 -fopenmp -static -o bayescan.exe start.cpp beta.cpp dirichlet.cpp
-              RJupdates.cpp MHupdates.cpp likelihood.cpp read_write.cpp anyoption.cpp
+            g++ -std=gnu++14 -O3 -fopenmp -static -include prelude.h -o bayescan.exe
+              start.cpp beta.cpp dirichlet.cpp RJupdates.cpp MHupdates.cpp
+              likelihood.cpp read_write.cpp anyoption.cpp
+          prelude.h includes the system headers BayeScan uses and then
+          #define fstat bayescan_fstat, because the MinGW headers declare a
+          function fstat() that clashes with BayeScan's variable of that name.
           EOF
           cd pkg && zip -q -X -r ../bayescan_windows.zip bayescan
 
