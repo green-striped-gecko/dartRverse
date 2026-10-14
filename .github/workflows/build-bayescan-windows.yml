@@ -1,0 +1,118 @@
+# One-off build of a self-contained BayeScan 2.1 for Windows, for
+# binaries/bayescan_windows.zip (used by gl.download.binary("bayescan") and
+# gl.run.bayescan in dartR.popgen). The official
+# BayeScan2.1_win32bits_cmd_line.exe needs pthreadGC2.dll and mingwm10.dll,
+# which the official distribution does not include.
+on:
+  push:
+    branches: [build-bayescan-windows]
+
+name: build-bayescan-windows
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: false
+          install: >-
+            mingw-w64-x86_64-gcc
+            unzip
+            zip
+
+      - name: Download the BayeScan 2.1 source
+        run: |
+          curl -sSfL -o BayeScan2.1.zip https://cmpg.unibe.ch/software/BayeScan/files/BayeScan2.1.zip
+          echo "c6bbc52a5a6a30e895951faf2bd6291ca47fdccdc708e693fce02389548d5547  BayeScan2.1.zip" | sha256sum -c
+          unzip -q BayeScan2.1.zip
+
+      - name: Build a static bayescan.exe
+        run: |
+          cd BayeScan2.1/source
+          g++ --version | head -1
+          g++ -O3 -fopenmp -static -o bayescan.exe start.cpp beta.cpp \
+            dirichlet.cpp RJupdates.cpp MHupdates.cpp likelihood.cpp \
+            read_write.cpp anyoption.cpp
+          objdump -p bayescan.exe | grep "DLL Name"
+          # only Windows system DLLs may be imported
+          if objdump -p bayescan.exe | grep "DLL Name" | grep -viE "kernel32|msvcrt|advapi32|user32|ws2_32|api-ms-win"; then
+            echo "bayescan.exe needs a non-system DLL"; exit 1
+          fi
+
+      - name: Package bayescan_windows.zip
+        run: |
+          mkdir -p pkg/bayescan
+          cp BayeScan2.1/source/bayescan.exe BayeScan2.1/binaries/COPYING pkg/bayescan/
+          gccv=$(g++ --version | head -1)
+          cat > pkg/bayescan/README.txt <<EOF
+          BayeScan 2.1 (Foll and Gaggiotti 2008), https://cmpg.unibe.ch/software/BayeScan/
+          Distributed under the GNU General Public License v3 (see COPYING). The source
+          code is in BayeScan2.1.zip at the URL above (folder source/).
+
+          This binary was built from the unmodified BayeScan 2.1 source on GitHub
+          Actions (windows-latest, MSYS2 MINGW64, $gccv), 64-bit,
+          linked statically so that no MinGW DLLs are needed:
+            g++ -O3 -fopenmp -static -o bayescan.exe start.cpp beta.cpp dirichlet.cpp
+              RJupdates.cpp MHupdates.cpp likelihood.cpp read_write.cpp anyoption.cpp
+          EOF
+          cd pkg && zip -q -X -r ../bayescan_windows.zip bayescan
+
+      # PowerShell does not have the MSYS2 folders on PATH, so this fails if
+      # the executable needs a MinGW DLL
+      - name: Run bayescan.exe outside MSYS2
+        shell: pwsh
+        run: |
+          Expand-Archive bayescan_windows.zip -DestinationPath run
+          New-Item -ItemType Directory out | Out-Null
+          & run\bayescan\bayescan.exe BayeScan2.1\input_examples\test_SNPs.txt -od out -o r -threads 2 -n 500 -thin 2 -nbp 5 -pilot 500 -burn 500 | Select-Object -First 1
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          Get-Content out\r_fst.txt -TotalCount 4
+          "rows: " + ((Get-Content out\r_fst.txt).Count - 1)
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bayescan_windows
+          path: bayescan_windows.zip
+
+  test-gl-run-bayescan:
+    needs: build
+    runs-on: windows-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: green-striped-gecko/dartR.popgen
+          ref: dev
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: |
+            any::devtools
+            any::testthat
+            github::green-striped-gecko/dartR.base@dev
+            github::green-striped-gecko/dartR.data@dev
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: bayescan_windows
+
+      - name: Run the gl.run.bayescan tests with the new bayescan.exe
+        shell: Rscript {0}
+        run: |
+          d <- file.path(tempdir(), "dl")
+          dir.create(d)
+          unzip("bayescan_windows.zip", exdir = d)
+          Sys.setenv(BAYESCAN_DIR = file.path(d, "bayescan"))
+          devtools::load_all()
+          testthat::test_file("tests/testthat/test-gl.run.bayescan.R",
+                              reporter = "summary", stop_on_failure = TRUE)
