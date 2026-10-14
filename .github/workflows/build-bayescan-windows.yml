@@ -1,4 +1,4 @@
-# One-off build of BayeScan 2.1 for Windows, for
+# One-off build of a self-contained BayeScan 2.1 for Windows, for
 # binaries/bayescan_windows.zip (used by gl.download.binary("bayescan") and
 # gl.run.bayescan in dartR.popgen). The official
 # BayeScan2.1_win32bits_cmd_line.exe needs pthreadGC2.dll and mingwm10.dll,
@@ -22,6 +22,7 @@ jobs:
           update: false
           install: >-
             mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-libgomp
             unzip
             zip
 
@@ -45,22 +46,19 @@ jobs:
           echo '#define fstat bayescan_fstat' >> ../prelude.h
           cat ../prelude.h
           # C++14: from C++17 std::beta clashes with BayeScan's global beta
-          # MSYS2 has no static libgomp, so the MinGW DLLs the executable
-          # needs are shipped next to it (as in epos_windows.zip)
-          g++ -std=gnu++14 -O3 -fopenmp -static-libgcc -static-libstdc++ \
-            -include ../prelude.h -o bayescan.exe start.cpp beta.cpp \
-            dirichlet.cpp RJupdates.cpp MHupdates.cpp likelihood.cpp \
-            read_write.cpp anyoption.cpp
-          ldd bayescan.exe
-          ldd bayescan.exe | awk '$3 ~ /^\/mingw64\// {print $3}' | sort -u > ../dlls.txt
-          echo "MinGW DLLs shipped:"; cat ../dlls.txt
+          g++ -std=gnu++14 -O3 -fopenmp -static -include ../prelude.h \
+            -o bayescan.exe start.cpp beta.cpp dirichlet.cpp RJupdates.cpp \
+            MHupdates.cpp likelihood.cpp read_write.cpp anyoption.cpp
+          objdump -p bayescan.exe | grep "DLL Name"
+          # only Windows system DLLs may be imported
+          if objdump -p bayescan.exe | grep "DLL Name" | grep -viE "kernel32|msvcrt|advapi32|user32|ws2_32|api-ms-win"; then
+            echo "bayescan.exe needs a non-system DLL"; exit 1
+          fi
 
       - name: Package bayescan_windows.zip
         run: |
           mkdir -p pkg/bayescan
           cp BayeScan2.1/source/bayescan.exe BayeScan2.1/binaries/COPYING pkg/bayescan/
-          cp $(cat dlls.txt) pkg/bayescan/
-          dlls=$(cd pkg/bayescan && ls *.dll | tr '\n' ' ')
           gccv=$(g++ --version | head -1)
           cat > pkg/bayescan/README.txt <<EOF
           BayeScan 2.1 (Foll and Gaggiotti 2008), https://cmpg.unibe.ch/software/BayeScan/
@@ -68,11 +66,9 @@ jobs:
           code is in BayeScan2.1.zip at the URL above (folder source/).
 
           This binary was built from the unmodified BayeScan 2.1 source on GitHub
-          Actions (windows-latest, MSYS2 MINGW64, $gccv), 64-bit. The MinGW
-          runtime DLLs it needs ($dlls) are included from MSYS2 and
-          must stay in the same folder as bayescan.exe:
-            g++ -std=gnu++14 -O3 -fopenmp -static-libgcc -static-libstdc++
-              -include prelude.h -o bayescan.exe
+          Actions (windows-latest, MSYS2 MINGW64, $gccv), 64-bit,
+          linked statically so that no MinGW DLLs are needed:
+            g++ -std=gnu++14 -O3 -fopenmp -static -include prelude.h -o bayescan.exe
               start.cpp beta.cpp dirichlet.cpp RJupdates.cpp MHupdates.cpp
               likelihood.cpp read_write.cpp anyoption.cpp
           prelude.h includes the system headers BayeScan uses and then
@@ -82,7 +78,7 @@ jobs:
           cd pkg && zip -q -X -r ../bayescan_windows.zip bayescan
 
       # PowerShell does not have the MSYS2 folders on PATH, so this fails if
-      # the executable needs a MinGW DLL that is not in the zip
+      # the executable needs a MinGW DLL
       - name: Run bayescan.exe outside MSYS2
         shell: pwsh
         run: |
