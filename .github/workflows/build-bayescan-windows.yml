@@ -12,6 +12,7 @@ name: build-bayescan-windows
 jobs:
   build:
     runs-on: windows-latest
+    timeout-minutes: 20
     defaults:
       run:
         shell: msys2 {0}
@@ -39,14 +40,21 @@ jobs:
           # MinGW declares the POSIX function fstat(), which clashes with
           # BayeScan's global variable fstat. This header, included before
           # each source file, loads the system headers BayeScan uses and then
-          # renames BayeScan's variable; the source files are not changed.
+          # renames BayeScan's variable.
           printf '%s\n' algorithm fstream iomanip iostream limits.h math.h \
             omp.h sstream stdio.h stdlib.h string.h time.h vector sys/stat.h \
             | sed 's/.*/#include <&>/' > ../prelude.h
           echo '#define fstat bayescan_fstat' >> ../prelude.h
           cat ../prelude.h
+          # read_discarded() (option -d) has no return statement. GCC 8 and
+          # later treat the end of the function as unreachable and compile
+          # its read loop into an endless loop, so bayescan -d never
+          # finishes. This adds the missing "return 0;".
+          perl -0pi -e 's/(discarded_loci\[locus-1\]=true;\r?\n    \}\r?\n)\}/$1    return 0;\r\n}/' read_write.cpp
+          sed -n '/^int read_discarded/,/^}/p' read_write.cpp
+          sed -n '/^int read_discarded/,/^}/p' read_write.cpp | grep -q "return 0;"
           # C++14: from C++17 std::beta clashes with BayeScan's global beta
-          g++ -std=gnu++14 -O3 -fopenmp -static -include ../prelude.h \
+          g++ -std=gnu++14 -O3 -fopenmp -static -Werror=return-type -include ../prelude.h \
             -o bayescan.exe start.cpp beta.cpp dirichlet.cpp RJupdates.cpp \
             MHupdates.cpp likelihood.cpp read_write.cpp anyoption.cpp
           objdump -p bayescan.exe | grep "DLL Name"
@@ -65,15 +73,21 @@ jobs:
           Distributed under the GNU General Public License v3 (see COPYING). The source
           code is in BayeScan2.1.zip at the URL above (folder source/).
 
-          This binary was built from the unmodified BayeScan 2.1 source on GitHub
-          Actions (windows-latest, MSYS2 MINGW64, $gccv), 64-bit,
-          linked statically so that no MinGW DLLs are needed:
+          This binary was built from the BayeScan 2.1 source on GitHub Actions
+          (windows-latest, MSYS2 MINGW64, $gccv), 64-bit, linked
+          statically so that no MinGW DLLs are needed:
             g++ -std=gnu++14 -O3 -fopenmp -static -include prelude.h -o bayescan.exe
               start.cpp beta.cpp dirichlet.cpp RJupdates.cpp MHupdates.cpp
               likelihood.cpp read_write.cpp anyoption.cpp
           prelude.h includes the system headers BayeScan uses and then
           #define fstat bayescan_fstat, because the MinGW headers declare a
           function fstat() that clashes with BayeScan's variable of that name.
+
+          Modification (2026-10-14): the function read_discarded() in
+          read_write.cpp had no return statement; "return 0;" was added at its
+          end. Without it, GCC 8 and later compile the loop that reads the file
+          given with option -d into an endless loop, and bayescan -d never
+          finishes. Nothing else in the source was changed.
           EOF
           cd pkg && zip -q -X -r ../bayescan_windows.zip bayescan
 
@@ -83,19 +97,31 @@ jobs:
         shell: pwsh
         run: |
           Expand-Archive bayescan_windows.zip -DestinationPath run
-          New-Item -ItemType Directory out | Out-Null
-          & run\bayescan\bayescan.exe BayeScan2.1\input_examples\test_SNPs.txt -od out -o r -threads 2 -n 500 -thin 2 -nbp 5 -pilot 500 -burn 500 *> run.log
-          "exit status: $LASTEXITCODE"
-          Get-Content run.log -TotalCount 1
-          if ($LASTEXITCODE -ne 0) { exit 1 }
-          Get-Content out\r_fst.txt -TotalCount 4
-          "rows: " + ((Get-Content out\r_fst.txt).Count - 1)
+          # each run takes about 15 s on a Mac; stop it after 5 minutes
+          function Run-Bayescan($name, $extra) {
+            New-Item -ItemType Directory $name | Out-Null
+            $a = @("BayeScan2.1\input_examples\test_SNPs.txt", "-od", $name, "-o", "r",
+                   "-threads", "2", "-n", "500", "-thin", "2", "-nbp", "5",
+                   "-pilot", "500", "-burn", "500") + $extra
+            $t = [Diagnostics.Stopwatch]::StartNew()
+            $p = Start-Process run\bayescan\bayescan.exe -ArgumentList $a -NoNewWindow -PassThru `
+                   -RedirectStandardOutput "$name.log" -RedirectStandardError "$name.err"
+            $null = $p.Handle
+            if (-not $p.WaitForExit(300000)) {
+              $p.Kill(); Get-Content "$name.log" -Tail 3 | Out-Host
+              Write-Host "$name timed out after 300 s"; exit 1
+            }
+            Write-Host "$name finished in $([int]$t.Elapsed.TotalSeconds) s, exit status $($p.ExitCode)"
+            Get-Content "$name.log" -TotalCount 1 | Out-Host
+            if ($p.ExitCode -ne 0) { Get-Content "$name.err" | Out-Host; exit 1 }
+            return ((Get-Content "$name\r_fst.txt").Count - 1)
+          }
+          $n = Run-Bayescan "out" @()
+          "rows: $n"
+          if ($n -ne 1000) { exit 1 }
           # -d reads a list of loci to discard (6 of the 1000 in the example)
-          New-Item -ItemType Directory outd | Out-Null
-          & run\bayescan\bayescan.exe BayeScan2.1\input_examples\test_SNPs.txt -d BayeScan2.1\input_examples\discarded.txt -od outd -o r -threads 2 -n 200 -thin 2 -nbp 2 -pilot 200 -burn 200 *> rund.log
-          if ($LASTEXITCODE -ne 0) { "exit status: $LASTEXITCODE"; exit 1 }
-          $n = (Get-Content outd\r_fst.txt).Count - 1
-          "rows with -d: " + $n
+          $n = Run-Bayescan "outd" @("-d", "BayeScan2.1\input_examples\discarded.txt")
+          "rows with -d: $n"
           if ($n -ne 994) { exit 1 }
 
       - uses: actions/upload-artifact@v4
@@ -106,6 +132,7 @@ jobs:
   test-gl-run-bayescan:
     needs: build
     runs-on: windows-latest
+    timeout-minutes: 60
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -140,3 +167,27 @@ jobs:
           devtools::load_all()
           testthat::test_file("tests/testthat/test-gl.run.bayescan.R",
                               reporter = "summary", stop_on_failure = TRUE)
+
+  # The Linux binary in dartRverse is the official BayeScan2.1_linux64bits,
+  # built with an old GCC. Check that its -d option finishes.
+  linux-official-d:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Run the dartRverse bayescan_linux.zip with and without -d
+        run: |
+          curl -sSfL -o BayeScan2.1.zip https://cmpg.unibe.ch/software/BayeScan/files/BayeScan2.1.zip
+          echo "c6bbc52a5a6a30e895951faf2bd6291ca47fdccdc708e693fce02389548d5547  BayeScan2.1.zip" | sha256sum -c
+          unzip -q BayeScan2.1.zip
+          curl -sSfL -o bayescan_linux.zip https://raw.githubusercontent.com/green-striped-gecko/dartRverse/dev/binaries/bayescan_linux.zip
+          unzip -q bayescan_linux.zip
+          ex=BayeScan2.1/input_examples
+          for d in no yes; do
+            mkdir out_$d
+            args="$ex/test_SNPs.txt -od out_$d -o r -threads 2 -n 500 -thin 2 -nbp 5 -pilot 500 -burn 500"
+            [ $d = yes ] && args="$args -d $ex/discarded.txt"
+            SECONDS=0
+            timeout 300 ./bayescan/bayescan $args > out_$d.log 2>&1 || { echo "-d $d: failed or timed out"; tail -3 out_$d.log; exit 1; }
+            echo "-d $d: $SECONDS s, $(( $(wc -l < out_$d/r_fst.txt) - 1 )) rows"
+          done
+          [ $(( $(wc -l < out_yes/r_fst.txt) - 1 )) -eq 994 ]
