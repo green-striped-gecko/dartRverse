@@ -35,7 +35,8 @@ jobs:
         run: |
           cd BayeScan2.1/source
           g++ --version | head -1
-          g++ -O3 -fopenmp -static -o bayescan.exe start.cpp beta.cpp \
+          # C++14: from C++17 std::beta clashes with BayeScan's global beta
+          g++ -std=gnu++14 -O3 -fopenmp -static -o bayescan.exe start.cpp beta.cpp \
             dirichlet.cpp RJupdates.cpp MHupdates.cpp likelihood.cpp \
             read_write.cpp anyoption.cpp
           objdump -p bayescan.exe | grep "DLL Name"
@@ -57,7 +58,7 @@ jobs:
           This binary was built from the unmodified BayeScan 2.1 source on GitHub
           Actions (windows-latest, MSYS2 MINGW64, $gccv), 64-bit,
           linked statically so that no MinGW DLLs are needed:
-            g++ -O3 -fopenmp -static -o bayescan.exe start.cpp beta.cpp dirichlet.cpp
+            g++ -std=gnu++14 -O3 -fopenmp -static -o bayescan.exe start.cpp beta.cpp dirichlet.cpp
               RJupdates.cpp MHupdates.cpp likelihood.cpp read_write.cpp anyoption.cpp
           EOF
           cd pkg && zip -q -X -r ../bayescan_windows.zip bayescan
@@ -73,6 +74,13 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit 1 }
           Get-Content out\r_fst.txt -TotalCount 4
           "rows: " + ((Get-Content out\r_fst.txt).Count - 1)
+          # -d reads a list of loci to discard (6 of the 1000 in the example)
+          New-Item -ItemType Directory outd | Out-Null
+          & run\bayescan\bayescan.exe BayeScan2.1\input_examples\test_SNPs.txt -d BayeScan2.1\input_examples\discarded.txt -od outd -o r -threads 2 -n 200 -thin 2 -nbp 2 -pilot 200 -burn 200 | Out-Null
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          $n = (Get-Content outd\r_fst.txt).Count - 1
+          "rows with -d: " + $n
+          if ($n -ne 994) { exit 1 }
 
       - uses: actions/upload-artifact@v4
         with:
