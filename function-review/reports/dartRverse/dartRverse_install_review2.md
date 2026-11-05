@@ -229,7 +229,7 @@ Proposed change: none in this review.
 - `devtools::check(document = FALSE, args = "--no-manual")`: 0 errors, 0 warnings, 3 notes (untracked `.claude/`, untracked `AGENTS.md`, clock check).
 - NEWS.md entry added under 1.2.6; version not bumped. Callers: none in local `dartR.*` checkouts; dartr2shiny not checked.
 - Not run: a real successful install, the Windows file lock, and `remotes`' skip when the commit is unchanged. In that last case the restart message would still print (reasoned from the code).
-- PR: not opened yet.
+- PR: #49.
 
 ```json
 {
@@ -263,7 +263,7 @@ Proposed change: none in this review.
     "dartR Google Group: not searched",
     "dartr2shiny caller grep: not checked out on this machine"
   ],
-  "status": "awaiting-approval",
-  "pr": null
+  "status": "pr-open",
+  "pr": 49
 }
 ```
