@@ -62,7 +62,7 @@ is_pkg_installed <- function(x) nzchar(system.file(package = x))
   inform_startup(dartRverse_attach_message(names(dc$failed),"failed", dc$failed))
   
   if (any(c("dartR.base","dartR.data") %in% notinstalled)) {
-    inform_startup(paste0("\nPlease note: The core dartRverse packages are not installed yet. \nYou can install the missing core packages using: \n",cli::style_bold(cli::col_blue("install.packages('BiocManager')\nBiocManager::install('SNPRelate')\nBiocManager::install('snpStats')\ndartRverse_install('dartR.base',rep='CRAN')\n")),"To install all packages of the dartRverse, use:\n",cli::style_bold(cli::col_blue("dartRverse_install('all')"))))
+    inform_startup(paste0("\nPlease note: The core dartRverse packages are not installed yet. \nYou can install the missing core packages using: \n",cli::style_bold(cli::col_blue("dartRverse_install('dartR.base')\n")),"To install all packages of the dartRverse, use:\n",cli::style_bold(cli::col_blue("dartRverse_install('all')"))))
   }
   
 }
