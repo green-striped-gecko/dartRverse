@@ -2,40 +2,45 @@ dartRverse_attach_message <- function(to_load, type) {
   if (length(to_load) == 0) {
     return(NULL)
   }
-  if (type=="core") {
-  header <- cli::rule(
-    left = cli::style_bold("Core dartRverse packages"),
-    right = paste0("dartRverse")
+
+  meta <- switch(
+    type,
+    core = list(
+      label = "Core dartRverse packages",
+      symbol = cli::col_green(cli::symbol$tick),
+      show_version = TRUE
+    ),
+    addon = list(
+      label = "Installed dartRverse packages",
+      symbol = cli::col_green(cli::symbol$tick),
+      show_version = TRUE
+    ),
+    notaddon = list(
+      label = "Not [yet] installed dartRverse packages",
+      symbol = cli::col_red(cli::symbol$cross),
+      show_version = FALSE
+    ),
+    stop("dartRverse_attach_message: unknown type '", type, "'", call. = FALSE)
   )
-  }
-  if (type=="addon") {
-    header <- cli::rule(
-      left = cli::style_bold("Installed dartRverse packages  "),
-      right = paste0("dartRverse")
-    )
-  }
-  if (type=="notaddon") {
-    header <- cli::rule(
-      left = cli::style_bold("Not [yet] installed dartRverse packages"),
-      right = paste0("dartRverse")
-    )
-  }
+
+  header <- cli::rule(
+    left = cli::style_bold(meta$label),
+    right = "dartRverse"
+  )
 
   to_load <- sort(to_load)
-  if (type=="addon" | type=="core") {
-  versions <- vapply(to_load, package_version_h, character(1)) 
+
+  if (meta$show_version) {
+    versions <- vapply(to_load, package_version_h, character(1))
+  } else {
+    # notaddon packages are never loaded, so there is no version to show
+    versions <- rep("", length(to_load))
+  }
 
   packages <- paste0(
-    cli::col_green(cli::symbol$tick), " ", cli::col_blue(format(to_load)), " ",
+    meta$symbol, " ", cli::col_blue(format(to_load)), " ",
     cli::ansi_align(versions, max(cli::ansi_nchar(versions)))
   )
-  } else {
-    versions=rep("", length(to_load))
-    packages <- paste0(
-      cli::col_red(cli::symbol$cross), " ", cli::col_blue(format(to_load)), " ",
-      cli::ansi_align(versions, max(cli::ansi_nchar(versions)))
-    ) 
-  }
 
   if (length(packages) %% 2 == 1) {
     packages <- append(packages, "")
@@ -47,7 +52,13 @@ dartRverse_attach_message <- function(to_load, type) {
 }
 
 package_version_h <- function(pkg) {
-  if (require(pkg, character.only = TRUE, quietly=TRUE)) highlight_version(utils::packageVersion(pkg)) else highlight_version("--")
+  # requireNamespace() only checks availability; it does not attach pkg to
+  # the search path the way require() would.
+  if (requireNamespace(pkg, quietly = TRUE)) {
+    highlight_version(utils::packageVersion(pkg))
+  } else {
+    highlight_version("--")
+  }
 }
 
 highlight_version <- function(x) {
@@ -62,5 +73,3 @@ highlight_version <- function(x) {
   pieces <- lapply(pieces, function(x) ifelse(is_dev(x), cli::col_red(x), x))
   vapply(pieces, paste, collapse = ".", FUN.VALUE = character(1))
 }
-
-
