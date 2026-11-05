@@ -263,7 +263,7 @@ Proposed change: none in this review.
     "dartR Google Group: not searched",
     "dartr2shiny caller grep: not checked out on this machine"
   ],
-  "status": "pr-open",
+  "status": "done",
   "pr": 49
 }
 ```

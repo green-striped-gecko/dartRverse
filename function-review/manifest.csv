@@ -1,5 +1,3 @@
 function,package,family,claimed_by,status
-gl.download.binary,dartRverse,io,Luis,pr-open
-.onAttach,dartRverse,report,Luis,pr-open
 gl.download.binary,dartRverse,io,Luis,done
-dartRverse_install,dartRverse,io,Bernd,pr-open
+dartRverse_install,dartRverse,io,Bernd,done
