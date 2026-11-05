@@ -127,7 +127,7 @@ came up during verification and are reported here for review with the PR.
 
 ## Outcome
 
-Pending: commit, PR into `dev`.
+PR: #53, into `dev`.
 
 ```json
 {
@@ -154,7 +154,7 @@ Pending: commit, PR into `dev`.
     "retry against a real failing server: mocked",
     "dartR Google Group: not searched"
   ],
-  "status": "pending_pr",
-  "pr": null
+  "status": "pr-open",
+  "pr": 53
 }
 ```
