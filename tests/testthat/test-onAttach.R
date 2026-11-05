@@ -73,8 +73,8 @@ test_that("a core package that fails to load gets no install advice", {
   expect_false(grepl("Please note", txt))
 })
 
-# Changed by review change 3: snpStats used to be missing from the advice
-test_that("missing core: advice installs SNPRelate and snpStats", {
+# dartRverse_install() now installs the Bioconductor packages itself
+test_that("missing core: advice is dartRverse_install, without BiocManager", {
   m <- with_mocked_bindings(
     startup_messages(),
     dartR_check = function() {
@@ -85,8 +85,8 @@ test_that("missing core: advice installs SNPRelate and snpStats", {
   )
   advice <- m[grepl("Please note", m)]
   expect_length(advice, 1)
-  expect_match(advice, "BiocManager::install\\('SNPRelate'\\)")
-  expect_match(advice, "BiocManager::install\\('snpStats'\\)")
+  expect_match(advice, "dartRverse_install\\('dartR.base'\\)")
+  expect_false(grepl("BiocManager", advice))
 })
 
 # Changed by review change 2: dartR.base used to appear in no list

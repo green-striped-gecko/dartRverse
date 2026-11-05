@@ -1,5 +1,26 @@
-# dartRverse 1.2.6
+# dartRverse 1.2.7
 
+* `dartRverse_install()` now installs, updates and handles Bioconductor:
+  - Loaded dartR packages can be updated without restarting R. Affected
+    packages are unloaded and loaded again in their original place on the
+    search path. A restart is needed only if a package outside the dartRverse
+    imports the package, or on Windows if the update needs a newer version of
+    a loaded third-party package with compiled code.
+  - `dartRverse_install("all")` now installs all 7 packages from CRAN, including
+    those not installed yet. It used to print commands to copy. Use
+    `dartRverse_install("all", rep = "Github", branch = "dev")` for a branch.
+  - Bioconductor packages that are missing or fail to load, including LEA, are
+    installed automatically. The function used to stop if SNPRelate or snpStats
+    was missing, and did not check LEA. BiocManager is a new dependency.
+  - The version table has links, where the console supports them, to CRAN and
+    Github and to run an install.
+  - Packages are installed in dependency order, not in the order given.
+  - Github installs no longer offer to upgrade outdated dependencies.
+  - R no longer asks whether to build a newer source version during an install.
+  - The download timeout is raised to at least 10 minutes during an install, and
+    a failed download from CRAN or Bioconductor is tried once more.
+  - Github installs use the Bioconductor release chosen by BiocManager, unless
+    `R_BIOC_VERSION` is set.
 * `dartRverse_install()` behaviour changes:
   - A failed install now ends in an error naming the packages that failed,
     after trying the others. A failed CRAN install used to give only a
