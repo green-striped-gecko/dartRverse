@@ -151,3 +151,204 @@ test_that("listing prints one line per dartR package", {
   expect_true(all(grepl("CRAN: .* \\(main\\) .* \\(beta\\) .* \\(dev\\)",
                         out[grepl("dartR\\.", out)])))
 })
+
+# Regression tests from the second review
+# (function-review/reports/dartRverse/dartRverse_install_review2.md).
+
+# Installers that run the supplied behaviour and record each call
+mock_with <- function(code, gh = function(repo, ...) invisible(TRUE),
+                      cran = function(pkgs, ...) invisible(NULL)) {
+  calls <- character(0)
+  with_mocked_bindings(
+    with_mocked_bindings(
+      code,
+      install_github = function(repo, ...) {
+        calls <<- c(calls, repo)
+        gh(repo, ...)
+      },
+      .package = "remotes"
+    ),
+    install.packages = function(pkgs, ...) {
+      calls <<- c(calls, pkgs)
+      cran(pkgs, ...)
+    },
+    .package = "dartRverse"
+  )
+  calls
+}
+
+# Version table with no network: every remote read fails
+offline_table <- function(status) {
+  with_mocked_bindings(
+    with_mocked_bindings(
+      capture.output(res <- dartRverse_install()),
+      readLines = function(...) stop("cannot open the connection"),
+      .package = "base"
+    ),
+    available.packages = function(...) stop("offline"),
+    dartR_status = function() status,
+    .package = "dartRverse"
+  )
+}
+
+# Change 1
+test_that("failed CRAN install errors, skips restart advice, re-attaches", {
+  skip_if_not_installed("dartR.sexlinked")
+  suppressWarnings(suppressMessages(
+    require("dartR.sexlinked", character.only = TRUE, quietly = TRUE)
+  ))
+  out <- capture.output(
+    calls <- mock_with(
+      expect_error(dartRverse_install("dartR.sexlinked"),
+                   "Installation failed.*dartR.sexlinked"),
+      cran = function(pkgs, ...) {
+        warning("package 'dartR.sexlinked' is not available for this version of R")
+      }
+    )
+  )
+  expect_length(calls, 1)
+  expect_false(any(grepl("Restart R", out)))
+  expect_true("package:dartR.sexlinked" %in% search())
+})
+
+test_that("a failed Github install does not skip the other packages", {
+  skip_if_not_installed("dartR.sexlinked")
+  out <- capture.output(
+    calls <- mock_with(
+      expect_error(
+        dartRverse_install(c("dartR.sexlinked", "dartR.data"), rep = "Github"),
+        "Installation failed.*dartR.sexlinked.*HTTP error 404"
+      ),
+      gh = function(repo, ...) {
+        if (grepl("sexlinked", repo)) stop("HTTP error 404")
+        invisible(TRUE)
+      }
+    )
+  )
+  expect_length(calls, 2)
+  expect_false(any(grepl("new version of dartR.sexlinked", out)))
+  expect_true("package:dartR.sexlinked" %in% search())
+})
+
+test_that("an unrelated installer warning is not treated as a failure", {
+  expect_warning(
+    capture.output(
+      calls <- mock_with(
+        dartRverse_install("dartR.sim"),
+        cran = function(pkgs, ...) warning("something harmless")
+      )
+    ),
+    "something harmless"
+  )
+  expect_length(calls, 1)
+})
+
+# Change 2
+test_that("no mode uses the attaching helpers", {
+  attaching <- function(...) stop("attaching helper called")
+  with_mocked_bindings(
+    {
+      capture.output(mock_with(dartRverse_install("all")))
+      capture.output(mock_with(dartRverse_install("dartR.data")))
+      capture.output(dartRverse_install(verbose = FALSE))
+      offline_table(list(core = "dartR.data", ip = character(0),
+                         nip = character(0), failed = character(0)))
+    },
+    dartR_check = attaching,
+    package_version_h = attaching,
+    .package = "dartRverse"
+  )
+  succeed()
+})
+
+test_that("version table marks an installed package that fails to load", {
+  skip_if_not_installed("dartR.sim")
+  out <- offline_table(list(core = "dartR.data", ip = character(0),
+                            nip = c("dartR.sim", "dartR.popgen"),
+                            failed = "dartR.sim"))
+  expect_true(any(grepl("dartR\\.sim.*installed, fails to load", out)))
+  expect_false(any(grepl("dartR\\.popgen.*fails to load", out)))
+})
+
+test_that("version table copes with an add-on but no core package", {
+  skip_if_not_installed("dartR.sim")
+  out <- offline_table(list(core = character(0), ip = "dartR.sim",
+                            nip = c("dartR.base", "dartR.data"),
+                            failed = character(0)))
+  expect_equal(sum(grepl("dartR\\.", out)), 3)
+})
+
+# Change 3
+test_that("branch with CRAN errors and installs nothing", {
+  calls <- mock_with({
+    expect_error(dartRverse_install("dartR.sim", branch = "dev"),
+                 "branch.*rep = 'Github'")
+    expect_error(dartRverse_install("dartR.sim", rep = "CRAN", branch = "main"),
+                 "branch.*rep = 'Github'")
+  })
+  expect_length(calls, 0)
+})
+
+test_that("branch must be one non-empty string", {
+  calls <- mock_with({
+    for (b in list(NULL, c("dev", "beta"), "", NA_character_, 1)) {
+      expect_error(dartRverse_install("dartR.sim", rep = "Github", branch = b),
+                   "branch must be")
+    }
+  })
+  expect_length(calls, 0)
+})
+
+test_that("feature branches stay allowed", {
+  capture.output(
+    calls <- mock_with(
+      dartRverse_install("dartR.sim", rep = "Github", branch = "dev_luis")
+    )
+  )
+  expect_length(calls, 1)
+})
+
+test_that("empty package errors and duplicates install once", {
+  calls <- mock_with(
+    expect_error(dartRverse_install(character(0)), "package must name")
+  )
+  expect_length(calls, 0)
+  capture.output(
+    calls <- mock_with(dartRverse_install(c("dartR.sim", "dartR.sim")))
+  )
+  expect_length(calls, 1)
+})
+
+# Change 4
+test_that("Bioconductor check applies to all packages except dartR.data", {
+  with_mocked_bindings(
+    {
+      capture.output(calls <- mock_with(dartRverse_install("dartR.data")))
+      expect_length(calls, 1)
+      calls <- mock_with(
+        expect_error(dartRverse_install(c("dartR.data", "dartR.sim")),
+                     "must be installed first")
+      )
+      expect_length(calls, 0)
+    },
+    is_installed = function(pkg, ...) FALSE,
+    .package = "rlang"
+  )
+})
+
+# Change 5
+test_that("'all' lists the core packages in the Github commands", {
+  out <- capture.output(calls <- mock_with(dartRverse_install("all")))
+  gh <- out[grepl("rep='Github'", out)]
+  expect_length(gh, 7)
+  expect_match(gh[1], "dartR.data", fixed = TRUE)
+  expect_match(gh[2], "dartR.base", fixed = TRUE)
+})
+
+# Change 7
+test_that("failed version reads leave no connection open", {
+  before <- nrow(showConnections(all = TRUE))
+  offline_table(list(core = "dartR.data", ip = character(0),
+                     nip = character(0), failed = character(0)))
+  expect_equal(nrow(showConnections(all = TRUE)), before)
+})

@@ -122,6 +122,8 @@ dartRverse_install("all")
 #> In case you want to install the latest version from Github, please use the following commands:
 #> [You can change the branch to 'beta' or 'dev' to get the latest changes and fixes.]
 #> 
+#> dartRverse_install('dartR.data', rep='Github', branch='main')
+#> dartRverse_install('dartR.base', rep='Github', branch='main')
 #> dartRverse_install('dartR.popgen', rep='Github', branch='main')
 #> dartRverse_install('dartR.captive', rep='Github', branch='main')
 #> dartRverse_install('dartR.sim', rep='Github', branch='main')
@@ -146,7 +148,7 @@ specify the branch:
 
 ``` r
 #installs the dev branch from github
-dartRverse_install("dartR.popgen", repository = "github", branch = "dev")
+dartRverse_install("dartR.popgen", rep = "Github", branch = "dev")
 ```
 
 On github there are three branches you might want to choose: main, beta
