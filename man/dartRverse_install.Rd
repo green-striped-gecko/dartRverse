@@ -16,11 +16,7 @@ dartRverse_install(
 
 \item{rep}{Which repository is used: 'CRAN' or 'Github' (partial matching, any case) [default 'CRAN'].}
 
-\item{branch}{If Github is used, the branch to install from: main, beta or dev [default 'main'].
-The 'main' repository on Github is identical with the latest CRAN submission. Important changes and fixes are published under 'beta' and tested there, before they are submitted to CRAN. Hence this might be the best chance 
-to look for fixes. All 'dev' branches are 'risky' meaning they have not been tested.
-To get the current versions available and which are installed run: dartRverse_install().
-To get the code how to install all other packages run: dartRverse_install("all").}
+\item{branch}{The Github branch to install from, usually main, beta or dev. It needs rep = 'Github'; supplying it with rep = 'CRAN' is an error [default 'main'].}
 
 \item{verbose}{If TRUE, the version table is printed when package is NULL; it has no effect otherwise [default TRUE].}
 }
@@ -31,8 +27,18 @@ Invisibly: 1 when the version table is requested, NULL otherwise.
 This function expects the name of one (or several) dartR packages, the repository (CRAN or Github) and in the case of github the branch (main, dev, beta) to install the identified version of the package. If run with no parameter the current installed packages and their versions are printed.
 }
 \details{
-All dartR packages depend on dartR.base, which imports the Bioconductor packages SNPRelate and snpStats. These cannot be installed from CRAN, so the function stops and shows the commands to install them if they are missing.
-If a package is already loaded, the new version is only used after R is restarted; the function says so after installing.
+All dartR packages except dartR.data depend on dartR.base, which imports the Bioconductor packages SNPRelate and snpStats. These cannot be installed from CRAN, so the function stops and shows the commands to install them if they are missing, unless dartR.data is the only package requested.
+If a package is already loaded, the new version is only used after R is restarted; the function says so after a successful install. If an install fails, the function still tries the other requested packages, re-attaches any package it detached, and then stops with an error naming the packages that failed.
+
+
+The function does not attach any dartR package. The version table loads the packages to check that they work, and marks a package that is installed but fails to load.
+
+The 'main' branch on Github is identical with the latest CRAN submission. Important changes and fixes are published under 'beta' and tested there, before they are submitted to CRAN. Hence this might be the best chance to look for fixes. All 'dev' branches are 'risky' meaning they have not been tested.
+
+A Github install changes only the named package. Packages it depends on, such as dartR.base, are not moved to the same branch, so install them from that branch as well if you need matching versions.
+
+To get the current versions available and which are installed run: dartRverse_install().
+To get the code how to install all other packages run: dartRverse_install("all").
 }
 \examples{
 # print the commands that install the whole dartRverse
@@ -44,3 +50,7 @@ dartRverse_install()
 dartRverse_install("dartR.popgen", rep = "Github", branch = "dev")
 }
 }
+\author{
+Author(s): Bernd Gruber. Custodian: Bernd Gruber -- Post to \url{https://groups.google.com/d/forum/dartr}
+}
+\concept{dartRverse installation}

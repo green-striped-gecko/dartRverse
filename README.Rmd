@@ -114,7 +114,7 @@ or use the dartRverse_install function, specifying the package and the repositor
 
 ```{r, eval=FALSE}
 #installs the dev branch from github
-dartRverse_install("dartR.popgen", repository = "github", branch = "dev")
+dartRverse_install("dartR.popgen", rep = "Github", branch = "dev")
 ```
 
 On github there are three branches you might want to choose: main, beta and dev
