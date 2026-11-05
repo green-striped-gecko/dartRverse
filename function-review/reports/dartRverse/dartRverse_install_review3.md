@@ -154,7 +154,7 @@ PR: #53, into `dev`.
     "retry against a real failing server: mocked",
     "dartR Google Group: not searched"
   ],
-  "status": "pr-open",
+  "status": "done",
   "pr": 53
 }
 ```
