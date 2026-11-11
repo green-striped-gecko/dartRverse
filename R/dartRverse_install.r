@@ -11,7 +11,7 @@
 #'
 #' \strong{Failed installs.} If an install fails, the function still tries the other requested packages, restores your session, and then stops with an error naming the packages that failed.
 #'
-#' \strong{Version table.} Where the console supports it, such as in RStudio, version numbers link to the package on CRAN or Github, and an install link runs the install. Elsewhere the table is plain text. A package that is installed but fails to load is marked. The function does not attach any package to show the table.
+#' \strong{Version table.} Reading the versions from CRAN and Github can take a moment, and the function says so before it starts. Where the console supports it, such as in RStudio, version numbers link to the package on CRAN or Github, and an install link runs the install. Elsewhere the table is plain text. A package that is installed but fails to load is marked. The function does not attach any package to show the table.
 #'
 #' \strong{Branches.} The 'main' branch on Github is identical with the latest CRAN submission. Important changes and fixes are published under 'beta' and tested there, before they are submitted to CRAN. Hence this might be the best chance to look for fixes. All 'dev' branches are 'risky' meaning they have not been tested.
 #'
@@ -48,6 +48,9 @@ dartRverse_install <- function(
   if (is.null(package))  #just print current versions
   {
     if (verbose>0) {
+    # reading about 22 version numbers from CRAN and Github can take a while, so say so before starting
+    cli::cat_line(cli::col_grey("Reading the available versions from CRAN and Github. This can take a moment, please be patient..."))
+    utils::flush.console()
     # dartR_check() and package_version_h() call require(), which would attach every package to the user's search path
     dc <- dartR_status()
     links <- dartR_links()
