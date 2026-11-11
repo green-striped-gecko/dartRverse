@@ -267,6 +267,29 @@ test_that("no mode uses the attaching helpers", {
   succeed()
 })
 
+test_that("version table says it is reading versions before the first download", {
+  status <- list(core = "dartR.data", ip = character(0),
+                 nip = character(0), failed = character(0))
+  out <- with_mocked_bindings(
+    with_mocked_bindings(
+      capture.output(res <- dartRverse_install()),
+      readLines = function(...) stop("cannot open the connection"),
+      .package = "base"
+    ),
+    available.packages = function(...) {
+      cat("DOWNLOAD STARTED\n")
+      stop("offline")
+    },
+    dartR_status = function() status,
+    .package = "dartRverse"
+  )
+  notice <- grep("Reading the available versions .* please be patient", out)
+  expect_length(notice, 1)
+  expect_lt(notice, grep("DOWNLOAD STARTED", out))
+  expect_lt(notice, grep("dartRverse packages:", out, fixed = TRUE))
+  expect_equal(res, 1)
+})
+
 test_that("version table marks an installed package that fails to load", {
   skip_if_not_installed("dartR.sim")
   out <- offline_table(list(core = "dartR.data", ip = character(0),

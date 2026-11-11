@@ -14,6 +14,8 @@
     was missing, and did not check LEA. BiocManager is a new dependency.
   - The version table has links, where the console supports them, to CRAN and
     Github and to run an install.
+  - The version table first says that it is reading the versions from CRAN
+    and Github, which can take a moment.
   - Packages are installed in dependency order, not in the order given.
   - Github installs no longer offer to upgrade outdated dependencies.
   - R no longer asks whether to build a newer source version during an install.
