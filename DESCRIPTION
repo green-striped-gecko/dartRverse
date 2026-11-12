@@ -1,8 +1,8 @@
 Package: dartRverse
 Title: Install and Load the 'dartRverse' Suits of Packages
-Version: 1.2.2
-Date: 2026-02-17
-Revision: Elastic Elapid
+Version: 1.2.7
+Date: 2026-11-12
+Revision: Generous Gecko
 Authors@R: c(
             person("Bernd", "Gruber", email="bernd.gruber@canberra.edu.au", role=c("aut","cre")), 
             person("Arthur", "Georges", email="georges@aerg.edu.au", role="aut"),
@@ -21,14 +21,18 @@ Description: Provides a single function that supports the installation of all pa
 URL: https://github.com/green-striped-gecko/dartRverse
 License: GPL (>= 3)
 Depends: R (>= 3.5)
-Imports: cli, rlang, devtools, RCurl, httr
+Imports: cli (>= 3.4.0), rlang, remotes, httr, BiocManager
 Suggests: 
    dartR.base,
    dartR.data,
    dartR.sim,
    dartR.captive,
    dartR.popgen,
-   dartR.spatial
+   dartR.spatial,
+   dartR.sexlinked,
+   testthat (>= 3.0.0),
+   withr
+Config/testthat/edition: 3
 Encoding: UTF-8
 RoxygenNote: 7.3.3
 NeedsCompilation: no

@@ -87,66 +87,35 @@ dartRverse packages are missing. As a minimum you need to install
 All packages are on CRAN, so you can simply type:
 
 ``` r
-install.packages("dartR.base")
+dartRverse_install("dartR.base")
 ```
 
 to install the core packages of the dartRverse. The core packages are
 handling the basic import and export functions, reporting, filtering and
-some basic analysis (e.g PCoA).
+some basic analysis (e.g PCoA). Use this function rather than
+install.packages(), because it also installs the Bioconductor packages
+that dartR needs, which are not on CRAN.
 
 In case you want to install the complete suit of packages (bring some
-time with you), we recommend to use the code printed with the command:
+time with you), type:
 
 ``` r
 dartRverse_install("all")
-#> 
-#> To install all packages from the dartRverse, please empty your workspace, restart R and run the following commands (you can copy the commands from here):
-#> 
-#> #########################################
-#> # bioconductor packages:
-#> install.packages('BiocManager')
-#> BiocManager::install('SNPRelate')
-#> BiocManager::install('snpStats')
-#> # core packages:
-#> library(dartRverse)
-#> dartRverse_install('dartR.base', rep='CRAN')
-#> #installs also dartR.data
-#> # additional packages:
-#> dartRverse_install('dartR.popgen', rep='CRAN')
-#> dartRverse_install('dartR.captive', rep='CRAN')
-#> dartRverse_install('dartR.sim', rep='CRAN')
-#> dartRverse_install('dartR.spatial', rep='CRAN')
-#> dartRverse_install('dartR.sexlinked', rep='CRAN')
-#> #########################################
-#> 
-#> In case you want to install the latest version from Github, please use the following commands:
-#> [You can change the branch to 'beta' or 'dev' to get the latest changes and fixes.]
-#> 
-#> dartRverse_install('dartR.popgen', rep='Github', branch='main')
-#> dartRverse_install('dartR.captive', rep='Github', branch='main')
-#> dartRverse_install('dartR.sim', rep='Github', branch='main')
-#> dartRverse_install('dartR.spatial', rep='Github', branch='main')
-#> dartRverse_install('dartR.sexlinked', rep='Github', branch='main')
 ```
 
-To make sure there are no packages already in your current R session, we
-recommend to clear you workspace, restart R and copy the code printed
-above into your restarted R console.
+The same function updates packages. You do not need to restart R, even
+if the packages are loaded at the moment.
 
-In case you want to intall a specific package say dartR.popgen you can
-either use the CRAN version typing:
-
-``` r
-install.packages("dartR.popgen")
-```
-
-or use the dartRverse_install function, specifying the package and the
-repository. In case you want to use github versions, you can also
-specify the branch:
+In case you want to install or update a specific package say
+dartR.popgen, specify the package. In case you want to use github
+versions, specify the repository and the branch, for one package or for
+all of them:
 
 ``` r
+dartRverse_install("dartR.popgen")
 #installs the dev branch from github
-dartRverse_install("dartR.popgen", repository = "github", branch = "dev")
+dartRverse_install("dartR.popgen", rep = "Github", branch = "dev")
+dartRverse_install("all", rep = "Github", branch = "dev")
 ```
 
 On github there are three branches you might want to choose: main, beta
@@ -179,7 +148,8 @@ dartRverse_install()
 
 The figures in bold are you currently installed versions and the other
 version numbers are the current versions on CRAN and Github (for the
-three branches).
+three branches). In RStudio, you can click a version number to see that
+version online, and click \[install\] to install it.
 
 ## Usage
 

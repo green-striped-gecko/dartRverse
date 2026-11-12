@@ -1,4 +1,4 @@
-dartRverse_attach_message <- function(to_load, type) {
+dartRverse_attach_message <- function(to_load, type, errors = NULL) {
   if (length(to_load) == 0) {
     return(NULL)
   }
@@ -19,6 +19,17 @@ dartRverse_attach_message <- function(to_load, type) {
       left = cli::style_bold("Not [yet] installed dartRverse packages"),
       right = paste0("dartRverse")
     )
+  }
+
+  if (type=="failed") {
+    # one package per line: the error text does not fit the two-column layout
+    header <- cli::rule(
+      left = cli::style_bold("Installed but failed to load"),
+      right = paste0("dartRverse")
+    )
+    info <- paste0(cli::col_red(cli::symbol$cross), " ", cli::col_blue(format(to_load)), " ", errors[to_load])
+    hint <- paste0("Run library(", to_load[1], ") to see the full error.")
+    return(paste0(header, "\n", paste(info, collapse = "\n"), "\n", hint))
   }
 
   to_load <- sort(to_load)

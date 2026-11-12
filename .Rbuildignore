@@ -3,3 +3,6 @@
 ^\.github$
 README[.]
 ^binaries$
+^function-review$
+^\.claude$
+^AGENTS\.md$
