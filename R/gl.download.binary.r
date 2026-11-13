@@ -238,7 +238,9 @@ binary_has_help <- function(pkg, fun) {
 
 # What was downloaded, the dartR functions that run it (help links where the
 # console supports them) and a request to cite the software
-binary_notice <- function(software) {
+# has_help can be replaced in tests, so the result does not depend on the
+# dartR versions installed
+binary_notice <- function(software, has_help = binary_has_help) {
   info <- binary_info()[[software]]
   if (is.null(info)) info <- list(name = software, funs = character(0))
   out <- paste0("Downloaded ", info$name, ".")
@@ -250,7 +252,7 @@ binary_notice <- function(software) {
     # an older installed version may not have the function yet (e.g. CRAN
     # dartR.captive 1.2.2 has no gl.inbreeding), and its help link would open
     # an empty help page
-    has.help <- installed & mapply(binary_has_help, pkg, fun)
+    has.help <- installed & mapply(has_help, pkg, fun)
     shown <- ifelse(help & has.help,
                     vapply(info$funs, function(f) {
                       cli::format_inline(paste0("{.help [", sub(".*::", "", f), "()](", f, ")}"))

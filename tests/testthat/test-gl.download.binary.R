@@ -163,17 +163,28 @@ test_that("download_binary() is gl.download.binary()", {
 # After a download the user is told what it is, where it is used, and to cite it
 test_that("the notice names the software, its functions and asks for a citation", {
   withr::local_options(cli.hyperlink = FALSE)
-  n <- binary_notice("structure")
+  # pretend every function has a help page, whatever dartR versions are installed
+  all.help <- function(pkg, fun) TRUE
+  n <- binary_notice("structure", has_help = all.help)
   expect_equal(n[1], "Downloaded STRUCTURE.")
   expect_match(n[2], "gl.run.structure(), gl.plot.structure(), gl.evanno(), gl.map.structure() in dartR.popgen",
                fixed = TRUE)
   expect_match(n[3], "check the help pages of the functions above", fixed = TRUE)
-  n <- binary_notice("plink")
+  n <- binary_notice("plink", has_help = all.help)
   expect_match(n[2], "in dartR.base; gl.inbreeding() in dartR.captive", fixed = TRUE)
   # software that no dartR function runs yet still gets the citation request
   n <- binary_notice("gone")
   expect_length(n, 2)
   expect_match(n[2], "GONE is the work of others", fixed = TRUE)
+})
+
+# An installed but older package without the function gets no link
+test_that("functions missing from an older installed version are marked", {
+  # installed is enough; the notice never loads the package
+  skip_if(!nzchar(system.file(package = "dartR.captive")), "dartR.captive is not installed")
+  no.inbreeding <- function(pkg, fun) fun != "gl.inbreeding"
+  n <- binary_notice("plink", has_help = no.inbreeding)
+  expect_match(n[2], "gl.inbreeding() (needs a newer dartR.captive) in dartR.captive", fixed = TRUE)
 })
 
 test_that("every documented binary has an entry and the functions exist", {
