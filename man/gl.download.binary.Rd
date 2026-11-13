@@ -13,7 +13,7 @@ gl.download.binary(
 )
 }
 \arguments{
-\item{software}{Name of the software package to download, one of "beagle", "colony", "eems", "emibd9", "epos", "faststructure", "gone", "ms", "neestimator", "plink", "popcluster", "stairway2" and "structure". Upper case is converted to lower case. Depending on the software several files will be downloaded. If NULL, a table of the binaries available for each operating system is printed [default NULL].}
+\item{software}{Name of the software package to download, one of "beagle", "colony", "eems", "emibd9", "epos", "faststructure", "gone", "ms", "neestimator", "plink", "popcluster", "stairway2" and "structure". Upper case is converted to lower case. Depending on the software several files will be downloaded. If NULL, a table of the binaries available for each operating system is printed. Where the console supports it, such as in RStudio, clicking a tick in the table downloads that binary [default NULL].}
 
 \item{os}{The operating system to download the binary for: "windows", "mac" or "linux" (partial matching is allowed). Some binaries are not available for all operating systems. If NULL, the current operating system is used [default NULL].}
 
@@ -28,6 +28,11 @@ When software is given, invisibly, the path of the folder that holds the unzippe
 }
 \description{
 This function supports the download of binaries from github. Those binaries are compiled files that allow to run dartR functions that integrate third party software such as epos (gl.run.epos), NeEstimator (gl.LDNe) or Structure (gl.run.structure). Please be aware this is just to allow for easy install and use of dartR functions. We have explicitly asked the authors of the software for permission to include those binaries here. Understandably some authors prefer to direct users to their own websites to download the software. Here a comment is issued by the function how to do so. Please note: **The third party packages are the work of others and please make the effort to cite them accordingly**. You find the citations under the help pages of the respective functions, for example ?gl.run.epos.
+}
+\details{
+After a download the function says which software was downloaded, which dartR functions use it (with links to their help pages where the console supports them) and asks you to check the help pages of those functions to cite the program and its methods correctly.
+
+On mac and linux the unzipped files are made executable (mode 777), so the dartR functions that call them, such as gl.run.epos or gl.LDNe, can run them straight away.
 }
 \examples{
 \dontrun{

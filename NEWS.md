@@ -61,4 +61,19 @@
   Software names are converted to lower case, so the documented
   `"NeEstimator"`, `"Stairway2"` and `"Gone"` now download. Download and
   listing failures report their cause.
+* `gl.download.binary()` binaries table:
+  - In consoles that support links, such as RStudio, clicking a tick
+    downloads that binary into `tempdir()`. Where links can only open web
+    pages, the tick opens the zip file. The links call the new alias
+    `download_binary()`, because RStudio does not run links to functions
+    with dots in their name.
+  - Ticks and crosses are drawn with symbols found in common console fonts
+    (`√` and `×`), so the box around the table stays square.
+* After a download, `gl.download.binary()` says which software was
+  downloaded, which dartR functions use it (linked to their help pages where
+  the console supports it) and asks you to check their help pages to cite
+  the program and its methods correctly.
+* `gl.download.binary()` makes the unzipped mac and linux binaries
+  executable for everyone (mode 777), also when the zip file was made on
+  Windows.
 * RCurl is no longer imported.
