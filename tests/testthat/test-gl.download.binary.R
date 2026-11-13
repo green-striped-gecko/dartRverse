@@ -180,11 +180,19 @@ test_that("every documented binary has an entry and the functions exist", {
   documented <- c("beagle", "colony", "eems", "emibd9", "epos", "faststructure", "gone",
                   "ms", "neestimator", "plink", "popcluster", "stairway2", "structure")
   expect_true(all(documented %in% names(binary_info())))
+  # only against the dartR versions the list was written for; older versions
+  # (e.g. CRAN 1.2.2) do not have all these functions yet
   for (f in unlist(lapply(binary_info(), `[[`, "funs"))) {
     pkg <- sub("::.*", "", f)
-    if (!nzchar(system.file(package = pkg))) next
+    if (!nzchar(system.file(package = pkg)) || utils::packageVersion(pkg) < "1.2.7") next
     expect_true(sub(".*::", "", f) %in% getNamespaceExports(pkg), label = f)
   }
+})
+
+test_that("functions missing from the installed version are not linked", {
+  expect_true(binary_has_help("stats", "median"))
+  expect_false(binary_has_help("stats", "gl.not.a.function"))
+  expect_false(binary_has_help("dartR.not.a.package", "median"))
 })
 
 test_that("functions are help links where the console supports them", {

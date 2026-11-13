@@ -228,6 +228,14 @@ binary_info <- function() {
   )
 }
 
+# TRUE if an installed package has a help page for the function. Reads the
+# package's help index, so the package is not loaded.
+binary_has_help <- function(pkg, fun) {
+  index <- system.file("help", "AnIndex", package = pkg)
+  if (!nzchar(index)) return(FALSE)
+  fun %in% sub("\t.*", "", readLines(index, warn = FALSE))
+}
+
 # What was downloaded, the dartR functions that run it (help links where the
 # console supports them) and a request to cite the software
 binary_notice <- function(software) {
@@ -239,11 +247,16 @@ binary_notice <- function(software) {
     fun <- sub(".*::", "", info$funs)
     help <- isTRUE(cli::ansi_hyperlink_types()$help)
     installed <- vapply(pkg, function(x) nzchar(system.file(package = x)), logical(1))
-    shown <- ifelse(help & installed,
+    # an older installed version may not have the function yet (e.g. CRAN
+    # dartR.captive 1.2.2 has no gl.inbreeding), and its help link would open
+    # an empty help page
+    has.help <- installed & mapply(binary_has_help, pkg, fun)
+    shown <- ifelse(help & has.help,
                     vapply(info$funs, function(f) {
                       cli::format_inline(paste0("{.help [", sub(".*::", "", f), "()](", f, ")}"))
                     }, character(1)),
                     paste0(fun, "()"))
+    shown <- ifelse(installed & !has.help, paste0(shown, " (needs a newer ", pkg, ")"), shown)
     by.pkg <- vapply(unique(pkg), function(x) {
       paste0(paste(shown[pkg == x], collapse = ", "), " in ", x,
              if (!installed[pkg == x][1]) " (not installed)")
