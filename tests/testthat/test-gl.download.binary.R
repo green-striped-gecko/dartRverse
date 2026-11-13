@@ -129,3 +129,77 @@ test_that("software must be a single string", {
   expect_error(gl.download.binary(1, os = "linux"),
                "single character string")
 })
+
+# Ticks in the table are links where the console supports them
+test_that("ticks run a download, open the zip, or stay plain", {
+  # cli only writes links when it thinks the console shows them
+  withr::local_options(cli.hyperlink = TRUE, cli.hyperlink_run = TRUE)
+  run <- binary_cell("plink", "mac", "main", list(href = TRUE, run = TRUE))
+  expect_match(run, "dartRverse::download_binary('plink', os = 'mac')", fixed = TRUE)
+  # RStudio runs only pkg::fun(args) with no dots in the names and no ( ) ; in args
+  code <- sub("\a.*", "", sub("^.*?run:", "", run, perl = TRUE))
+  expect_match(code, "^\\w+::\\w+[(][^();]*[)]$", perl = TRUE)
+  dev <- binary_cell("plink", "mac", "dev", list(href = TRUE, run = TRUE))
+  expect_match(dev, "branch = 'dev'", fixed = TRUE)
+  href <- binary_cell("plink", "linux", "main", list(href = TRUE, run = FALSE))
+  expect_match(href, binary_url("plink", "linux", "main"), fixed = TRUE)
+  plain <- binary_cell("plink", "linux", "main", list(href = FALSE, run = FALSE))
+  expect_equal(cli::ansi_strip(plain), binary_symbols()$tick)
+})
+
+# The table only uses symbols that console fonts draw one character wide
+test_that("tick and cross are in common console fonts", {
+  withr::local_options(cli.unicode = TRUE)
+  expect_equal(binary_symbols(), list(tick = "\u221a", cross = "\u00d7"))
+  withr::local_options(cli.unicode = FALSE)
+  expect_equal(binary_symbols(), list(tick = "v", cross = "x"))
+})
+
+# The alias used by the links passes its arguments on unchanged
+test_that("download_binary() is gl.download.binary()", {
+  expect_error(download_binary(1, os = "linux"), "single character string")
+})
+
+# After a download the user is told what it is, where it is used, and to cite it
+test_that("the notice names the software, its functions and asks for a citation", {
+  withr::local_options(cli.hyperlink = FALSE)
+  n <- binary_notice("structure")
+  expect_equal(n[1], "Downloaded STRUCTURE.")
+  expect_match(n[2], "gl.run.structure(), gl.plot.structure(), gl.evanno(), gl.map.structure() in dartR.popgen",
+               fixed = TRUE)
+  expect_match(n[3], "check the help pages of the functions above", fixed = TRUE)
+  n <- binary_notice("plink")
+  expect_match(n[2], "in dartR.base; gl.inbreeding() in dartR.captive", fixed = TRUE)
+  # software that no dartR function runs yet still gets the citation request
+  n <- binary_notice("gone")
+  expect_length(n, 2)
+  expect_match(n[2], "GONE is the work of others", fixed = TRUE)
+})
+
+test_that("every documented binary has an entry and the functions exist", {
+  documented <- c("beagle", "colony", "eems", "emibd9", "epos", "faststructure", "gone",
+                  "ms", "neestimator", "plink", "popcluster", "stairway2", "structure")
+  expect_true(all(documented %in% names(binary_info())))
+  for (f in unlist(lapply(binary_info(), `[[`, "funs"))) {
+    pkg <- sub("::.*", "", f)
+    if (!nzchar(system.file(package = pkg))) next
+    expect_true(sub(".*::", "", f) %in% getNamespaceExports(pkg), label = f)
+  }
+})
+
+test_that("functions are help links where the console supports them", {
+  withr::local_options(cli.hyperlink = TRUE, cli.hyperlink_help = TRUE)
+  skip_if_not_installed("dartR.popgen")
+  expect_match(binary_notice("epos")[2], "help:dartR.popgen::gl.run.epos", fixed = TRUE)
+})
+
+# mac and linux binaries are made executable for everyone
+test_that("unzipped mac and linux binaries get mode 777", {
+  skip_on_os("windows")  # Windows has no execute permission bits
+  skip_on_cran()
+  skip_if_offline("raw.githubusercontent.com")
+  d <- file.path(tempdir(), "baseline_chmod")
+  gl.download.binary("gone", os = "linux", out.dir = d, verbose = 0)
+  f <- list.files(d, recursive = TRUE, full.names = TRUE)
+  expect_true(all(as.character(file.mode(f)) == "777"))
+})
