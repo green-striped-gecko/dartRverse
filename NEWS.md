@@ -1,3 +1,9 @@
+# dartRverse 1.3.0
+
+* All dartRverse packages at version 1.3.0: file-backed (FBM) objects are
+  read from disk in blocks across dartR.base, dartR.popgen, dartR.spatial,
+  dartR.captive, dartR.sexlinked and dartR.sim (see their NEWS).
+
 # dartRverse 1.2.7
 
 * `dartRverse_install()` now installs, updates and handles Bioconductor:
