@@ -1,6 +1,7 @@
 # dartRverse 1.3.0
 
-* All dartRverse packages at version 1.3.0: file-backed (FBM) objects are
+* dartRverse packages at version 1.3.0 (dartR.data stays at 1.2.7, as on
+  CRAN): file-backed (FBM) objects are
   read from disk in blocks across dartR.base, dartR.popgen, dartR.spatial,
   dartR.captive, dartR.sexlinked and dartR.sim (see their NEWS).
 
