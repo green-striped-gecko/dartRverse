@@ -13,7 +13,7 @@ FBM work: `dartR.base/function-review/release-1.3.0-status.md`,
 | dartR.data | 1.2.7 | accepted |
 | dartR.base | 1.3.0 | accepted |
 | dartR.popgen | 1.3.0 | accepted |
-| dartR.sim | 1.3.0 | submitted, under consideration |
+| dartR.sim | 1.3.0 | returned by pre-test, fixed, to resubmit (19 Nov) |
 | dartR.spatial | 1.3.0 | next (fixed today, see below) |
 | dartR.captive | 1.3.0 | waiting |
 | dartR.sexlinked | 1.3.0 | waiting |
@@ -23,6 +23,22 @@ Submit the next one only after the previous one is accepted. All tarballs
 in `D:/Bernd/R/dartRs/cran` were compared file by file with GitHub `beta`
 on 19 Nov and match it (only the fields `R CMD build` adds to DESCRIPTION
 differ). dartR.spatial was rebuilt after today's fix (19 Nov, 10:18).
+
+**main (19 Nov):** `beta` merged into `main` for the three accepted packages;
+`main` now has the same content as `beta`: dartR.data 8776ec0, dartR.base
+eae477d, dartR.popgen 55e3543. Do the same for each further package after
+CRAN accepts it.
+
+**dartR.sim resubmission (19 Nov, dev 0922c41, beta 12fe5c8):** the CRAN
+pre-test (Windows R-devel) gave 2 NOTEs: the `gl.sim.WF.run()` call took
+22 s in the examples, and "PVAs" in DESCRIPTION was flagged as possibly
+misspelled. Fixes: that call is in `\donttest{}` in the examples of
+`gl.sim.WF.run()` and `gl.sim.WF.table()` (the latter ran it too);
+DESCRIPTION now says "fully fledged population viability analyses".
+`R CMD check --as-cran` of the clean build: 0 errors, 477 s, examples 14 s
+OK, vignettes 152 s (only the local dplyr warning and clock note).
+Tarball `cran/dartR.sim_1.3.0.tar.gz` rebuilt (19 Nov, 10:51), installed.
+Luis is the CRAN maintainer: he uploads and confirms the resubmission.
 
 **dartR.spatial fix (19 Nov, commit 2f1167e, beta f2eec7f):** `reemsplots2`
 (GitHub only) removed from `Suggests` and the `Remotes` field deleted, as
@@ -67,9 +83,7 @@ Earlier notes (18 Nov):
    Their tarballs in `cran/` were rebuilt from these commits (16:35).
    **Fix before submitting:**
    - dartR.spatial `Remotes`/`reemsplots2`: done 19 Nov (see above).
-   - dartR.sim: the `gl.sim.WF.run` example takes 22 s elapsed (NOTE
-     "examples > 5 s"); dartR.sim was submitted with it. Only act if CRAN
-     asks: shorten it or wrap it in `\donttest{}`.
+   - dartR.sim slow example: done 19 Nov (see above).
 5. After acceptance: merge `beta` into `main` (main = CRAN; never earlier).
 
 ## Reverse dependencies (CRAN versions vs dartR.base 1.3.0)
@@ -83,15 +97,14 @@ were moved back to dartR.base so the CRAN add-ons keep working.
 ## Branches (origin, 19 Nov 2026)
 
 `beta` has the same content as `dev` in every repo (dartRverse dev only adds
-this document). `main` is not yet updated: merge `beta` into `main` for
-data, base and popgen now that CRAN accepted them, the others after
-acceptance (dartRverse main only gained the coancestry zips).
+this document). `main` = `beta` for data, base and popgen (merged 19 Nov after
+CRAN acceptance); the others are merged after their acceptance (dartRverse main only gained the coancestry zips).
 
 | Package | dev | beta | Version |
 |---|---|---|---|
 | dartR.base | e580622 | 5c88139 | 1.3.0 |
 | dartR.popgen | 9cb03bb | 02730f7 | 1.3.0 |
-| dartR.sim | b4f0f68 | 1bb9af4 | 1.3.0 |
+| dartR.sim | 0922c41 | 12fe5c8 | 1.3.0 |
 | dartR.spatial | 2f1167e | f2eec7f | 1.3.0 |
 | dartR.captive | d1473de | 2578fd8 | 1.3.0 |
 | dartR.sexlinked | 29a914f | 5d90b12 | 1.3.0 |
