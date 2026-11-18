@@ -30,10 +30,17 @@ FBM work: `dartR.base/function-review/release-1.3.0-status.md`,
 3. **Deadline:** dartR.sim on CRAN (1.2.2) fails its `gl.sim.ind` example
    (dartR.data 1.2.7's `testset.gl` has 3 all-NA loci); CRAN wants it fixed
    before **2026-12-06**. dartR.sim 1.3.0 fixes it.
-4. The other packages may also exceed CRAN's 10-min check time on Windows
-   R-devel; consider `skip_on_cran()` for their slowest test files before
-   submitting (dartR.popgen tests ~200 s locally, dartR.sim tests ~350 s
-   plus vignettes ~155 s).
+4. Done (18 Nov, evening): the slowest test files of popgen, sim, spatial,
+   captive and sexlinked call `skip_on_cran()` too (pushed to dev and
+   merged into beta). Local `R CMD check --as-cran` of clean builds, all
+   0 errors (local dplyr warning and clock note only): sexlinked 165 s,
+   spatial 316 s, captive 325 s, popgen 418 s, sim 480 s (vignettes 143 s).
+   Their tarballs in `cran/` were rebuilt from these commits (16:35).
+   **Fix before submitting:**
+   - dartR.spatial: DESCRIPTION has a `Remotes` field, which CRAN's incoming
+     check flags ("Unknown, possibly misspelled, fields"). Remove it.
+   - dartR.sim: the `gl.sim.WF.run` example takes 22 s elapsed (NOTE
+     "examples > 5 s"); shorten it or wrap it in `\donttest{}`.
 5. After acceptance: merge `beta` into `main` (main = CRAN; never earlier).
 
 ## Reverse dependencies (CRAN versions vs dartR.base 1.3.0)
@@ -52,11 +59,11 @@ were moved back to dartR.base so the CRAN add-ons keep working.
 | Package | dev | beta | Version |
 |---|---|---|---|
 | dartR.base | e580622 | 5c88139 | 1.3.0 |
-| dartR.popgen | 0729006 | ab25c03 | 1.3.0 |
-| dartR.sim | dcbbf88 | 835abc0 | 1.3.0 |
-| dartR.spatial | 8c2a044 | 6819963 | 1.3.0 |
-| dartR.captive | 293d944 | b308332 | 1.3.0 |
-| dartR.sexlinked | 9fbbd51 | f6b0354 | 1.3.0 |
+| dartR.popgen | 9cb03bb | 02730f7 | 1.3.0 |
+| dartR.sim | b4f0f68 | 1bb9af4 | 1.3.0 |
+| dartR.spatial | bf4f464 | f6d7360 | 1.3.0 |
+| dartR.captive | d1473de | 2578fd8 | 1.3.0 |
+| dartR.sexlinked | 29a914f | 5d90b12 | 1.3.0 |
 | dartR.data | c77c859 | 5c604db | 1.2.7 |
 | dartRverse | (this commit) | 3598e40 | 1.3.0 |
 
