@@ -188,7 +188,7 @@ test_that("functions missing from an older installed version are marked", {
 })
 
 test_that("every documented binary has an entry and the functions exist", {
-  documented <- c("beagle", "colony", "eems", "emibd9", "epos", "faststructure", "gone",
+  documented <- c("beagle", "coancestry", "colony", "eems", "emibd9", "epos", "faststructure", "gone",
                   "ms", "neestimator", "plink", "popcluster", "stairway2", "structure")
   expect_true(all(documented %in% names(binary_info())))
   # only against the dartR versions the list was written for; older versions
@@ -221,4 +221,29 @@ test_that("unzipped mac and linux binaries get mode 777", {
   gl.download.binary("gone", os = "linux", out.dir = d, verbose = 0)
   f <- list.files(d, recursive = TRUE, full.names = TRUE)
   expect_true(all(as.character(file.mode(f)) == "777"))
+})
+
+# Users do not expect to click in the console: the tip comes before the table
+test_that("the click tip comes before the binary table", {
+  run <- cli::ansi_strip(binary_hint(list(href = TRUE, run = TRUE)))
+  expect_true(startsWith(run, "Tip: you can click in the console. Click a tick to download"))
+  browser <- cli::ansi_strip(binary_hint(list(href = TRUE, run = FALSE)))
+  expect_true(startsWith(browser, "Tip: you can click in the console."))
+  expect_match(browser, "gl.download.binary(\"plink\")", fixed = TRUE)
+  expect_equal(binary_hint(list(href = FALSE, run = FALSE)),
+               "To download, type for example: gl.download.binary(\"plink\")")
+
+  skip_on_cran()
+  skip_if_offline("api.github.com")
+  out <- tryCatch(
+    capture.output(gl.download.binary(verbose = 0)),
+    error = function(e) {
+      if (grepl("rate limit", conditionMessage(e))) skip("GitHub API rate limit exceeded")
+      stop(e)
+    }
+  )
+  out <- cli::ansi_strip(out)
+  tip_at <- grep("you can click in the console|To download, type", out)
+  expect_length(tip_at, 1)
+  expect_lt(tip_at, grep("Available binaries", out))
 })

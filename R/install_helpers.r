@@ -311,8 +311,39 @@ dartR_table_row <- function(state, p, versions, links) {
          " | ", dartR_version_cell(p, "dev", versions[["dev"]], links), " (dev)")
 }
 
-# The last row of the table: where links run code it offers all packages at once,
-# otherwise it shows the command to type
+# Printed before a table with links. Most users do not expect that text in
+# the R console can be clicked, so say it first, where it is not missed.
+dartR_click_tip <- function(text) {
+  paste(cli::style_bold(cli::col_cyan("Tip: you can click in the console.")), text)
+}
+
+# The hint above the version table of dartRverse_install(), or NULL where the
+# console has no links (the "All packages" row then shows the command to type)
+dartR_install_hint <- function(links) {
+  if (links$run) {
+    return(dartR_click_tip(paste0(
+      "Click [install] next to a version to install that package, or a branch in the 'All packages' line to install all of them.",
+      if (links$href) " Version numbers open the package on CRAN or Github." else "")))
+  }
+  if (links$href) {
+    return(dartR_click_tip("Click a version number to open the package on CRAN or Github."))
+  }
+  NULL
+}
+
+# The hint above the table of gl.download.binary()
+binary_hint <- function(links) {
+  if (links$run) {
+    dartR_click_tip("Click a tick to download that binary into tempdir().")
+  } else if (links$href) {
+    dartR_click_tip("Click a tick to download the zip file in your browser, or type for example: gl.download.binary(\"plink\")")
+  } else {
+    "To download, type for example: gl.download.binary(\"plink\")"
+  }
+}
+
+# The "All packages" line, printed before the table: where links run code it
+# offers all packages at once, otherwise it shows the command to type
 dartR_all_row <- function(links) {
   if (!links$run) {
     return("To install, type for example: dartRverse_install(\"all\", rep = \"Github\", branch = \"dev\")")

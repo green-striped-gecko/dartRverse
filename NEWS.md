@@ -4,6 +4,14 @@
   CRAN): file-backed (FBM) objects are
   read from disk in blocks across dartR.base, dartR.popgen, dartR.spatial,
   dartR.captive, dartR.sexlinked and dartR.sim (see their NEWS).
+* `dartRverse_install()` and `gl.download.binary()`: a tip above the table
+  says that the console can be clicked (versions, [install] links, ticks),
+  as few users expect that. In `dartRverse_install()` the line that
+  installs all packages now also comes before the table instead of after
+  it, where it was missed.
+* `gl.download.binary()`: "coancestry" (the program `dartR_coancestry` used
+  by `dartR.captive::gl.relatedness()` and `gl.diagnostics.relatedness()`)
+  is documented, and the notice after its download names those functions.
 
 # dartRverse 1.2.7
 
