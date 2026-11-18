@@ -20,6 +20,14 @@ dartR_check <- function()
         invokeRestart("muffleWarning")
       })
     if (!ok && is_pkg_installed(x)) {
+      # require(quietly = TRUE) swallows the load error without a warning;
+      # load the namespace once more to recover it
+      if (length(msg) == 0) {
+        msg <- tryCatch({
+          loadNamespace(x, lib.loc = loc)
+          character(0)
+        }, error = function(e) conditionMessage(e))
+      }
       failed[x] <<- if (length(msg) > 0) gsub("\\s+", " ", msg[length(msg)]) else "unknown error"
     }
     ok

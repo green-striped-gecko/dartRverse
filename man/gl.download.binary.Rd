@@ -13,7 +13,7 @@ gl.download.binary(
 )
 }
 \arguments{
-\item{software}{Name of the software package to download, one of "beagle", "colony", "eems", "emibd9", "epos", "faststructure", "gone", "ms", "neestimator", "plink", "popcluster", "stairway2" and "structure". Upper case is converted to lower case. Depending on the software several files will be downloaded. If NULL, a table of the binaries available for each operating system is printed. Where the console supports it, such as in RStudio, clicking a tick in the table downloads that binary [default NULL].}
+\item{software}{Name of the software package to download, one of "beagle", "coancestry", "colony", "eems", "emibd9", "epos", "faststructure", "gone", "ms", "neestimator", "plink", "popcluster", "stairway2" and "structure". Upper case is converted to lower case. Depending on the software several files will be downloaded. If NULL, a table of the binaries available for each operating system is printed. Where the console supports it, such as in RStudio, clicking a tick in the table downloads that binary; a tip above the table says so [default NULL].}
 
 \item{os}{The operating system to download the binary for: "windows", "mac" or "linux" (partial matching is allowed). Some binaries are not available for all operating systems. If NULL, the current operating system is used [default NULL].}
 

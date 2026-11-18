@@ -2,7 +2,7 @@
 #'
 #' This function supports the download of binaries from github. Those binaries are compiled files that allow to run dartR functions that integrate third party software such as epos (gl.run.epos), NeEstimator (gl.LDNe) or Structure (gl.run.structure). Please be aware this is just to allow for easy install and use of dartR functions. We have explicitly asked the authors of the software for permission to include those binaries here. Understandably some authors prefer to direct users to their own websites to download the software. Here a comment is issued by the function how to do so. Please note: **The third party packages are the work of others and please make the effort to cite them accordingly**. You find the citations under the help pages of the respective functions, for example ?gl.run.epos.
 #'
-#' @param software Name of the software package to download, one of "beagle", "colony", "eems", "emibd9", "epos", "faststructure", "gone", "ms", "neestimator", "plink", "popcluster", "stairway2" and "structure". Upper case is converted to lower case. Depending on the software several files will be downloaded. If NULL, a table of the binaries available for each operating system is printed. Where the console supports it, such as in RStudio, clicking a tick in the table downloads that binary [default NULL].
+#' @param software Name of the software package to download, one of "beagle", "coancestry", "colony", "eems", "emibd9", "epos", "faststructure", "gone", "ms", "neestimator", "plink", "popcluster", "stairway2" and "structure". Upper case is converted to lower case. Depending on the software several files will be downloaded. If NULL, a table of the binaries available for each operating system is printed. Where the console supports it, such as in RStudio, clicking a tick in the table downloads that binary; a tip above the table says so [default NULL].
 #' @param os The operating system to download the binary for: "windows", "mac" or "linux" (partial matching is allowed). Some binaries are not available for all operating systems. If NULL, the current operating system is used [default NULL].
 #' @param branch Which branch of the dartRverse github repository to download from, or to list the binaries of. There should be no reason to change it [default "main"].
 #' @param out.dir The path where to save the binary [default tempdir()].
@@ -89,8 +89,11 @@ gl.download.binary <- function(software=NULL,
     os <- unique(sapply(strsplit(all.files, "_"),"[",2))
     
     
+    links <- dartR_links()
+    # say first that the ticks can be clicked; after the table it is missed
+    cli::cat_line(binary_hint(links))
     l0 <- cli::cat_line(cli::style_bold("Available binaries:"))
-    
+
     dc <- data.frame(matrix(0, nrow=length(soft), ncol=length(os)))
     
     for (i in 1:length(all.files)) {
@@ -101,7 +104,6 @@ gl.download.binary <- function(software=NULL,
     rownames(dc)<- soft
     colnames(dc)<- os
     
-    links <- dartR_links()
     l1<- ansi_columns(cli::col_blue(c("    ",colnames(dc))), width = 65, align = "center")
     ly <- NA
     for (i in 1:nrow(dc)) {
@@ -115,13 +117,6 @@ gl.download.binary <- function(software=NULL,
       ly[i] <- ansi_columns(lx, width = 65, align = "center")
     }
     cli::cat_line(boxx(c(l1,ly)))
-    if (links$run) {
-      cli::cat_line("Click a tick to download that binary into tempdir().")
-    } else if (links$href) {
-      cli::cat_line("Click a tick to download the zip file in your browser, or type for example: gl.download.binary(\"plink\")")
-    } else {
-      cli::cat_line("To download, type for example: gl.download.binary(\"plink\")")
-    }
     
   
       
@@ -204,6 +199,9 @@ binary_info <- function() {
   list(
     bayescan      = list(name = "BayeScan", funs = "dartR.popgen::gl.run.bayescan"),
     beagle        = list(name = "Beagle", funs = "dartR.base::gl.impute"),
+    coancestry    = list(name = "Coancestry (dartR_coancestry)",
+                         funs = c("dartR.captive::gl.relatedness",
+                                  "dartR.captive::gl.diagnostics.relatedness")),
     colony        = list(name = "COLONY", funs = c("dartR.captive::gl.run.colony",
                                                    "dartR.captive::gl.parentage.power")),
     eems          = list(name = "EEMS", funs = "dartR.spatial::gl.run.eems"),

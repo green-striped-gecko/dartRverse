@@ -728,3 +728,40 @@ test_that("failed version reads leave no connection open", {
                      nip = character(0), failed = character(0)))
   expect_equal(nrow(showConnections(all = TRUE)), before)
 })
+
+# Users do not expect to click in the console: the tip and the line that
+# installs all packages come before the table, not after it
+test_that("the click tip and the 'All packages' line come before the table", {
+  status <- list(core = "dartR.data", ip = character(0),
+                 nip = character(0), failed = character(0))
+  for (run in c(TRUE, FALSE)) {
+    out <- with_mocked_bindings(
+      offline_table(status),
+      dartR_links = function() list(href = run, run = run),
+      .package = "dartRverse"
+    )
+    out <- cli::ansi_strip(out)
+    table_at <- grep("^dartRverse packages:", out)
+    all_at <- grep("All packages:|To install, type", out)
+    expect_length(table_at, 1)
+    expect_length(all_at, 1)
+    expect_lt(all_at, table_at)
+    tip_at <- grep("you can click in the console", out, fixed = TRUE)
+    if (run) {
+      expect_length(tip_at, 1)
+      expect_lt(tip_at, all_at)
+    } else {
+      expect_length(tip_at, 0)
+    }
+  }
+})
+
+test_that("the click tip names what can be clicked", {
+  tip <- cli::ansi_strip(dartR_install_hint(list(href = TRUE, run = TRUE)))
+  expect_true(startsWith(tip, "Tip: you can click in the console."))
+  expect_match(tip, "[install]", fixed = TRUE)
+  expect_match(tip, "Version numbers open", fixed = TRUE)
+  expect_match(cli::ansi_strip(dartR_install_hint(list(href = TRUE, run = FALSE))),
+               "Click a version number to open", fixed = TRUE)
+  expect_null(dartR_install_hint(list(href = FALSE, run = FALSE)))
+})
