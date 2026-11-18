@@ -5,6 +5,8 @@
 
 ## An accessible genetic analysis platform for conservation, ecology and agriculture - dartRverse
 
+**What's new:** see [NEWS.md](NEWS.md) for the changes in each version.
+
 <!-- badges: start -->
 
 ### Repositories
