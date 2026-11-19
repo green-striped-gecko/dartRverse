@@ -17,7 +17,7 @@ FBM work: `dartR.base/function-review/release-1.3.0-status.md`,
 | dartR.spatial | 1.3.0 | **next**: tarball rebuilt and checked 20 Nov, CRAN note below |
 | dartR.captive | **1.3.1** | accepted (20 Nov); main merged 92bee8c |
 | dartR.sexlinked | 1.3.0 | checked 20 Nov, CRAN note below; Diana submits |
-| dartRverse | 1.3.0 | last |
+| dartRverse | 1.3.0 | last; checked 20 Nov, CRAN note below |
 
 Submit the next one only after the previous one is accepted. Tarballs in
 `D:/Bernd/R/dartRs/cran` (local folder, not in git):
@@ -192,6 +192,48 @@ and dartR.captive 1.3.1).
 (Locally only: a warning that adegenet/ade4 were built under R 4.3.3, and
 notes that the current time could not be verified and that pandoc is not
 installed. All are specific to the local machine.)
+
+## Reverse dependencies
+
+There are currently no reverse dependencies on CRAN.
+```
+
+**CRAN note for dartRverse 1.3.0** (Bernd uploads, after all add-ons are
+accepted; tarball = `beta` 0be9b08, rebuilt 20 Nov 09:25; checked 20 Nov,
+home PC, R 4.3.1: 0 errors, 0 warnings, 273 s, examples 17 s, tests 52 s;
+only local NOTEs clock, no pandoc):
+
+```
+## Submission summary
+
+This is an update of dartRverse (1.0.6 -> 1.3.0), the meta-package of the
+dartRverse. It completes a coordinated release: dartR.base 1.3.0,
+dartR.data 1.2.7, dartR.popgen 1.3.0, dartR.sim 1.3.0, dartR.spatial 1.3.0,
+dartR.captive 1.3.1 and dartR.sexlinked 1.3.0 are on CRAN. All dartRverse
+packages are in Suggests only.
+
+## Main changes
+
+* dartRverse_install() lists the installed and available versions of the
+  dartRverse packages and, only when called by the user, installs or
+  updates them from CRAN or GitHub, including the Bioconductor
+  dependencies. Failed installs are reported as failures. devtools and RCurl
+  are no longer imported.
+* gl.download.binary() downloads, only when called by the user, external
+  programs used by some dartRverse functions (e.g. PLINK, 'dartR_coancestry')
+  into tempdir() by default, or into a directory the user gives.
+* Examples that need internet access or install software are in \dontrun{}.
+
+## Test environments
+
+* local Windows 11, R 4.3.1: R CMD check --as-cran
+
+## R CMD check results
+
+0 errors | 0 warnings | 0 notes
+
+(Locally only: notes that the current time could not be verified and that
+pandoc is not installed. Both are specific to the local machine.)
 
 ## Reverse dependencies
 
