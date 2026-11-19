@@ -150,6 +150,12 @@ All `dev_fbm` branches are deleted (they were fully merged).
   `gl.select.panel.combined`, `gl.select.panel.parallel`,
   `gl.opt.ind.all`; unclear errors with exactly 2 populations.
 
+- The local check warning "package 'dplyr' was built under R version
+  4.4.3" comes only from the UC PC: R there is 4.4.1, while 293 installed
+  packages (dplyr among them) were built under newer R. CRAN does not see
+  it. Rebuilding dplyr from source failed on 19 Nov and was not pursued
+  (Bernd: leave it). The lasting fix is updating R on that PC.
+
 ## Working conventions
 
 - Run only the affected test files while iterating; full test suite and
