@@ -16,7 +16,7 @@ FBM work: `dartR.base/function-review/release-1.3.0-status.md`,
 | dartR.sim | 1.3.0 | accepted (20 Nov) |
 | dartR.spatial | 1.3.0 | **next**: tarball rebuilt and checked 20 Nov, CRAN note below |
 | dartR.captive | **1.3.1** | accepted (20 Nov); main merged 92bee8c |
-| dartR.sexlinked | 1.3.0 | waiting |
+| dartR.sexlinked | 1.3.0 | checked 20 Nov, CRAN note below; Diana submits |
 | dartRverse | 1.3.0 | last |
 
 Submit the next one only after the previous one is accepted. Tarballs in
@@ -156,6 +156,46 @@ are not installed. All are specific to the local machine.)
 
 The only reverse dependency is dartRverse (Suggests). It does not use the
 functions that were moved or removed.
+```
+
+**CRAN note for dartR.sexlinked 1.3.0** (maintainer Diana Robledo-Ruiz
+<diana.robledoruiz1@monash.edu> uploads; tarball = `beta` 5d90b12; checked
+20 Nov, home PC, R 4.3.1: 0 errors, 269 s, examples 21 s, tests 31 s; only
+local WARNING adegenet/ade4 built under R 4.3.3 and NOTEs clock, no pandoc):
+
+```
+## Submission summary
+
+This is an update of dartR.sexlinked (1.2.2 -> 1.3.0). It is part of a
+coordinated dartRverse release and requires dartR.base (>= 1.3.0), which CRAN
+has accepted (as have dartR.data 1.2.7, dartR.popgen 1.3.0, dartR.sim 1.3.0
+and dartR.captive 1.3.1).
+
+## Main changes
+
+* gl.report.sexlinked(), gl.filter.sexlinked(), gl.keep.sexlinked() and
+  gl.infer.sex() support file-backed (FBM) genotype storage from dartR.base
+  1.3.0, reading the data in blocks of loci; results are identical to those
+  for data held in memory.
+* Bug fixes in gl.drop.sexlinked(), gl.keep.sexlinked(),
+  gl.filter.sexlinked() and gl.infer.sex() (see NEWS.md).
+* Slow test files call skip_on_cran().
+
+## Test environments
+
+* local Windows 11, R 4.3.1: R CMD check --as-cran
+
+## R CMD check results
+
+0 errors | 0 warnings | 0 notes
+
+(Locally only: a warning that adegenet/ade4 were built under R 4.3.3, and
+notes that the current time could not be verified and that pandoc is not
+installed. All are specific to the local machine.)
+
+## Reverse dependencies
+
+There are currently no reverse dependencies on CRAN.
 ```
 
 **Home PC (20 Nov):** `Rscript` on PATH is R 4.6.2 with no packages; the
