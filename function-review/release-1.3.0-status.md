@@ -55,7 +55,11 @@ each further package after CRAN accepts it.
 - dartR.base 1.3.1 on dev (legacy `readRDS()` objects, `gl.pcoa.plot`
   star labels); not in `beta`.
 
-**CRAN note for dartR.spatial 1.3.0** (Luis uploads):
+**CRAN maintainers (`cre`):** Bernd for dartR.base, data, popgen, spatial,
+captive and dartRverse; Luis for dartR.sim; Diana Robledo-Ruiz for
+dartR.sexlinked. The maintainer uploads and confirms the submission email.
+
+**CRAN note for dartR.spatial 1.3.0** (Bernd uploads):
 
 ```
 ## Submission summary
@@ -89,6 +93,64 @@ come from the local machine.)
 
 The only reverse dependency is dartRverse (Suggests). The CRAN version of
 dartRverse (1.0.6) was checked against dartR.spatial 1.3.0: Status OK.
+```
+
+**dartR.captive 1.3.1 checked (20 Nov, home PC, R 4.3.1):**
+`R CMD check --as-cran cran/dartR.captive_1.3.1.tar.gz`: 0 errors, 354 s;
+examples 17 s (19 s with donttest), tests 56 s. Only local issues: WARNING
+adegenet/ade4 built under R 4.3.3; NOTEs clock, no pandoc, no V8.
+Reverse dependencies: only dartRverse (Suggests); the CRAN dartRverse 1.0.6
+does not use the functions removed in 1.2.7 (`gl.assign.*`,
+`utils.assignment*`). Ready to submit after spatial is accepted.
+
+**dartRverse (20 Nov):** NEWS says captive is 1.3.1; dev merged into `beta`
+(0be9b08, now also carries this document, which is build-ignored);
+`cran/dartRverse_1.3.0.tar.gz` rebuilt from it (09:25).
+
+**CRAN note for dartR.captive 1.3.1** (Bernd uploads):
+
+```
+## Submission summary
+
+This is an update of dartR.captive (1.2.2 -> 1.3.1). It is part of a
+coordinated dartRverse release and requires dartR.base (>= 1.3.0); dartR.base
+1.3.0, dartR.data 1.2.7, dartR.popgen 1.3.0, dartR.sim 1.3.0 and
+dartR.spatial 1.3.0 have been accepted.
+
+## Main changes
+
+* New functions: gl.test.offspring(), gl.report.errorrate(),
+  gl.inbreeding(), gl.parentage.power() and gl.relatedness().
+* gl.relatedness() uses the external program 'dartR_coancestry' (Coancestry
+  estimators, by permission of its author, Jinliang Wang, who is listed as a
+  contributor). The program is not shipped with the package and is never
+  downloaded automatically: users download it explicitly with
+  dartRverse::gl.download.binary() and give its location. gl.inbreeding()
+  runs PLINK and GCTA, which users install themselves, in the same way.
+  Examples that need these programs are in \dontrun{}, and tests skip when
+  the programs are absent.
+* Support for file-backed (FBM) genotype storage from dartR.base 1.3.0.
+* gl.assign.pca(), gl.assign.pa(), gl.assign.on.genotype() and
+  gl.assign.mahalanobis() moved to dartR.popgen; duplicate and unused
+  helpers removed.
+* Slow test files call skip_on_cran().
+
+## Test environments
+
+* local Windows 11, R 4.3.1: R CMD check --as-cran
+
+## R CMD check results
+
+0 errors | 0 warnings | 0 notes
+
+(Locally only: a warning that adegenet/ade4 were built under R 4.3.3, and
+notes that the current time could not be verified and that pandoc and V8
+are not installed. All are specific to the local machine.)
+
+## Reverse dependencies
+
+The only reverse dependency is dartRverse (Suggests). It does not use the
+functions that were moved or removed.
 ```
 
 **Home PC (20 Nov):** `Rscript` on PATH is R 4.6.2 with no packages; the
