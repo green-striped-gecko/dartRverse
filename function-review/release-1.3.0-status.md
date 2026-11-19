@@ -14,9 +14,9 @@ FBM work: `dartR.base/function-review/release-1.3.0-status.md`,
 | dartR.base | 1.3.0 | accepted |
 | dartR.popgen | 1.3.0 | accepted |
 | dartR.sim | 1.3.0 | accepted (20 Nov) |
-| dartR.spatial | 1.3.0 | **next**: tarball rebuilt and checked 20 Nov, CRAN note below |
+| dartR.spatial | 1.3.0 | accepted (20 Nov); main merged 258a1b3 |
 | dartR.captive | **1.3.1** | accepted (20 Nov); main merged 92bee8c |
-| dartR.sexlinked | 1.3.0 | checked 20 Nov, CRAN note below; Diana submits |
+| dartR.sexlinked | 1.3.0 | **next**: checked 20 Nov, CRAN note below; Diana submits |
 | dartRverse | 1.3.0 | last; checked 20 Nov, CRAN note below |
 
 Submit the next one only after the previous one is accepted. Tarballs in
@@ -37,8 +37,8 @@ submitting captive 1.3.1.
 
 **main:** `beta` merged into `main` for the accepted packages; `main` has
 the same content as `beta`: dartR.data 8776ec0, dartR.base eae477d,
-dartR.popgen 55e3543 (19 Nov), dartR.sim bdf9ffd, dartR.captive 92bee8c
-(20 Nov). Do the same for
+dartR.popgen 55e3543 (19 Nov), dartR.sim bdf9ffd, dartR.captive 92bee8c,
+dartR.spatial 258a1b3 (20 Nov). Do the same for
 each further package after CRAN accepts it.
 
 **20 Nov: Luis's PRs merged into dev, versions 1.3.1 on dev.**
@@ -168,8 +168,8 @@ local WARNING adegenet/ade4 built under R 4.3.3 and NOTEs clock, no pandoc):
 
 This is an update of dartR.sexlinked (1.2.2 -> 1.3.0). It is part of a
 coordinated dartRverse release and requires dartR.base (>= 1.3.0), which CRAN
-has accepted (as have dartR.data 1.2.7, dartR.popgen 1.3.0, dartR.sim 1.3.0
-and dartR.captive 1.3.1).
+has accepted (as have dartR.data 1.2.7, dartR.popgen 1.3.0, dartR.sim 1.3.0,
+dartR.spatial 1.3.0 and dartR.captive 1.3.1).
 
 ## Main changes
 
@@ -325,7 +325,7 @@ main only gained the coancestry zips).
 | dartR.base | e416024 | 5c88139 | eae477d | 1.3.1 / 1.3.0 |
 | dartR.popgen | b13e24a | 02730f7 | 55e3543 | 1.3.1 / 1.3.0 |
 | dartR.sim | 0922c41 | 12fe5c8 | bdf9ffd | 1.3.0 / 1.3.0 |
-| dartR.spatial | 2f1167e | f2eec7f | 51c7854 | 1.3.0 / 1.3.0 |
+| dartR.spatial | 2f1167e | f2eec7f | 258a1b3 | 1.3.0 / 1.3.0 |
 | dartR.captive | 9270e80 | aafba88 | 92bee8c | 1.3.1 / 1.3.1 |
 | dartR.sexlinked | 29a914f | 5d90b12 | 4bb887a | 1.3.0 / 1.3.0 |
 | dartR.data | c77c859 | 5c604db | 8776ec0 | 1.2.7 / 1.2.7 |
