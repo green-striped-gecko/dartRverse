@@ -1,7 +1,8 @@
 # dartRverse 1.3.0
 
 * dartRverse packages at version 1.3.0 (dartR.data stays at 1.2.7, as on
-  CRAN): file-backed (FBM) objects are
+  CRAN; dartR.captive is 1.3.1, with a fix to `gl.test.offspring()`):
+  file-backed (FBM) objects are
   read from disk in blocks across dartR.base, dartR.popgen, dartR.spatial,
   dartR.captive, dartR.sexlinked and dartR.sim (see their NEWS).
 * `dartRverse_install()` and `gl.download.binary()`: a tip above the table
