@@ -1,4 +1,4 @@
-# dartRverse 1.3.0 release: status (19 Nov 2026)
+# dartRverse 1.3.0 release: status (20 Nov 2026)
 
 Hand-over to pick up the release from another computer. Older details of the
 FBM work: `dartR.base/function-review/release-1.3.0-status.md`,
@@ -6,28 +6,95 @@ FBM work: `dartR.base/function-review/release-1.3.0-status.md`,
 
 ## Where the release stands
 
-**19 Nov 2026 — CRAN submissions, one package at a time:**
+**20 Nov 2026 — CRAN submissions, one package at a time:**
 
 | Package | Version | CRAN |
 |---|---|---|
 | dartR.data | 1.2.7 | accepted |
 | dartR.base | 1.3.0 | accepted |
 | dartR.popgen | 1.3.0 | accepted |
-| dartR.sim | 1.3.0 | returned by pre-test, fixed, to resubmit (19 Nov) |
-| dartR.spatial | 1.3.0 | next (fixed today, see below) |
-| dartR.captive | 1.3.0 | waiting |
+| dartR.sim | 1.3.0 | accepted (20 Nov) |
+| dartR.spatial | 1.3.0 | **next**: tarball rebuilt 20 Nov, CRAN note below |
+| dartR.captive | **1.3.1** | waiting (was 1.3.0; see below) |
 | dartR.sexlinked | 1.3.0 | waiting |
 | dartRverse | 1.3.0 | last |
 
-Submit the next one only after the previous one is accepted. All tarballs
-in `D:/Bernd/R/dartRs/cran` were compared file by file with GitHub `beta`
-on 19 Nov and match it (only the fields `R CMD build` adds to DESCRIPTION
-differ). dartR.spatial was rebuilt after today's fix (19 Nov, 10:18).
+Submit the next one only after the previous one is accepted. Tarballs in
+`D:/Bernd/R/dartRs/cran` (local folder, not in git):
 
-**main (19 Nov):** `beta` merged into `main` for the three accepted packages;
-`main` now has the same content as `beta`: dartR.data 8776ec0, dartR.base
-eae477d, dartR.popgen 55e3543. Do the same for each further package after
-CRAN accepts it.
+- `dartR.spatial_1.3.0.tar.gz`: **rebuilt 20 Nov 09:13** from `beta`
+  f2eec7f with R 4.3.1 on the home PC. The copy there before was the 18 Nov
+  build, still with `reemsplots2` in Suggests and the `Remotes` field (the
+  19 Nov rebuild was on the UC PC only). The new DESCRIPTION has neither.
+- `dartR.captive_1.3.1.tar.gz`: **new, 20 Nov 09:17**, from `beta` aafba88.
+  `dartR.captive_1.3.0.tar.gz` removed from the folder.
+- The others (18 Nov 17:22) postdate their last `beta` commits and were
+  compared with `beta` on 19 Nov.
+
+Neither new tarball has had `R CMD check --as-cran` yet (spatial: the same
+commit passed it on the UC PC on 19 Nov, 0 errors). Run it before
+submitting captive 1.3.1.
+
+**main:** `beta` merged into `main` for the accepted packages; `main` has
+the same content as `beta`: dartR.data 8776ec0, dartR.base eae477d,
+dartR.popgen 55e3543 (19 Nov), dartR.sim bdf9ffd (20 Nov). Do the same for
+each further package after CRAN accepts it.
+
+**20 Nov: Luis's PRs merged into dev, versions 1.3.1 on dev.**
+
+- dartR.captive #156: `gl.test.offspring()` stopped with "Allele
+  frequencies must be finite and in [0,1]" whenever it estimated the
+  frequencies from about 50 or more individuals (default `epsilon`) and a
+  locus was (nearly) fixed; the estimate is now limited to [0, 1]. Tests:
+  73 pass, 0 fail. Because the function is unusable on realistic data in
+  1.3.0, **captive goes to CRAN as 1.3.1**: dev merged into `beta` (aafba88),
+  NEWS has a 1.3.1 section.
+- dartR.popgen #137: `gl.select.panel.parallel()` ran only `n_cores` chains
+  when `n_cores < n_chains`. Fixed on dev, version 1.3.1 (b13e24a); panel
+  tests 99 pass, 0 fail. Not in `beta`/CRAN yet (popgen 1.3.0 is accepted).
+- dartR.base 1.3.1 on dev (legacy `readRDS()` objects, `gl.pcoa.plot`
+  star labels); not in `beta`.
+
+**CRAN note for dartR.spatial 1.3.0** (Luis uploads):
+
+```
+## Submission summary
+
+This is an update of dartR.spatial (1.2.2 -> 1.3.0). It accompanies
+dartR.base 1.3.0, which CRAN has accepted, and requires dartR.base (>= 1.3.0).
+dartR.data 1.2.7, dartR.popgen 1.3.0 and dartR.sim 1.3.0 have also been
+accepted as part of this coordinated dartRverse release.
+
+## Changes relevant to CRAN
+
+* The GitHub-only package 'reemsplots2' has been removed from Suggests, and
+  the Remotes field has been removed from DESCRIPTION. gl.run.eems() checks for
+  'reemsplots2' at run time with requireNamespace() and, if it is missing,
+  stops with a message saying how to install it.
+* The slowest test files call skip_on_cran() to keep check time low.
+
+## Test environments
+
+* local Windows, R 4.4.1: R CMD check --as-cran
+
+## R CMD check results
+
+0 errors | 0 warnings | 0 notes
+
+(The only issues locally were a warning that an installed dependency was built
+under a newer R version, and the "unable to verify current time" note. Both
+come from the local machine.)
+
+## Reverse dependencies
+
+The only reverse dependency is dartRverse (Suggests). The CRAN version of
+dartRverse (1.0.6) was checked against dartR.spatial 1.3.0: Status OK.
+```
+
+**Home PC (20 Nov):** `Rscript` on PATH is R 4.6.2 with no packages; the
+package library is under R 4.3.1
+(`C:/Program Files/R/R-4.3.1/bin/x64/Rscript.exe`). All eight dev versions
+installed there on 20 Nov.
 
 **dartR.sim resubmission (19 Nov, dev 0922c41, beta 12fe5c8):** the CRAN
 pre-test (Windows R-devel) gave 2 NOTEs: the `gl.sim.WF.run()` call took
@@ -70,13 +137,13 @@ Earlier notes (18 Nov):
 
 ## Next steps
 
-1. Wait for CRAN to accept dartR.base 1.3.0.
-2. Then submit, in dependency order: dartR.popgen, dartR.spatial,
-   dartR.sim, dartR.captive, dartR.sexlinked, dartRverse. All require
-   `dartR.base (>= 1.3.0)`.
-3. **Deadline:** dartR.sim on CRAN (1.2.2) fails its `gl.sim.ind` example
-   (dartR.data 1.2.7's `testset.gl` has 3 all-NA loci); CRAN wants it fixed
-   before **2026-12-06**. dartR.sim 1.3.0 fixes it.
+1. Submit dartR.spatial 1.3.0 (tarball and CRAN note above).
+2. After acceptance: merge spatial `beta` into `main`; run
+   `R CMD check --as-cran` on `cran/dartR.captive_1.3.1.tar.gz` and submit
+   it (its CRAN note must say 1.2.2 -> 1.3.1 and mention the
+   `gl.test.offspring()` fix); then dartR.sexlinked, then dartRverse.
+3. Done 20 Nov: dartR.sim 1.3.0 accepted, which clears the 2026-12-06
+   deadline for the `gl.sim.ind` example error.
 4. Done (18 Nov, evening): the slowest test files of popgen, sim, spatial,
    captive and sexlinked call `skip_on_cran()` too (pushed to dev and
    merged into beta). Local `R CMD check --as-cran` of clean builds, all
@@ -96,22 +163,24 @@ dartR.sim 1.2.2 the known `gl.sim.ind` example error (already on its CRAN
 check page, not caused by dartR.base). `gl.He`, `gl.Ho`, `gl.propShared`
 were moved back to dartR.base so the CRAN add-ons keep working.
 
-## Branches (origin, 19 Nov 2026)
+## Branches (origin, 20 Nov 2026)
 
-`beta` has the same content as `dev` in every repo (dartRverse dev only adds
-this document). `main` = `beta` for data, base and popgen (merged 19 Nov after
-CRAN acceptance); the others are merged after their acceptance (dartRverse main only gained the coancestry zips).
+`beta` has the same content as `dev` except where dev has moved on to 1.3.1
+(base, popgen: dev only; captive: dev and beta). dartRverse dev only adds
+this document. `main` = `beta` for data, base, popgen and sim (merged after
+CRAN acceptance); the others are merged after their acceptance (dartRverse
+main only gained the coancestry zips).
 
-| Package | dev | beta | Version |
-|---|---|---|---|
-| dartR.base | e580622 | 5c88139 | 1.3.0 |
-| dartR.popgen | 9cb03bb | 02730f7 | 1.3.0 |
-| dartR.sim | 0922c41 | 12fe5c8 | 1.3.0 |
-| dartR.spatial | 2f1167e | f2eec7f | 1.3.0 |
-| dartR.captive | d1473de | 2578fd8 | 1.3.0 |
-| dartR.sexlinked | 29a914f | 5d90b12 | 1.3.0 |
-| dartR.data | c77c859 | 5c604db | 1.2.7 |
-| dartRverse | (latest) | 3598e40 | 1.3.0 |
+| Package | dev | beta | main | Version dev / beta |
+|---|---|---|---|---|
+| dartR.base | e416024 | 5c88139 | eae477d | 1.3.1 / 1.3.0 |
+| dartR.popgen | b13e24a | 02730f7 | 55e3543 | 1.3.1 / 1.3.0 |
+| dartR.sim | 0922c41 | 12fe5c8 | bdf9ffd | 1.3.0 / 1.3.0 |
+| dartR.spatial | 2f1167e | f2eec7f | 51c7854 | 1.3.0 / 1.3.0 |
+| dartR.captive | 9270e80 | aafba88 | d10e738 | 1.3.1 / 1.3.1 |
+| dartR.sexlinked | 29a914f | 5d90b12 | 4bb887a | 1.3.0 / 1.3.0 |
+| dartR.data | c77c859 | 5c604db | 8776ec0 | 1.2.7 / 1.2.7 |
+| dartRverse | (latest) | 3598e40 | da7c68d | 1.3.0 / 1.3.0 |
 
 All `dev_fbm` branches are deleted (they were fully merged).
 
