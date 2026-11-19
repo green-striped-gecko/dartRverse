@@ -48,6 +48,8 @@ check and still tells users to install it from GitHub. gl.run.eems tests:
 14 pass, 0 fail (3 skipped, need the EEMS program). `R CMD check --as-cran`
 of the clean build: 0 errors, 353 s, incoming-feasibility NOTE gone (only
 the local dplyr warning and clock note). Installed on the UC PC.
+Reverse dependencies: only dartRverse (Suggests). CRAN's dartRverse 1.0.6
+checked against dartR.spatial 1.3.0 on 19 Nov: Status OK. Ready to submit.
 
 Earlier notes (18 Nov):
 
