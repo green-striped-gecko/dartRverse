@@ -14,10 +14,10 @@ FBM work: `dartR.base/function-review/release-1.3.0-status.md`,
 | dartR.base | 1.3.0 | accepted |
 | dartR.popgen | 1.3.0 | accepted |
 | dartR.sim | 1.3.0 | accepted (20 Nov) |
-| dartR.spatial | 1.3.0 | **next**: tarball rebuilt 20 Nov, CRAN note below |
-| dartR.captive | **1.3.1** | waiting (was 1.3.0; see below) |
-| dartR.sexlinked | 1.3.0 | waiting |
-| dartRverse | 1.3.0 | last |
+| dartR.spatial | 1.3.0 | accepted (20 Nov); main merged 258a1b3 |
+| dartR.captive | **1.3.1** | accepted (20 Nov); main merged 92bee8c |
+| dartR.sexlinked | 1.3.0 | **next**: checked 20 Nov, CRAN note below; Diana submits |
+| dartRverse | 1.3.0 | last; checked 20 Nov, CRAN note below |
 
 Submit the next one only after the previous one is accepted. Tarballs in
 `D:/Bernd/R/dartRs/cran` (local folder, not in git):
@@ -37,7 +37,8 @@ submitting captive 1.3.1.
 
 **main:** `beta` merged into `main` for the accepted packages; `main` has
 the same content as `beta`: dartR.data 8776ec0, dartR.base eae477d,
-dartR.popgen 55e3543 (19 Nov), dartR.sim bdf9ffd (20 Nov). Do the same for
+dartR.popgen 55e3543 (19 Nov), dartR.sim bdf9ffd, dartR.captive 92bee8c,
+dartR.spatial 258a1b3 (20 Nov). Do the same for
 each further package after CRAN accepts it.
 
 **20 Nov: Luis's PRs merged into dev, versions 1.3.1 on dev.**
@@ -55,40 +56,188 @@ each further package after CRAN accepts it.
 - dartR.base 1.3.1 on dev (legacy `readRDS()` objects, `gl.pcoa.plot`
   star labels); not in `beta`.
 
-**CRAN note for dartR.spatial 1.3.0** (Luis uploads):
+**CRAN maintainers (`cre`):** Bernd for dartR.base, data, popgen, spatial,
+captive and dartRverse; Luis for dartR.sim; Diana Robledo-Ruiz for
+dartR.sexlinked. The maintainer uploads and confirms the submission email.
+
+**CRAN note for dartR.spatial 1.3.0** (Bernd uploads; checked 20 Nov,
+home PC, R 4.3.1: 0 errors, 336 s, examples 17 s, with donttest 30 s, tests
+34 s; only local WARNING adegenet/ade4 built under R 4.3.3 and NOTEs clock,
+no pandoc):
 
 ```
 ## Submission summary
 
-This is an update of dartR.spatial (1.2.2 -> 1.3.0). It accompanies
-dartR.base 1.3.0, which CRAN has accepted, and requires dartR.base (>= 1.3.0).
-dartR.data 1.2.7, dartR.popgen 1.3.0 and dartR.sim 1.3.0 have also been
-accepted as part of this coordinated dartRverse release.
+This is an update of dartR.spatial (1.2.2 -> 1.3.0). It is part of a
+coordinated dartRverse release and requires dartR.base (>= 1.3.0), which CRAN
+has accepted. dartR.data 1.2.7, dartR.popgen 1.3.0, dartR.sim 1.3.0 and
+dartR.captive 1.3.1 have also been accepted.
 
-## Changes relevant to CRAN
+## Main changes
 
+* Support for file-backed (FBM) genotype storage from dartR.base 1.3.0.
 * The GitHub-only package 'reemsplots2' has been removed from Suggests, and
   the Remotes field has been removed from DESCRIPTION. gl.run.eems() checks for
   'reemsplots2' at run time with requireNamespace() and, if it is missing,
   stops with a message saying how to install it.
-* The slowest test files call skip_on_cran() to keep check time low.
+* Bug fixes (see NEWS.md), and slow test files call skip_on_cran().
 
 ## Test environments
 
-* local Windows, R 4.4.1: R CMD check --as-cran
+* local Windows 11, R 4.3.1: R CMD check --as-cran
 
 ## R CMD check results
 
 0 errors | 0 warnings | 0 notes
 
-(The only issues locally were a warning that an installed dependency was built
-under a newer R version, and the "unable to verify current time" note. Both
-come from the local machine.)
+(Locally only: a warning that adegenet/ade4 were built under R 4.3.3, and
+notes that the current time could not be verified and that pandoc is not
+installed. All are specific to the local machine.)
 
 ## Reverse dependencies
 
 The only reverse dependency is dartRverse (Suggests). The CRAN version of
 dartRverse (1.0.6) was checked against dartR.spatial 1.3.0: Status OK.
+```
+
+**dartR.captive 1.3.1 checked (20 Nov, home PC, R 4.3.1):**
+`R CMD check --as-cran cran/dartR.captive_1.3.1.tar.gz`: 0 errors, 354 s;
+examples 17 s (19 s with donttest), tests 56 s. Only local issues: WARNING
+adegenet/ade4 built under R 4.3.3; NOTEs clock, no pandoc, no V8.
+Reverse dependencies: only dartRverse (Suggests); the CRAN dartRverse 1.0.6
+does not use the functions removed in 1.2.7 (`gl.assign.*`,
+`utils.assignment*`). Ready to submit after spatial is accepted.
+
+**dartRverse (20 Nov):** NEWS says captive is 1.3.1; dev merged into `beta`
+(0be9b08, now also carries this document, which is build-ignored);
+`cran/dartRverse_1.3.0.tar.gz` rebuilt from it (09:25).
+
+**CRAN note for dartR.captive 1.3.1** (Bernd uploads):
+
+```
+## Submission summary
+
+This is an update of dartR.captive (1.2.2 -> 1.3.1). It is part of a
+coordinated dartRverse release and requires dartR.base (>= 1.3.0); dartR.base
+1.3.0, dartR.data 1.2.7, dartR.popgen 1.3.0, dartR.sim 1.3.0 and
+dartR.spatial 1.3.0 have been accepted.
+
+## Main changes
+
+* New functions: gl.test.offspring(), gl.report.errorrate(),
+  gl.inbreeding(), gl.parentage.power() and gl.relatedness().
+* gl.relatedness() uses the external program 'dartR_coancestry' (Coancestry
+  estimators, by permission of its author, Jinliang Wang, who is listed as a
+  contributor). The program is not shipped with the package and is never
+  downloaded automatically: users download it explicitly with
+  dartRverse::gl.download.binary() and give its location. gl.inbreeding()
+  runs PLINK and GCTA, which users install themselves, in the same way.
+  Examples that need these programs are in \dontrun{}, and tests skip when
+  the programs are absent.
+* Support for file-backed (FBM) genotype storage from dartR.base 1.3.0.
+* gl.assign.pca(), gl.assign.pa(), gl.assign.on.genotype() and
+  gl.assign.mahalanobis() moved to dartR.popgen; duplicate and unused
+  helpers removed.
+* Slow test files call skip_on_cran().
+
+## Test environments
+
+* local Windows 11, R 4.3.1: R CMD check --as-cran
+
+## R CMD check results
+
+0 errors | 0 warnings | 0 notes
+
+(Locally only: a warning that adegenet/ade4 were built under R 4.3.3, and
+notes that the current time could not be verified and that pandoc and V8
+are not installed. All are specific to the local machine.)
+
+## Reverse dependencies
+
+The only reverse dependency is dartRverse (Suggests). It does not use the
+functions that were moved or removed.
+```
+
+**CRAN note for dartR.sexlinked 1.3.0** (maintainer Diana Robledo-Ruiz
+<diana.robledoruiz1@monash.edu> uploads; tarball = `beta` 5d90b12; checked
+20 Nov, home PC, R 4.3.1: 0 errors, 269 s, examples 21 s, tests 31 s; only
+local WARNING adegenet/ade4 built under R 4.3.3 and NOTEs clock, no pandoc):
+
+```
+## Submission summary
+
+This is an update of dartR.sexlinked (1.2.2 -> 1.3.0). It is part of a
+coordinated dartRverse release and requires dartR.base (>= 1.3.0), which CRAN
+has accepted (as have dartR.data 1.2.7, dartR.popgen 1.3.0, dartR.sim 1.3.0,
+dartR.spatial 1.3.0 and dartR.captive 1.3.1).
+
+## Main changes
+
+* gl.report.sexlinked(), gl.filter.sexlinked(), gl.keep.sexlinked() and
+  gl.infer.sex() support file-backed (FBM) genotype storage from dartR.base
+  1.3.0, reading the data in blocks of loci; results are identical to those
+  for data held in memory.
+* Bug fixes in gl.drop.sexlinked(), gl.keep.sexlinked(),
+  gl.filter.sexlinked() and gl.infer.sex() (see NEWS.md).
+* Slow test files call skip_on_cran().
+
+## Test environments
+
+* local Windows 11, R 4.3.1: R CMD check --as-cran
+
+## R CMD check results
+
+0 errors | 0 warnings | 0 notes
+
+(Locally only: a warning that adegenet/ade4 were built under R 4.3.3, and
+notes that the current time could not be verified and that pandoc is not
+installed. All are specific to the local machine.)
+
+## Reverse dependencies
+
+There are currently no reverse dependencies on CRAN.
+```
+
+**CRAN note for dartRverse 1.3.0** (Bernd uploads, after all add-ons are
+accepted; tarball = `beta` 0be9b08, rebuilt 20 Nov 09:25; checked 20 Nov,
+home PC, R 4.3.1: 0 errors, 0 warnings, 273 s, examples 17 s, tests 52 s;
+only local NOTEs clock, no pandoc):
+
+```
+## Submission summary
+
+This is an update of dartRverse (1.0.6 -> 1.3.0), the meta-package of the
+dartRverse. It completes a coordinated release: dartR.base 1.3.0,
+dartR.data 1.2.7, dartR.popgen 1.3.0, dartR.sim 1.3.0, dartR.spatial 1.3.0,
+dartR.captive 1.3.1 and dartR.sexlinked 1.3.0 are on CRAN. All dartRverse
+packages are in Suggests only.
+
+## Main changes
+
+* dartRverse_install() lists the installed and available versions of the
+  dartRverse packages and, only when called by the user, installs or
+  updates them from CRAN or GitHub, including the Bioconductor
+  dependencies. Failed installs are reported as failures. devtools and RCurl
+  are no longer imported.
+* gl.download.binary() downloads, only when called by the user, external
+  programs used by some dartRverse functions (e.g. PLINK, 'dartR_coancestry')
+  into tempdir() by default, or into a directory the user gives.
+* Examples that need internet access or install software are in \dontrun{}.
+
+## Test environments
+
+* local Windows 11, R 4.3.1: R CMD check --as-cran
+
+## R CMD check results
+
+0 errors | 0 warnings | 0 notes
+
+(Locally only: notes that the current time could not be verified and that
+pandoc is not installed. Both are specific to the local machine.)
+
+## Reverse dependencies
+
+There are currently no reverse dependencies on CRAN.
 ```
 
 **Home PC (20 Nov):** `Rscript` on PATH is R 4.6.2 with no packages; the
@@ -176,8 +325,8 @@ main only gained the coancestry zips).
 | dartR.base | e416024 | 5c88139 | eae477d | 1.3.1 / 1.3.0 |
 | dartR.popgen | b13e24a | 02730f7 | 55e3543 | 1.3.1 / 1.3.0 |
 | dartR.sim | 0922c41 | 12fe5c8 | bdf9ffd | 1.3.0 / 1.3.0 |
-| dartR.spatial | 2f1167e | f2eec7f | 51c7854 | 1.3.0 / 1.3.0 |
-| dartR.captive | 9270e80 | aafba88 | d10e738 | 1.3.1 / 1.3.1 |
+| dartR.spatial | 2f1167e | f2eec7f | 258a1b3 | 1.3.0 / 1.3.0 |
+| dartR.captive | 9270e80 | aafba88 | 92bee8c | 1.3.1 / 1.3.1 |
 | dartR.sexlinked | 29a914f | 5d90b12 | 4bb887a | 1.3.0 / 1.3.0 |
 | dartR.data | c77c859 | 5c604db | 8776ec0 | 1.2.7 / 1.2.7 |
 | dartRverse | (latest) | 3598e40 | da7c68d | 1.3.0 / 1.3.0 |
