@@ -259,7 +259,23 @@ After editing an R package, run from that package directory:
 
 ```sh
 Rscript -e "devtools::document()"
-Rscript -e "devtools::test()"
+Rscript -e "devtools::test(filter = '<affected files>')"
+```
+
+Testing depends on the target branch, because the full suite is slow and
+`devtools::check()` runs all tests again:
+
+- **While developing:** run only the test files affected by the change
+  (`devtools::test(filter = ...)`), not the full suite.
+- **Before a push to `dev`:** affected tests only. Do not run the full
+  suite or `devtools::check()` locally; the push triggers `R CMD check` on
+  GitHub Actions (four platforms), which is the full check. Look at its
+  result when asked, and fix failures with a follow-up push.
+- **Before a merge or push to `beta` or `main`:** run the full check locally,
+  once, without a separate `devtools::test()` (the check already runs the
+  tests):
+
+```sh
 Rscript -e "devtools::check(document = FALSE, args = '--no-manual')"
 ```
 
